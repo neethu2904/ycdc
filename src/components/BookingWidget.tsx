@@ -17,6 +17,8 @@ import {
 interface BookingWidgetProps {
   onClose?: () => void;
   initialBranch?: string;
+  initialCategory?: string;
+  initialService?: string;
 }
 
 const BRANCHES = [
@@ -78,11 +80,11 @@ const TIME_SLOTS = [
   '02:00 PM', '02:45 PM', '03:30 PM', '04:15 PM', '05:00 PM'
 ];
 
-export default function BookingWidget({ onClose, initialBranch }: BookingWidgetProps) {
-  const [step, setStep] = useState(1);
+export default function BookingWidget({ onClose, initialBranch, initialCategory, initialService }: BookingWidgetProps) {
+  const [step, setStep] = useState(initialCategory ? 3 : 1);
   const [branch, setBranch] = useState(initialBranch || 'bangalore');
-  const [category, setCategory] = useState('skin');
-  const [service, setService] = useState('acne-therapy');
+  const [category, setCategory] = useState(initialCategory || 'skin');
+  const [service, setService] = useState(initialService || 'acne-therapy');
   const [doctor, setDoctor] = useState('yogiraj');
   const [date, setDate] = useState('');
   const [timeSlot, setTimeSlot] = useState('10:15 AM');

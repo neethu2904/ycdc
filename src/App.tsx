@@ -17,6 +17,9 @@ import {
 import BookingWidget from './components/BookingWidget';
 import ConsultationForm from './components/ConsultationForm';
 import LeadDashboard from './components/LeadDashboard';
+import AboutUs from './components/AboutUs';
+import TreatmentsList from './components/TreatmentsList';
+import ContactUs from './components/ContactUs';
 
 import './App.css';
 
@@ -150,6 +153,13 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showDashboardModal, setShowDashboardModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+  const [bookingPrefills, setBookingPrefills] = useState<{ category?: string; service?: string }>({});
+
+  const handleBookTreatment = (category: string, serviceId: string) => {
+    setBookingPrefills({ category, service: serviceId });
+    setShowBookingModal(true);
+  };
 
   // Carousel & responsive state
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -225,7 +235,11 @@ function App() {
       <header className="glass" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1px solid var(--silk-200)', padding: '16px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
-          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a 
+            href="#" 
+            onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} 
+            style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+          >
             <span style={{
               fontFamily: 'var(--font-serif)',
               fontSize: '2.2rem',
@@ -242,13 +256,45 @@ function App() {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="desktop-menu">
-            <a href="#services" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Treatments</a>
-            <a href="#doctors" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Our Doctors</a>
-            <a href="#locations" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Locations</a>
-            <a href="#consultation" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Virtual Diagnosis</a>
+          <nav className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <button 
+              onClick={() => setCurrentPage('home')} 
+              style={{ background: 'none', border: 'none', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.95rem', cursor: 'pointer' }}
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => setCurrentPage('about')} 
+              style={{ background: 'none', border: 'none', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.95rem', cursor: 'pointer' }}
+            >
+              About Us
+            </button>
+            <button 
+              onClick={() => setCurrentPage('treatments')} 
+              style={{ background: 'none', border: 'none', fontWeight: currentPage === 'treatments' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.95rem', cursor: 'pointer' }}
+            >
+              Treatments
+            </button>
+            <button 
+              onClick={() => setCurrentPage('contact')} 
+              style={{ background: 'none', border: 'none', fontWeight: currentPage === 'contact' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.95rem', cursor: 'pointer' }}
+            >
+              Contact Us
+            </button>
+            <button 
+              onClick={() => {
+                setCurrentPage('home');
+                setTimeout(() => {
+                  const el = document.getElementById('consultation');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }} 
+              style={{ background: 'none', border: 'none', fontWeight: '500', color: 'var(--plum-800)', fontSize: '0.95rem', cursor: 'pointer' }}
+            >
+              Virtual Diagnosis
+            </button>
             <button
-              onClick={() => setShowBookingModal(true)}
+              onClick={() => { setBookingPrefills({}); setShowBookingModal(true); }}
               className="btn btn-primary"
               style={{ padding: '10px 20px', fontSize: '0.85rem' }}
             >
@@ -267,13 +313,26 @@ function App() {
 
         {/* Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
-          <div className="glass" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', padding: '20px 24px', borderTop: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'var(--shadow-md)' }}>
-            <a href="#services" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.1rem', fontWeight: '500' }}>Treatments</a>
-            <a href="#doctors" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.1rem', fontWeight: '500' }}>Our Doctors</a>
-            <a href="#locations" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.1rem', fontWeight: '500' }}>Locations</a>
-            <a href="#consultation" onClick={() => setMobileMenuOpen(false)} style={{ fontSize: '1.1rem', fontWeight: '500' }}>Virtual Diagnosis</a>
+          <div className="glass" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', padding: '20px 24px', borderTop: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', gap: '16px', boxShadow: 'var(--shadow-md)', textAlign: 'left' }}>
+            <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1.1rem', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Home</button>
+            <button onClick={() => { setCurrentPage('about'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1.1rem', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>About Us</button>
+            <button onClick={() => { setCurrentPage('treatments'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1.1rem', fontWeight: currentPage === 'treatments' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
+            <button onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1.1rem', fontWeight: currentPage === 'contact' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Contact Us</button>
+            <button 
+              onClick={() => { 
+                setCurrentPage('home'); 
+                setMobileMenuOpen(false); 
+                setTimeout(() => {
+                  const el = document.getElementById('consultation');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }} 
+              style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1.1rem', fontWeight: '500', color: 'var(--plum-800)', cursor: 'pointer', padding: 0 }}
+            >
+              Virtual Diagnosis
+            </button>
             <button
-              onClick={() => { setMobileMenuOpen(false); setShowBookingModal(true); }}
+              onClick={() => { setMobileMenuOpen(false); setBookingPrefills({}); setShowBookingModal(true); }}
               className="btn btn-primary"
               style={{ width: '100%' }}
             >
@@ -283,8 +342,10 @@ function App() {
         )}
       </header>
 
-      {/* Hero Section */}
-      <section className="animate-fade-in" style={{
+      {currentPage === 'home' && (
+        <>
+          {/* Hero Section */}
+          <section className="animate-fade-in" style={{
         position: 'relative',
         minHeight: '85vh',
         display: 'flex',
@@ -897,12 +958,31 @@ function App() {
           </div>
         </div>
       </section>
+        </>
+      )}
+
+      {currentPage === 'about' && (
+        <AboutUs onNavigateToContact={() => setCurrentPage('contact')} />
+      )}
+
+      {currentPage === 'treatments' && (
+        <TreatmentsList onBookTreatment={handleBookTreatment} />
+      )}
+
+      {currentPage === 'contact' && (
+        <ContactUs />
+      )}
 
       {/* Footer */}
       <footer className="glass-dark" style={{ color: 'rgba(255,255,255,0.7)', padding: '60px 0 30px', borderTop: '1px solid var(--plum-800)' }}>
         <div className="container footer-main">
           <div>
-            <h4 style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '2rem' }}>YCDC</h4>
+            <h4 
+              onClick={() => setCurrentPage('home')} 
+              style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '2rem', cursor: 'pointer' }}
+            >
+              YCDC
+            </h4>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '10px', lineHeight: '1.5' }}>
               Yogiraj Centre for Dermatology & Cosmetology (YCDC) is an ISO 9001:2015 certified aesthetic and clinical clinic group specializing in advanced skin, hair, and laser therapies.
             </p>
@@ -947,11 +1027,11 @@ function App() {
           <div className="footer-links-grid">
             <div>
               <h6 style={{ color: 'white', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '16px' }}>Quick Links</h6>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem' }}>
-                <a href="#services">Treatments</a>
-                <a href="#doctors">Our Doctors</a>
-                <a href="#locations">Clinic Locations</a>
-                <a href="#consultation">Virtual Screening</a>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', alignItems: 'flex-start' }}>
+                <button onClick={() => setCurrentPage('home')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Home</button>
+                <button onClick={() => setCurrentPage('about')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>About Us</button>
+                <button onClick={() => setCurrentPage('treatments')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
+                <button onClick={() => setCurrentPage('contact')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Contact Us</button>
               </div>
             </div>
             <div>
@@ -1092,7 +1172,14 @@ function App() {
           padding: '20px'
         }}>
           <div style={{ width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto', borderRadius: '12px' }}>
-            <BookingWidget onClose={() => setShowBookingModal(false)} />
+            <BookingWidget 
+              onClose={() => {
+                setShowBookingModal(false);
+                setBookingPrefills({});
+              }} 
+              initialCategory={bookingPrefills.category}
+              initialService={bookingPrefills.service}
+            />
           </div>
         </div>
       )}
