@@ -200,14 +200,14 @@ function App() {
   return (
     <>
       {/* Top Banner (Timings & Quick CTA) */}
-      <div className="glass-dark" style={{ color: 'white', fontSize: '0.85rem', padding: '10px 0', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', position: 'relative', zIndex: 1000 }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-          <div>
+      <div className="glass-dark top-bar-container" style={{ color: 'white', fontSize: '0.85rem', padding: '10px 0', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', position: 'relative', zIndex: 1000 }}>
+        <div className="container top-bar-inner">
+          <div className="top-bar-contact">
             <span>⏱️ Mon - Sat: 9:00 AM - 7:00 PM</span>
-            <span style={{ margin: '0 12px', opacity: 0.5 }}>|</span>
+            <span className="top-bar-separator">|</span>
             <span>📍 Whitefield, Bangalore & Pattom, Trivandrum</span>
           </div>
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <div className="top-bar-actions">
             <a href="tel:+917593864264" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'white' }}>
               <Phone size={14} style={{ color: 'white' }} /> +91 75938 64264
             </a>
@@ -242,7 +242,7 @@ function App() {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+          <nav className="desktop-menu">
             <a href="#services" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Treatments</a>
             <a href="#doctors" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Our Doctors</a>
             <a href="#locations" style={{ fontWeight: '500', color: 'var(--plum-900)', fontSize: '0.95rem' }}>Locations</a>
@@ -260,7 +260,6 @@ function App() {
           <button
             className="mobile-menu-btn"
             onClick={() => setMobileMenuOpen(prev => !prev)}
-            style={{ display: 'none', background: 'none', border: 'none', color: 'var(--plum-900)', cursor: 'pointer' }}
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -312,19 +311,19 @@ function App() {
         >
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>
+        <div className="container hero-container">
           <div className="animate-fade-in-left">
             <span className="badge badge-premium animate-float" style={{ marginBottom: '20px', backgroundColor: '#7c631a', color: '#ffffff', borderColor: '#634f14' }}>
               ISO 9001:2015 Certified Dermatology Center
             </span>
-            <h1 style={{ fontFamily: 'var(--font-serif)', color: 'white', marginBottom: '24px', fontSize: '3.8rem', lineHeight: '1.1' }}>
+            <h1 className="hero-title">
               Science-Driven <br />
               <span className="gold-gradient-text">Dermatology & Cosmetology</span>
             </h1>
-            <p style={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.2rem', marginBottom: '36px', maxWidth: '580px', lineHeight: '1.6' }}>
+            <p className="hero-desc">
               For over four decades, YCDC has blended clinical expertise with state-of-the-art aesthetic science to deliver exceptional care for your skin and hair under the leadership of Dr. K. Yogiraj.
             </p>
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div className="hero-ctas">
               <button onClick={() => setShowBookingModal(true)} className="btn btn-accent" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 Schedule Appointment <Calendar size={16} />
               </button>
@@ -334,7 +333,7 @@ function App() {
             </div>
 
             {/* Features Row */}
-            <div style={{ display: 'flex', gap: '30px', marginTop: '60px', flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px' }}>
+            <div className="hero-features">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <Award size={20} style={{ color: 'var(--gold-400)' }} />
                 <div>
@@ -431,7 +430,7 @@ function App() {
           </div>
 
           {/* Tab Content Display */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.12fr 0.88fr', gap: '40px', alignItems: 'center' }}>
+          <div className="treatment-layout">
             {/* Treatment List */}
             <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {TREATMENT_CATEGORIES.find(c => c.id === activeTab)?.treatments.map((t, idx) => (
@@ -736,7 +735,7 @@ function App() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="location-card-buttons">
                 <button onClick={() => handleWhatsAppConnect('Bangalore')} className="btn btn-outline" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
                   WhatsApp Branch
                 </button>
@@ -790,7 +789,7 @@ function App() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div className="location-card-buttons">
                 <button onClick={() => handleWhatsAppConnect('Trivandrum')} className="btn btn-outline" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
                   WhatsApp Branch
                 </button>
@@ -805,7 +804,7 @@ function App() {
 
       {/* Online Consultation / Diagnosis section */}
       <section id="consultation" className="section-padding" style={{ background: 'linear-gradient(var(--silk-200), var(--silk-100))' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '0.9fr 1.1fr', gap: '50px', alignItems: 'center' }}>
+        <div className="container consultation-layout">
           <div style={{ textAlign: 'left' }}>
             <span className="badge badge-premium" style={{ marginBottom: '10px' }}>Remote Screening</span>
             <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', fontSize: '2.5rem', lineHeight: '1.2', marginTop: '10px' }}>
@@ -901,7 +900,7 @@ function App() {
 
       {/* Footer */}
       <footer className="glass-dark" style={{ color: 'rgba(255,255,255,0.7)', padding: '60px 0 30px', borderTop: '1px solid var(--plum-800)' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '40px', marginBottom: '40px', textAlign: 'left' }}>
+        <div className="container footer-main">
           <div>
             <h4 style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '2rem' }}>YCDC</h4>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', marginTop: '10px', lineHeight: '1.5' }}>
@@ -945,7 +944,7 @@ function App() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          <div className="footer-links-grid">
             <div>
               <h6 style={{ color: 'white', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '16px' }}>Quick Links</h6>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem' }}>

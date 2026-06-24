@@ -420,3 +420,219 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold-300);
 }
+
+/* ==========================================
+   Mobile Responsiveness & Layout Overrides
+   ========================================== */
+
+/* Top Bar Styling */
+.top-bar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.top-bar-contact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.top-bar-separator {
+  margin: 0 12px;
+  opacity: 0.5;
+}
+.top-bar-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Header & Navigation */
+.desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--plum-900);
+  cursor: pointer;
+}
+
+/* Hero Section */
+.hero-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero-title {
+  font-family: var(--font-serif);
+  color: white;
+  margin-bottom: 24px;
+  font-size: 3.8rem;
+  line-height: 1.1;
+}
+.hero-desc {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.2rem;
+  margin-bottom: 36px;
+  max-width: 580px;
+  line-height: 1.6;
+}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hero-features {
+  display: flex;
+  gap: 30px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 30px;
+  text-align: left;
+}
+
+/* Treatments & Services Layout */
+.treatment-layout {
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Locations Clinic Cards Buttons */
+.location-card-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Consultation Layout */
+.consultation-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 50px;
+  align-items: center;
+}
+
+/* Footer Main Layout */
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 40px;
+  margin-bottom: 40px;
+  text-align: left;
+}
+.footer-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* --- Media Queries --- */
+
+@media (max-width: 991px) {
+  /* Hero */
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-ctas {
+    justify-content: center;
+  }
+  .hero-features {
+    justify-content: center;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* Treatments */
+  .treatment-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Consultation */
+  .consultation-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Footer */
+  .footer-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header Top Bar */
+  .top-bar-inner {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  .top-bar-contact {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .top-bar-separator {
+    display: none;
+  }
+  .top-bar-actions {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  /* Navigation */
+  .desktop-menu {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  
+  /* Hero Title & Description */
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+  .hero-desc {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* CTAs stack on mobile */
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-ctas .btn, .hero-ctas a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Location buttons stack */
+  .location-card-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Footer link columns stack */
+  .footer-links-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
