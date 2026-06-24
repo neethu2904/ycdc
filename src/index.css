@@ -135,6 +135,14 @@ a {
   background-clip: text;
 }
 
+.pink-white-blend-text {
+  background: linear-gradient(135deg, #ffffff 0%, #f9cfd6 50%, #d67b8d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
 .plum-gradient {
   background: linear-gradient(135deg, var(--plum-900) 0%, var(--plum-800) 50%, var(--plum-700) 100%);
 }

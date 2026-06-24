@@ -200,7 +200,7 @@ function App() {
   return (
     <>
       {/* Top Banner (Timings & Quick CTA) */}
-      <div className="glass-dark" style={{ color: 'var(--gold-300)', fontSize: '0.85rem', padding: '10px 0', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', position: 'relative', zIndex: 1000 }}>
+      <div className="glass-dark" style={{ color: 'white', fontSize: '0.85rem', padding: '10px 0', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', position: 'relative', zIndex: 1000 }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <span>⏱️ Mon - Sat: 9:00 AM - 7:00 PM</span>
@@ -209,7 +209,7 @@ function App() {
           </div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <a href="tel:+917593864264" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'white' }}>
-              <Phone size={14} style={{ color: 'var(--gold-400)' }} /> +91 75938 64264
+              <Phone size={14} style={{ color: 'white' }} /> +91 75938 64264
             </a>
             <button
               onClick={() => handleWhatsAppConnect('General')}
@@ -312,19 +312,9 @@ function App() {
         >
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
-        {/* Overlay for Premium Dark Glass Effect */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(rgba(43, 20, 39, 0.85), rgba(43, 20, 39, 0.7))',
-          zIndex: -1
-        }} />
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '40px', alignItems: 'center' }}>
           <div className="animate-fade-in-left">
-            <span className="badge badge-premium animate-float" style={{ marginBottom: '20px' }}>
+            <span className="badge badge-premium animate-float" style={{ marginBottom: '20px', backgroundColor: '#7c631a', color: '#ffffff', borderColor: '#634f14' }}>
               ISO 9001:2015 Certified Dermatology Center
             </span>
             <h1 style={{ fontFamily: 'var(--font-serif)', color: 'white', marginBottom: '24px', fontSize: '3.8rem', lineHeight: '1.1' }}>
