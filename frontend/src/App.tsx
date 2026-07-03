@@ -442,8 +442,10 @@ function AppContent() {
               YCDC
             </span>
             <div style={{ borderLeft: '1px solid var(--gold-500)', paddingLeft: '8px', display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--plum-900)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Yogiraj Centre</span>
-              <span style={{ fontSize: '0.65rem', color: 'var(--gold-600)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Dermatology & Cosmetology</span>
+              <span style={{ fontSize: windowWidth < 480 ? '0.65rem' : '0.75rem', fontWeight: 'bold', color: 'var(--plum-900)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Yogiraj Centre</span>
+              {windowWidth >= 480 && (
+                <span style={{ fontSize: '0.65rem', color: 'var(--gold-600)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Dermatology & Cosmetology</span>
+              )}
             </div>
           </a>
 
@@ -562,7 +564,7 @@ function AppContent() {
         )}
       </header>
 
-      <main key={currentPage} className="page-transition-enter" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <main key={currentPage} className="page-transition-enter" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
         {currentPage === 'home' && (
 
         <>
@@ -1136,7 +1138,7 @@ function AppContent() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' }}>
             {/* Trivandrum Branch */}
             <div className="glass reveal reveal-left hover-premium" style={{ padding: '30px', borderRadius: '12px', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>

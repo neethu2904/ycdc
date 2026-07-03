@@ -126,7 +126,7 @@ export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
             </p>
           </div>
 
-          <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+          <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '30px' }}>
             {/* Doctor 1 */}
             <div className="glass hover-premium" style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', textAlign: 'left', background: 'white' }}>
               <div style={{ height: '300px', overflow: 'hidden', position: 'relative' }}>
