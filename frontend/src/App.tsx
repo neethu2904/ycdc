@@ -1339,7 +1339,7 @@ function AppContent() {
             </div>
           </div>
 
-          <div className="reveal reveal-right">
+          <div className="reveal reveal-right" style={{ width: '100%', minWidth: 0 }}>
             <ConsultationForm />
           </div>
         </div>

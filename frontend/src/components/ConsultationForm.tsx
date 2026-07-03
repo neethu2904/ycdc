@@ -121,7 +121,7 @@ export default function ConsultationForm({ onSuccessClose }: ConsultationFormPro
 
   if (isSubmitted) {
     return (
-      <div className="glass animate-fade-in" style={{ padding: '40px', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--gold-400)' }}>
+      <div className="glass consultation-form-card animate-fade-in" style={{ borderRadius: '12px', textAlign: 'center', border: '1px solid var(--gold-400)' }}>
         <div style={{
           width: '64px',
           height: '64px',
@@ -179,7 +179,7 @@ export default function ConsultationForm({ onSuccessClose }: ConsultationFormPro
   }
 
   return (
-    <form onSubmit={handleSubmit} className="glass" style={{ padding: '30px 40px', borderRadius: '12px', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
+    <form onSubmit={handleSubmit} className="glass consultation-form-card" style={{ borderRadius: '12px', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <span className="badge badge-premium" style={{ marginBottom: '8px' }}>
           Virtual Screening Wizard

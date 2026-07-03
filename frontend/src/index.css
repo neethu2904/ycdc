@@ -1094,4 +1094,13 @@ a {
   }
 }
 
+.consultation-form-card {
+  padding: 30px 40px;
+}
+@media (max-width: 480px) {
+  .consultation-form-card {
+    padding: 20px 16px;
+  }
+}
+
 
