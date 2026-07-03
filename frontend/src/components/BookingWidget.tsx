@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   MapPin, 
   Calendar as CalendarIcon, 
-  Clock, 
   User, 
   Sparkles, 
   Check, 
@@ -23,8 +22,8 @@ interface BookingWidgetProps {
 }
 
 const BRANCHES = [
-  { id: 'bangalore', name: 'Whitefield, Bangalore', address: '4th Floor, Premium Square, Whitefield Main Road' },
-  { id: 'trivandrum', name: 'Pattom, Trivandrum', address: 'Marappalam Road, Opp. IndusInd Bank, Pattom' }
+  { id: 'trivandrum', name: 'Pattom, Trivandrum', address: 'Marappalam Road, Opp. IndusInd Bank, Pattom' },
+  { id: 'bangalore', name: 'Whitefield, Bangalore', address: '4th Floor, Premium Square, Whitefield Main Road' }
 ];
 
 const CATEGORIES = [
@@ -76,19 +75,16 @@ const DOCTORS = [
   { id: 'sunil', name: 'Dr. Sunil Menon', role: 'Aesthetic Surgeon', branches: ['trivandrum'], specialty: ['aesthetics', 'laser'] }
 ];
 
-const TIME_SLOTS = [
-  '09:30 AM', '10:15 AM', '11:00 AM', '11:45 AM', 
-  '02:00 PM', '02:45 PM', '03:30 PM', '04:15 PM', '05:00 PM'
-];
+
 
 export default function BookingWidget({ onClose, initialBranch, initialCategory, initialService }: BookingWidgetProps) {
   const [step, setStep] = useState(initialCategory ? 3 : 1);
-  const [branch, setBranch] = useState(initialBranch || 'bangalore');
+  const [branch, setBranch] = useState(initialBranch || 'trivandrum');
   const [category, setCategory] = useState(initialCategory || 'skin');
   const [service, setService] = useState(initialService || 'acne-therapy');
   const [doctor, setDoctor] = useState('yogiraj');
   const [date, setDate] = useState('');
-  const [timeSlot, setTimeSlot] = useState('10:15 AM');
+  const timeSlot = 'Flexible';
   
   // Patient details
   const [patientName, setPatientName] = useState('');
@@ -268,8 +264,8 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
               <span style={{ fontWeight: '500', color: 'var(--charcoal)' }}>{selectedService?.name}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f0edf0', paddingTop: '12px', marginTop: '4px' }}>
-              <span style={{ color: 'var(--muted-charcoal)', fontSize: '0.9rem' }}>Date & Time</span>
-              <span style={{ fontWeight: '600', color: 'var(--plum-800)' }}>{date} at {timeSlot}</span>
+              <span style={{ color: 'var(--muted-charcoal)', fontSize: '0.9rem' }}>Preferred Date</span>
+              <span style={{ fontWeight: '600', color: 'var(--plum-800)' }}>{date}</span>
             </div>
           </div>
         </div>
@@ -423,7 +419,6 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                       <Sparkles size={16} style={{ color: service === s.id ? 'var(--gold-600)' : 'var(--plum-600)' }} />
                       <span style={{ fontSize: '0.95rem', fontWeight: '500', color: 'var(--plum-900)' }}>{s.name}</span>
                     </div>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--gold-600)', fontWeight: 'bold' }}>{s.price}</span>
                   </div>
                 ))}
               </div>
@@ -505,8 +500,8 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-              <div className="form-group">
+            <div style={{ display: 'block', marginBottom: '20px' }}>
+              <div className="form-group" style={{ marginBottom: 0 }}>
                 <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <CalendarIcon size={14} /> Select Date
                 </label>
@@ -517,20 +512,6 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   onChange={(e) => setDate(e.target.value)}
                   className="form-input" 
                 />
-              </div>
-              <div className="form-group">
-                <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Clock size={14} /> Select Time Slot
-                </label>
-                <select 
-                  value={timeSlot}
-                  onChange={(e) => setTimeSlot(e.target.value)}
-                  className="form-select"
-                >
-                  {TIME_SLOTS.map((slot) => (
-                    <option key={slot} value={slot}>{slot}</option>
-                  ))}
-                </select>
               </div>
             </div>
           </div>

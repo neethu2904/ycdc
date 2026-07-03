@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
 import {
   Phone,
   Calendar,
@@ -15,7 +16,13 @@ import {
   Instagram,
   Facebook,
   Linkedin,
-  Twitter
+  Twitter,
+  Zap,
+  Sparkles,
+  Scissors,
+  Stethoscope,
+  ClipboardList,
+  Upload
 } from 'lucide-react';
 import BookingWidget from './components/BookingWidget';
 import ConsultationForm from './components/ConsultationForm';
@@ -28,6 +35,7 @@ import BeforeAfter from './components/BeforeAfter';
 import GalleryPage from './components/GalleryPage';
 import BlogPage from './components/BlogPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import ApplyNowModal from './components/ApplyNowModal';
 import { API_BASE_URL } from './config';
 import useScrollReveal from './hooks/useScrollReveal';
 import AnimatedCounter from './components/AnimatedCounter';
@@ -39,6 +47,7 @@ const TREATMENT_CATEGORIES = [
   {
     id: 'skin',
     title: 'Clinical Dermatology',
+    icon: Stethoscope,
     tagline: 'Science-backed treatments for healthy, disease-free skin.',
     treatments: [
       { name: 'Advanced Acne & Scar Correction', desc: 'Targeted laser and RF therapies to clear breakouts and smooth deep skin scars.', duration: '45 mins' },
@@ -50,6 +59,7 @@ const TREATMENT_CATEGORIES = [
   {
     id: 'hair',
     title: 'Hair & Scalp Care',
+    icon: Scissors,
     tagline: 'Advanced hair restoration and medical trichology.',
     treatments: [
       { name: 'Follicular Hair Transplant (FUE)', desc: 'State-of-the-art hair restoration procedures delivering highly natural density.', duration: '4-8 hours' },
@@ -61,6 +71,7 @@ const TREATMENT_CATEGORIES = [
   {
     id: 'laser',
     title: 'Laser & Aesthetics',
+    icon: Zap,
     tagline: 'Cutting-edge laser therapies for permanent rejuvenation.',
     treatments: [
       { name: 'Secret RF Microneedling', desc: 'Fractional radiofrequency targeting deep wrinkles, acne scars, and skin laxity.', duration: '60 mins' },
@@ -72,6 +83,7 @@ const TREATMENT_CATEGORIES = [
   {
     id: 'cosmetic',
     title: 'Cosmetic Aesthetics',
+    icon: Sparkles,
     tagline: 'Non-surgical anti-aging and facial contouring.',
     treatments: [
       { name: 'Botox Anti-Wrinkle Injections', desc: 'Targeted micro-doses to relax dynamic wrinkles and restore youthfulness.', duration: '30 mins' },
@@ -90,7 +102,7 @@ const DOCTORS = [
     experience: '48+ Years Experience',
     qualification: 'MD, DVD, DHA (Dermatologist & Cosmetologist)',
     bio: 'A legendary pioneer in Indian dermatology, Dr. Yogiraj has treated generations of patients and specializes in advanced clinical dermatology, hair restoration, and traditional dermatologic surgeries.',
-    locations: 'Bangalore & Trivandrum'
+    locations: 'Trivandrum & Bangalore'
   },
   {
     id: 'niranjana',
@@ -123,6 +135,13 @@ const DOCTORS = [
 
 const REVIEWS = [
   {
+    name: 'Priyamvada Nair',
+    location: 'Trivandrum',
+    treatment: 'Secret RF Microneedling (Google Review)',
+    rating: 5,
+    text: 'I visited the Trivandrum center for my acne scar treatment. Dr. Maya Vincent was very gentle. After 3 sessions of Secret RF, my skin is much smoother and the scars are barely visible.'
+  },
+  {
     name: 'Siddharth R.',
     location: 'Bangalore',
     treatment: 'Hair Transplant (FUE)',
@@ -130,11 +149,11 @@ const REVIEWS = [
     text: 'Dr. Yogiraj and Dr. Vennela Reddy performed my hair transplant. The results are incredibly natural. The facility in Whitefield is state-of-the-art and feels very premium. Excellent care!'
   },
   {
-    name: 'Priyamvada Nair',
+    name: 'Anjali Menon',
     location: 'Trivandrum',
-    treatment: 'Secret RF Microneedling',
+    treatment: 'Chemical Peels (Google Review)',
     rating: 5,
-    text: 'I visited the Trivandrum center for my acne scar treatment. Dr. Maya Vincent was very gentle. After 3 sessions of Secret RF, my skin is much smoother and the scars are barely visible.'
+    text: 'YCDC is the oldest and most trusted clinic in Trivandrum. I had their chemical peels for hyperpigmentation. Dr. Yogiraj\'s diagnosis was spot-on, and the clinical care is exceptional.'
   },
   {
     name: 'Deepak Mohan',
@@ -142,6 +161,20 @@ const REVIEWS = [
     treatment: 'Laser Hair Reduction',
     rating: 5,
     text: 'Very professional clinic. The staff explain everything patiently. The laser treatment is completely pain-free compared to other clinics. Value for money and premium service.'
+  },
+  {
+    name: 'Dr. Rahul Krishnan',
+    location: 'Bangalore',
+    treatment: 'Acne Correction (Google Review)',
+    rating: 5,
+    text: 'As a doctor myself, I appreciate YCDC\'s evidence-based approach. My acne scars have reduced significantly and the Whitefield clinic has the latest lasers. Highly recommended.'
+  },
+  {
+    name: 'Kavitha S.',
+    location: 'Trivandrum',
+    treatment: 'Hydrafacial (Google Review)',
+    rating: 5,
+    text: 'Loved my experience at YCDC Pattom. The staff is highly trained and the Hydrafacial gave my skin an instant glow. Perfect bridal glow prep!'
   }
 ];
 
@@ -202,12 +235,50 @@ const DOCTOR_IMAGES: Record<string, string> = {
   maya: '/doctor_maya.png'
 };
 
-function App() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState('skin');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showDashboardModal, setShowDashboardModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState('home');
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Helper to map pathname to currentPage state
+  const getPageFromPath = (path: string) => {
+    switch (path) {
+      case '/': return 'home';
+      case '/about-us': return 'about';
+      case '/our-team': return 'team';
+      case '/before-after': return 'before-after';
+      case '/treatments': return 'treatments';
+      case '/gallery': return 'gallery';
+      case '/blog': return 'blog';
+      case '/contact-us': return 'contact';
+      case '/privacy-policy': return 'privacy';
+      default: return 'home';
+    }
+  };
+
+  const currentPage = getPageFromPath(location.pathname);
+
+  // Helper to navigate
+  const navigateToPage = (page: string) => {
+    switch (page) {
+      case 'home': navigate('/'); break;
+      case 'about': navigate('/about-us'); break;
+      case 'team': navigate('/our-team'); break;
+      case 'before-after': navigate('/before-after'); break;
+      case 'treatments': navigate('/treatments'); break;
+      case 'gallery': navigate('/gallery'); break;
+      case 'blog': navigate('/blog'); break;
+      case 'contact': navigate('/contact-us'); break;
+      case 'privacy': navigate('/privacy-policy'); break;
+      default: navigate('/');
+    }
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'instant' as any });
+  };
   const [bookingPrefills, setBookingPrefills] = useState<{ category?: string; service?: string }>({});
   const [seoConfigs, setSeoConfigs] = useState<any>(null);
 
@@ -299,6 +370,25 @@ function App() {
     setCarouselIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
+  // Reviews Carousel state
+  const [reviewIndex, setReviewIndex] = useState(0);
+  const reviewsToShow = windowWidth < 640 ? 1 : windowWidth < 1024 ? 2 : windowWidth < 1280 ? 3 : 4;
+  const maxReviewIndex = Math.max(0, REVIEWS.length - reviewsToShow);
+
+  useEffect(() => {
+    if (reviewIndex > maxReviewIndex) {
+      setReviewIndex(maxReviewIndex);
+    }
+  }, [maxReviewIndex, reviewIndex]);
+
+  const nextReview = () => {
+    setReviewIndex((prev) => (prev >= maxReviewIndex ? 0 : prev + 1));
+  };
+
+  const prevReview = () => {
+    setReviewIndex((prev) => (prev <= 0 ? maxReviewIndex : prev - 1));
+  };
+
   // Quick CTA Handlers
   const handleWhatsAppConnect = (branch: string) => {
     const text = encodeURIComponent(`Hello YCDC, I would like to inquire about treatments at your ${branch} branch.`);
@@ -313,7 +403,7 @@ function App() {
           <div className="top-bar-contact">
             <span>⏱️ Mon - Sat: 9:00 AM - 7:00 PM</span>
             <span className="top-bar-separator">|</span>
-            <span>📍 Whitefield, Bangalore & Pattom, Trivandrum</span>
+            <span>📍 Pattom, Trivandrum & Whitefield, Bangalore</span>
           </div>
           <div className="top-bar-actions">
             <a href="tel:+917593864264" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'white' }}>
@@ -339,7 +429,7 @@ function App() {
           {/* Logo */}
           <a 
             href="#" 
-            onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} 
+            onClick={(e) => { e.preventDefault(); navigateToPage('home'); }} 
             style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
           >
             <span style={{
@@ -360,56 +450,56 @@ function App() {
           {/* Desktop Navigation Links */}
           <nav className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <button 
-              onClick={() => setCurrentPage('home')} 
+              onClick={() => navigateToPage('home')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Home
             </button>
             <button 
-              onClick={() => setCurrentPage('about')} 
+              onClick={() => navigateToPage('about')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               About Us
             </button>
             <button 
-              onClick={() => setCurrentPage('team')} 
+              onClick={() => navigateToPage('team')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'team' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Our Team
             </button>
             <button 
-              onClick={() => setCurrentPage('before-after')} 
+              onClick={() => navigateToPage('before-after')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'before-after' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Before & After
             </button>
             <button 
-              onClick={() => setCurrentPage('treatments')} 
+              onClick={() => navigateToPage('treatments')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'treatments' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Treatments
             </button>
             <button 
-              onClick={() => setCurrentPage('gallery')} 
+              onClick={() => navigateToPage('gallery')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'gallery' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Gallery
             </button>
             <button 
-              onClick={() => setCurrentPage('blog')} 
+              onClick={() => navigateToPage('blog')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'blog' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Blog
             </button>
             <button 
-              onClick={() => setCurrentPage('contact')} 
+              onClick={() => navigateToPage('contact')} 
               style={{ background: 'none', border: 'none', fontWeight: currentPage === 'contact' ? 'bold' : '500', color: 'var(--plum-900)', fontSize: '0.9rem', cursor: 'pointer' }}
             >
               Contact
             </button>
             <button 
               onClick={() => {
-                setCurrentPage('home');
+                navigateToPage('home');
                 setTimeout(() => {
                   const el = document.getElementById('consultation');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -440,17 +530,17 @@ function App() {
         {/* Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
           <div className="glass" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', padding: '20px 24px', borderTop: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: 'var(--shadow-md)', textAlign: 'left' }}>
-            <button onClick={() => { setCurrentPage('home'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Home</button>
-            <button onClick={() => { setCurrentPage('about'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>About Us</button>
-            <button onClick={() => { setCurrentPage('team'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'team' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Our Team</button>
-            <button onClick={() => { setCurrentPage('before-after'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'before-after' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Before & After</button>
-            <button onClick={() => { setCurrentPage('treatments'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'treatments' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
-            <button onClick={() => { setCurrentPage('gallery'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'gallery' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Gallery</button>
-            <button onClick={() => { setCurrentPage('blog'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'blog' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Blog</button>
-            <button onClick={() => { setCurrentPage('contact'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'contact' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Contact Us</button>
+            <button onClick={() => { navigateToPage('home'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Home</button>
+            <button onClick={() => { navigateToPage('about'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>About Us</button>
+            <button onClick={() => { navigateToPage('team'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'team' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Our Team</button>
+            <button onClick={() => { navigateToPage('before-after'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'before-after' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Before & After</button>
+            <button onClick={() => { navigateToPage('treatments'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'treatments' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
+            <button onClick={() => { navigateToPage('gallery'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'gallery' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Gallery</button>
+            <button onClick={() => { navigateToPage('blog'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'blog' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Blog</button>
+            <button onClick={() => { navigateToPage('contact'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'contact' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Contact Us</button>
             <button 
               onClick={() => { 
-                setCurrentPage('home'); 
+                navigateToPage('home'); 
                 setMobileMenuOpen(false); 
                 setTimeout(() => {
                   const el = document.getElementById('consultation');
@@ -504,6 +594,16 @@ function App() {
         >
           <source src="/hero_video.mp4" type="video/mp4" />
         </video>
+        {/* Dark overlay for contrast */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(26, 8, 21, 0.65)', /* Brand deep plum overlay */
+          zIndex: -1
+        }} />
         {/* Kinetic Blob Background Elements */}
         <div className="ambient-blob-container">
           <div className="ambient-blob" style={{ top: '-10%', left: '-10%' }}></div>
@@ -571,8 +671,8 @@ function App() {
                 style={{ background: 'white', padding: '16px', borderRadius: '6px', border: '1px solid var(--silk-200)', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               >
                 <div>
-                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Whitefield Center</h6>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Bengaluru, Karnataka</span>
+                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Pattom Center</h6>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Thiruvananthapuram, Kerala</span>
                 </div>
                 <ChevronRight size={18} style={{ color: 'var(--gold-600)' }} />
               </div>
@@ -582,8 +682,8 @@ function App() {
                 style={{ background: 'white', padding: '16px', borderRadius: '6px', border: '1px solid var(--silk-200)', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               >
                 <div>
-                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Pattom Center</h6>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Thiruvananthapuram, Kerala</span>
+                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Whitefield Center</h6>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Bengaluru, Karnataka</span>
                 </div>
                 <ChevronRight size={18} style={{ color: 'var(--gold-600)' }} />
               </div>
@@ -626,7 +726,7 @@ function App() {
               Our team of expert Dermatologists and Hair Transplant Surgeons specializes in skin rejuvenation, laser treatments, hair restoration, and hair transplant procedures. We work closely with each client to provide customized skin care and hair solutions, helping you achieve healthy, glowing skin and thick, voluminous hair.
             </p>
             <p style={{ fontSize: '1rem', color: 'var(--muted-charcoal)', lineHeight: '1.7' }}>
-              At YCDC, we bring over 50 years of expertise in advanced skin care and hair treatments, combining experience with innovation to deliver exceptional results. Our clinics in Bangalore, Karnataka, and Trivandrum, Kerala, are equipped with state-of-the-art dermatology and hair restoration technology, ensuring precision, safety, and superior outcomes.
+              At YCDC, we bring over 50 years of expertise in advanced skin care and hair treatments, combining experience with innovation to deliver exceptional results. Our clinics in Trivandrum, Kerala, and Bangalore, Karnataka, are equipped with state-of-the-art dermatology and hair restoration technology, ensuring precision, safety, and superior outcomes.
             </p>
             
             {/* Dr. Yogiraj Signature & Info */}
@@ -659,8 +759,89 @@ function App() {
         </div>
       </section>
 
+      {/* Specialties Overview Grid Section */}
+      <section id="specialties-overview" className="section-padding reveal reveal-scale" style={{ backgroundColor: 'white', borderTop: '1px solid var(--silk-200)', borderBottom: '1px solid var(--silk-200)' }}>
+        <div className="container">
+          <div className="reveal reveal-up" style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <span className="badge badge-premium">Key Specialties</span>
+            <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
+              Our Core <span style={{ color: 'var(--plum-800)' }}>Dermatology Specialties</span>
+            </h2>
+            <p style={{ maxWidth: '650px', margin: '12px auto 0', color: 'var(--muted-charcoal)' }}>
+              Explore our primary areas of excellence, blending advanced clinical dermatology with cutting-edge cosmetic science.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px' }}>
+            {/* Card 1 */}
+            <div className="glass hover-premium reveal reveal-left" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'var(--transition-smooth)' }}>
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--plum-100)', color: 'var(--plum-800)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <Stethoscope size={24} />
+                </div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--plum-900)', marginBottom: '10px' }}>Clinical Dermatology</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.6' }}>
+                  Professional treatment for acne, deep scars, melasma, psoriasis, and pediatric clinical skin disorders using evidence-based medical therapies.
+                </p>
+              </div>
+              <button onClick={() => { setActiveTab('skin'); const el = document.getElementById('services'); if(el) el.scrollIntoView({behavior: 'smooth'}); }} style={{ background: 'none', border: 'none', color: 'var(--gold-600)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', marginTop: '20px', padding: 0 }}>
+                Learn More <ArrowRight size={14} />
+              </button>
+            </div>
+
+            {/* Card 2 */}
+            <div className="glass hover-premium reveal reveal-up" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'var(--transition-smooth)' }}>
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--plum-100)', color: 'var(--plum-800)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <Scissors size={24} />
+                </div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--plum-900)', marginBottom: '10px' }}>Hair & Scalp Care</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.6' }}>
+                  State-of-the-art FUE hair transplantations, Platelet-Rich Plasma (PRP) scalp therapy, and DHT-blocking meso-nutrients to restore hair density.
+                </p>
+              </div>
+              <button onClick={() => { setActiveTab('hair'); const el = document.getElementById('services'); if(el) el.scrollIntoView({behavior: 'smooth'}); }} style={{ background: 'none', border: 'none', color: 'var(--gold-600)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', marginTop: '20px', padding: 0 }}>
+                Learn More <ArrowRight size={14} />
+              </button>
+            </div>
+
+            {/* Card 3 */}
+            <div className="glass hover-premium reveal reveal-up" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'var(--transition-smooth)' }}>
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--plum-100)', color: 'var(--plum-800)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <Zap size={24} />
+                </div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--plum-900)', marginBottom: '10px' }}>Laser & Aesthetics</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.6' }}>
+                  US-FDA approved laser hair reduction, Secret RF microneedling for acne scars/anti-aging, and Hollywood carbon laser peels for instant glow.
+                </p>
+              </div>
+              <button onClick={() => { setActiveTab('laser'); const el = document.getElementById('services'); if(el) el.scrollIntoView({behavior: 'smooth'}); }} style={{ background: 'none', border: 'none', color: 'var(--gold-600)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', marginTop: '20px', padding: 0 }}>
+                Learn More <ArrowRight size={14} />
+              </button>
+            </div>
+
+            {/* Card 4 */}
+            <div className="glass hover-premium reveal reveal-right" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'var(--transition-smooth)' }}>
+              <div>
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--plum-100)', color: 'var(--plum-800)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <Sparkles size={24} />
+                </div>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.3rem', color: 'var(--plum-900)', marginBottom: '10px' }}>Cosmetic Aesthetics</h4>
+                <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.6' }}>
+                  Premium Botox injections, Dermal fillers (lips, cheeks, under-eyes), medical hydrafacials, and vampire facials to combat signs of aging.
+                </p>
+              </div>
+              <button onClick={() => { setActiveTab('cosmetic'); const el = document.getElementById('services'); if(el) el.scrollIntoView({behavior: 'smooth'}); }} style={{ background: 'none', border: 'none', color: 'var(--gold-600)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', marginTop: '20px', padding: 0 }}>
+                Learn More <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Interactive Treatments & Services Section */}
-      <section id="services" className="section-padding" style={{ backgroundColor: 'white' }}>
+      <section id="services" className="section-padding" style={{ backgroundColor: 'var(--silk-100)', borderBottom: '1px solid var(--silk-200)' }}>
         <div className="container">
           <div className="reveal reveal-up" style={{ textAlign: 'center', marginBottom: '50px' }}>
             <span className="badge badge-premium">Our Offerings</span>
@@ -674,26 +855,33 @@ function App() {
 
           {/* Treatment Tabs */}
           <div className="reveal reveal-up" style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '40px', borderBottom: '1px solid var(--silk-200)', paddingBottom: '20px' }}>
-            {TREATMENT_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                style={{
-                  padding: '12px 24px',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '0.95rem',
-                  fontWeight: '600',
-                  borderRadius: '30px',
-                  border: '1px solid transparent',
-                  cursor: 'pointer',
-                  backgroundColor: activeTab === cat.id ? 'var(--plum-800)' : 'var(--silk-100)',
-                  color: activeTab === cat.id ? 'white' : 'var(--plum-900)',
-                  transition: 'var(--transition-smooth)'
-                }}
-              >
-                {cat.title}
-              </button>
-            ))}
+            {TREATMENT_CATEGORIES.map((cat) => {
+              const IconComponent = cat.icon;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveTab(cat.id)}
+                  style={{
+                    padding: '12px 24px',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.95rem',
+                    fontWeight: '600',
+                    borderRadius: '30px',
+                    border: '1px solid transparent',
+                    cursor: 'pointer',
+                    backgroundColor: activeTab === cat.id ? 'var(--plum-800)' : 'var(--silk-100)',
+                    color: activeTab === cat.id ? 'white' : 'var(--plum-900)',
+                    transition: 'var(--transition-smooth)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  {IconComponent && <IconComponent size={16} />}
+                  {cat.title}
+                </button>
+              );
+            })}
           </div>
 
           {/* Tab Content Display */}
@@ -703,17 +891,7 @@ function App() {
               {TREATMENT_CATEGORIES.find(c => c.id === activeTab)?.treatments.map((t, idx) => (
                 <div
                   key={idx}
-                  className="hover-premium"
-                  style={{
-                    padding: '20px',
-                    borderRadius: '8px',
-                    background: 'var(--silk-100)',
-                    borderLeft: '4px solid var(--gold-500)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    gap: '16px'
-                  }}
+                  className="hover-premium treatment-list-card"
                 >
                   <div style={{ textAlign: 'left' }}>
                     <h5 style={{ fontWeight: 'bold', fontSize: '1.1rem', color: 'var(--plum-900)' }}>{t.name}</h5>
@@ -763,7 +941,7 @@ function App() {
       </section>
 
       {/* Doctors / About Section */}
-      <section id="doctors" className="section-padding reveal reveal-scale" style={{ backgroundColor: 'var(--silk-100)' }}>
+      <section id="doctors" className="section-padding reveal reveal-scale" style={{ backgroundColor: 'white', borderTop: '1px solid var(--silk-200)', borderBottom: '1px solid var(--silk-200)' }}>
         <div className="container">
 
           {/* Custom Flex Header for Heading and Chevron Navigation */}
@@ -946,7 +1124,7 @@ function App() {
 
 
       {/* Multi-Branch Setup Section */}
-      <section id="locations" className="section-padding" style={{ backgroundColor: 'white' }}>
+      <section id="locations" className="section-padding" style={{ backgroundColor: 'var(--silk-100)' }}>
         <div className="container">
           <div className="reveal reveal-up" style={{ textAlign: 'center', marginBottom: '50px' }}>
             <span className="badge badge-premium">Our Centers</span>
@@ -959,62 +1137,8 @@ function App() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
-            {/* Whitefield Branch */}
-            <div className="glass reveal reveal-left hover-premium" style={{ padding: '30px', borderRadius: '12px', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: 'var(--plum-900)' }}>Whitefield, Bangalore</h4>
-                  <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>Active Center</span>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem', marginBottom: '20px' }}>
-                  <div>
-                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Address</strong>
-                    <span>4th Floor, Premium Square, Whitefield Main Road, Near ITPL, Whitefield, Bengaluru - 560066</span>
-                  </div>
-                  <div>
-                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Hours</strong>
-                    <span>Mon - Sat: 9:00 AM - 7:00 PM <br />(Sunday Closed)</span>
-                  </div>
-                  <div>
-                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Direct Phone</strong>
-                    <a href="tel:+917593864264" style={{ color: 'var(--gold-600)', fontWeight: 'bold' }}>+91 75938 64264</a>
-                  </div>
-                </div>
-
-                {/* Mock Map Placeholder */}
-                <div style={{
-                  height: '150px',
-                  borderRadius: '6px',
-                  background: 'var(--silk-200)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '20px',
-                  border: '1px solid var(--silk-200)',
-                  color: 'var(--muted-charcoal)',
-                  fontSize: '0.8rem',
-                  flexDirection: 'column',
-                  gap: '6px'
-                }}>
-                  <MapPin size={24} style={{ color: 'var(--plum-800)' }} />
-                  <span>Whitefield Main Road Navigation Map</span>
-                  <a href="https://maps.google.com" target="_blank" style={{ textDecoration: 'underline', color: 'var(--gold-600)', fontWeight: 'bold' }}>Open Live Map</a>
-                </div>
-              </div>
-
-              <div className="location-card-buttons">
-                <button onClick={() => handleWhatsAppConnect('Bangalore')} className="btn btn-outline" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
-                  WhatsApp Branch
-                </button>
-                <button onClick={() => setShowBookingModal(true)} className="btn btn-primary" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
-                  Book Whitefield
-                </button>
-              </div>
-            </div>
-
             {/* Trivandrum Branch */}
-            <div className="glass reveal reveal-right hover-premium" style={{ padding: '30px', borderRadius: '12px', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div className="glass reveal reveal-left hover-premium" style={{ padding: '30px', borderRadius: '12px', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: 'var(--plum-900)' }}>Pattom, Trivandrum</h4>
@@ -1066,6 +1190,60 @@ function App() {
                 </button>
               </div>
             </div>
+
+            {/* Whitefield Branch */}
+            <div className="glass reveal reveal-right hover-premium" style={{ padding: '30px', borderRadius: '12px', border: '1px solid var(--silk-200)', textAlign: 'left', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: 'var(--plum-900)' }}>Whitefield, Bangalore</h4>
+                  <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>Active Center</span>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.9rem', marginBottom: '20px' }}>
+                  <div>
+                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Address</strong>
+                    <span>4th Floor, Premium Square, Whitefield Main Road, Near ITPL, Whitefield, Bengaluru - 560066</span>
+                  </div>
+                  <div>
+                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Hours</strong>
+                    <span>Mon - Sat: 9:00 AM - 7:00 PM <br />(Sunday Closed)</span>
+                  </div>
+                  <div>
+                    <strong style={{ color: 'var(--plum-800)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Direct Phone</strong>
+                    <a href="tel:+917593864264" style={{ color: 'var(--gold-600)', fontWeight: 'bold' }}>+91 75938 64264</a>
+                  </div>
+                </div>
+
+                {/* Mock Map Placeholder */}
+                <div style={{
+                  height: '150px',
+                  borderRadius: '6px',
+                  background: 'var(--silk-200)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '20px',
+                  border: '1px solid var(--silk-200)',
+                  color: 'var(--muted-charcoal)',
+                  fontSize: '0.8rem',
+                  flexDirection: 'column',
+                  gap: '6px'
+                }}>
+                  <MapPin size={24} style={{ color: 'var(--plum-800)' }} />
+                  <span>Whitefield Main Road Navigation Map</span>
+                  <a href="https://maps.google.com" target="_blank" style={{ textDecoration: 'underline', color: 'var(--gold-600)', fontWeight: 'bold' }}>Open Live Map</a>
+                </div>
+              </div>
+
+              <div className="location-card-buttons">
+                <button onClick={() => handleWhatsAppConnect('Bangalore')} className="btn btn-outline" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
+                  WhatsApp Branch
+                </button>
+                <button onClick={() => setShowBookingModal(true)} className="btn btn-primary" style={{ padding: '10px', fontSize: '0.8rem', textTransform: 'none' }}>
+                  Book Whitefield
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1083,26 +1261,77 @@ function App() {
               Can't make it to our Bangalore or Trivandrum clinic? YCDC offers a secure, virtual pre-screening consultation.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '30px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--gold-100)', color: 'var(--gold-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', fontSize: '0.8rem' }}>1</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '30px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--plum-100)', 
+                  color: 'var(--plum-800)', 
+                  border: '1px solid var(--plum-600)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  flexShrink: 0 
+                }}>
+                  <ClipboardList size={18} />
+                </div>
                 <div>
-                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Share Concerns & Symptoms</h6>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)' }}>Fill out our diagnostic questionnaire regarding skin or hair concerns.</p>
+                  <h6 style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', color: 'var(--plum-800)', fontSize: '1.1rem', marginBottom: '4px' }}>
+                    1. Share Concerns & Symptoms
+                  </h6>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--charcoal)', lineHeight: '1.5' }}>
+                    Fill out our diagnostic questionnaire regarding skin or hair concerns.
+                  </p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--gold-100)', color: 'var(--gold-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', fontSize: '0.8rem' }}>2</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--plum-100)', 
+                  color: 'var(--plum-800)', 
+                  border: '1px solid var(--plum-600)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  flexShrink: 0 
+                }}>
+                  <Upload size={18} />
+                </div>
                 <div>
-                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Secure Photo Upload</h6>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)' }}>Upload clear pictures of the affected skin area for dermatologist evaluation.</p>
+                  <h6 style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', color: 'var(--plum-800)', fontSize: '1.1rem', marginBottom: '4px' }}>
+                    2. Secure Photo Upload
+                  </h6>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--charcoal)', lineHeight: '1.5' }}>
+                    Upload clear pictures of the affected skin area for dermatologist evaluation.
+                  </p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'var(--gold-100)', color: 'var(--gold-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 'bold', fontSize: '0.8rem' }}>3</div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                <div style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  borderRadius: '50%', 
+                  backgroundColor: 'var(--plum-100)', 
+                  color: 'var(--plum-800)', 
+                  border: '1px solid var(--plum-600)',
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  flexShrink: 0 
+                }}>
+                  <Stethoscope size={18} />
+                </div>
                 <div>
-                  <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)' }}>Doctor Review & Treatment Path</h6>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)' }}>Our specialists review your details and contact you with custom prescriptions or clinic invitation.</p>
+                  <h6 style={{ fontFamily: 'var(--font-serif)', fontWeight: 'bold', color: 'var(--plum-800)', fontSize: '1.1rem', marginBottom: '4px' }}>
+                    3. Doctor Review & Treatment Path
+                  </h6>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--charcoal)', lineHeight: '1.5' }}>
+                    Our specialists review your details and contact you with custom prescriptions or clinic invitation.
+                  </p>
                 </div>
               </div>
             </div>
@@ -1115,54 +1344,138 @@ function App() {
       </section>
 
       {/* Patient Reviews / Testimonials */}
-      <section className="section-padding reveal reveal-scale" style={{ backgroundColor: 'white' }}>
+      <section className="section-padding reveal reveal-scale" style={{ backgroundColor: 'white', overflow: 'hidden' }}>
         <div className="container">
-          <div className="reveal reveal-up" style={{ textAlign: 'center', marginBottom: '50px' }}>
-            <span className="badge badge-premium">Patient Stories</span>
-            <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
-              Trusted by Thousands of <span style={{ color: 'var(--plum-800)' }}>Happy Patients</span>
-            </h2>
+          
+          {/* Custom Flex Header for Heading and Chevron Navigation */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px', flexWrap: 'wrap', gap: '20px' }}>
+            <div style={{ textAlign: 'left' }}>
+              <span className="badge badge-premium">Patient Stories</span>
+              <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
+                Trusted by Thousands of <span style={{ color: 'var(--plum-800)' }}>Happy Patients</span>
+              </h2>
+              <p style={{ maxWidth: '650px', margin: '12px auto 0', color: 'var(--muted-charcoal)' }}>
+                Read genuine feedback from patients who experienced transformative skincare and hair treatments at YCDC.
+              </p>
+            </div>
+
+            {/* Navigation buttons */}
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={prevReview}
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '50%',
+                  border: '1px solid var(--silk-200)',
+                  background: 'white',
+                  color: 'var(--gold-500)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'var(--transition-fast)',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--gold-500)';
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.borderColor = 'var(--gold-500)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.color = 'var(--gold-500)';
+                  e.currentTarget.style.borderColor = 'var(--silk-200)';
+                }}
+                title="Previous Review"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={nextReview}
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '50%',
+                  border: '1px solid var(--silk-200)',
+                  background: 'white',
+                  color: 'var(--gold-500)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'var(--transition-fast)',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--gold-500)';
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.borderColor = 'var(--gold-500)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'white';
+                  e.currentTarget.style.color = 'var(--gold-500)';
+                  e.currentTarget.style.borderColor = 'var(--silk-200)';
+                }}
+                title="Next Review"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
 
-          <div className="reveal-stagger" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-            {REVIEWS.map((r, idx) => (
-              <div
-                key={idx}
-                className="hover-premium"
-                style={{
-                  background: 'var(--silk-100)',
-                  border: '1px solid var(--silk-200)',
-                  borderRadius: '10px',
-                  padding: '24px',
-                  textAlign: 'left',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <div>
-                  {/* Rating stars */}
-                  <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
-                    {[...Array(r.rating)].map((_, i) => (
-                      <span key={i} style={{ color: 'var(--gold-500)', fontSize: '1.2rem' }}>★</span>
-                    ))}
-                  </div>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--charcoal)', fontStyle: 'italic', marginBottom: '16px' }}>
-                    "{r.text}"
-                  </p>
-                </div>
-
-                <div style={{ borderTop: '1px solid var(--silk-200)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {/* Slider Container */}
+          <div
+            className="reveal reveal-up"
+            style={{ overflow: 'hidden', position: 'relative', width: '100%', padding: '10px 0' }}
+          >
+            <div style={{
+              display: 'flex',
+              transform: `translateX(calc(-${reviewIndex} * (100% + 24px) / ${reviewsToShow}))`,
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              gap: '24px'
+            }}>
+              {REVIEWS.map((r, idx) => (
+                <div
+                  key={idx}
+                  className="hover-premium"
+                  style={{
+                    flex: `0 0 calc(${100 / reviewsToShow}% - ${(24 * (reviewsToShow - 1)) / reviewsToShow}px)`,
+                    background: 'var(--silk-100)',
+                    border: '1px solid var(--silk-200)',
+                    borderRadius: '10px',
+                    padding: '24px',
+                    textAlign: 'left',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    minHeight: '260px'
+                  }}
+                >
                   <div>
-                    <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)', fontSize: '0.9rem' }}>{r.name}</h6>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Patient, {r.location}</span>
+                    {/* Rating stars */}
+                    <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+                      {[...Array(r.rating)].map((_, i) => (
+                        <span key={i} style={{ color: 'var(--gold-500)', fontSize: '1.2rem' }}>★</span>
+                      ))}
+                    </div>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--charcoal)', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.5' }}>
+                      "{r.text}"
+                    </p>
                   </div>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--gold-600)', background: 'var(--gold-100)', padding: '2px 8px', borderRadius: '4px' }}>
-                    {r.treatment}
-                  </span>
+
+                  <div style={{ borderTop: '1px solid var(--silk-200)', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <h6 style={{ fontWeight: 'bold', color: 'var(--plum-900)', fontSize: '0.9rem' }}>{r.name}</h6>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>Patient, {r.location}</span>
+                    </div>
+                    <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--gold-600)', background: 'var(--gold-100)', padding: '2px 8px', borderRadius: '4px' }}>
+                      {r.treatment}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -1236,11 +1549,11 @@ function App() {
 
 
       {currentPage === 'about' && (
-        <AboutUs onNavigateToContact={() => setCurrentPage('contact')} />
+        <AboutUs onNavigateToContact={() => navigateToPage('contact')} />
       )}
 
       {currentPage === 'team' && (
-        <OurTeam />
+        <OurTeam onOpenApplyModal={() => setShowApplyModal(true)} />
       )}
 
       {currentPage === 'before-after' && (
@@ -1273,7 +1586,7 @@ function App() {
         <div className="container footer-main">
           <div>
             <h4 
-              onClick={() => setCurrentPage('home')} 
+              onClick={() => navigateToPage('home')} 
               style={{ fontFamily: 'var(--font-serif)', color: 'white', fontSize: '2rem', cursor: 'pointer' }}
             >
               YCDC
@@ -1374,21 +1687,21 @@ function App() {
             <div>
               <h6 style={{ color: 'white', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '16px' }}>Quick Links</h6>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', alignItems: 'flex-start' }}>
-                <button onClick={() => setCurrentPage('home')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Home</button>
-                <button onClick={() => setCurrentPage('about')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>About Us</button>
-                <button onClick={() => setCurrentPage('team')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Our Team</button>
-                <button onClick={() => setCurrentPage('before-after')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Before & After</button>
-                <button onClick={() => setCurrentPage('treatments')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
-                <button onClick={() => setCurrentPage('gallery')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Gallery</button>
-                <button onClick={() => setCurrentPage('blog')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Blog</button>
-                <button onClick={() => setCurrentPage('contact')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Contact Us</button>
+                <button onClick={() => navigateToPage('home')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Home</button>
+                <button onClick={() => navigateToPage('about')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>About Us</button>
+                <button onClick={() => navigateToPage('team')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Our Team</button>
+                <button onClick={() => navigateToPage('before-after')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Before & After</button>
+                <button onClick={() => navigateToPage('treatments')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Treatments & Services</button>
+                <button onClick={() => navigateToPage('gallery')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Gallery</button>
+                <button onClick={() => navigateToPage('blog')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Blog</button>
+                <button onClick={() => navigateToPage('contact')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', cursor: 'pointer', padding: 0 }}>Contact Us</button>
               </div>
             </div>
             <div>
               <h6 style={{ color: 'white', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '16px' }}>Locations</h6>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
-                <span>Whitefield, Bangalore</span>
                 <span>Pattom, Trivandrum</span>
+                <span>Whitefield, Bangalore</span>
               </div>
             </div>
             <div>
@@ -1405,22 +1718,53 @@ function App() {
         <div className="container" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
           <span>© {new Date().getFullYear()} Yogiraj Centre for Dermatology & Cosmetology (YCDC). All rights reserved.</span>
           <div style={{ display: 'flex', gap: '16px' }}>
-            <button onClick={() => setCurrentPage('privacy')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
+            <button onClick={() => navigateToPage('privacy')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
             <span>|</span>
-            <button onClick={() => setCurrentPage('privacy')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>Terms of Service</button>
+            <button onClick={() => navigateToPage('privacy')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>Terms of Service</button>
           </div>
         </div>
       </footer>
 
       {/* Floating Action Buttons */}
 
+      {/* Floating Call Now Button */}
+      <div className="floating-cta-phone">
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => window.open('tel:+917593864264', '_self')}
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--plum-900)',
+              color: 'var(--gold-300)',
+              border: '2px solid var(--gold-500)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: 2,
+              transition: 'var(--transition-fast)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-3px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)';
+            }}
+            title="Call Us Now"
+          >
+            <Phone size={24} />
+          </button>
+        </div>
+      </div>
+
       {/* 1. Floating WhatsApp Connect Button */}
-      <div style={{
-        position: 'fixed',
-        bottom: '30px',
-        left: '30px',
-        zIndex: 998
-      }}>
+      <div className="floating-cta-whatsapp">
         <div style={{ position: 'relative' }}>
           {/* Pulsing ring animation in inline style */}
           <div style={{
@@ -1557,7 +1901,19 @@ function App() {
           </div>
         </div>
       )}
+      {/* 3. Careers Application Modal */}
+      {showApplyModal && (
+        <ApplyNowModal onClose={() => setShowApplyModal(false)} />
+      )}
     </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
 

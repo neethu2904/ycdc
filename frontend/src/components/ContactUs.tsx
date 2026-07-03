@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 export default function ContactUs() {
-  const [branch, setBranch] = useState('bangalore');
+  const [branch, setBranch] = useState('trivandrum');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -60,7 +60,7 @@ export default function ContactUs() {
     <div className="animate-fade-in" style={{ backgroundColor: 'var(--silk-100)', paddingBottom: '60px' }}>
       {/* Page Header */}
       <section className="section-padding" style={{ 
-        background: 'linear-gradient(rgba(43, 20, 39, 0.9), rgba(43, 20, 39, 0.8)), url("/locations_banner.jpg") no-repeat center center/cover', 
+        background: 'url("/clinic_lobby_premium.png") no-repeat center center/cover', 
         color: 'white',
         textAlign: 'center',
         padding: '80px 0'
@@ -110,13 +110,13 @@ export default function ContactUs() {
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label">Preferred Branch</label>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <label style={{ flex: 1, padding: '12px', borderRadius: '4px', border: branch === 'bangalore' ? '2px solid var(--plum-800)' : '1px solid var(--silk-200)', backgroundColor: branch === 'bangalore' ? 'var(--plum-100)' : 'white', cursor: 'pointer', textAlign: 'center', fontWeight: '500', fontSize: '0.9rem' }}>
-                      <input type="radio" name="branch" value="bangalore" checked={branch === 'bangalore'} onChange={() => setBranch('bangalore')} style={{ display: 'none' }} />
-                      Bangalore
-                    </label>
                     <label style={{ flex: 1, padding: '12px', borderRadius: '4px', border: branch === 'trivandrum' ? '2px solid var(--plum-800)' : '1px solid var(--silk-200)', backgroundColor: branch === 'trivandrum' ? 'var(--plum-100)' : 'white', cursor: 'pointer', textAlign: 'center', fontWeight: '500', fontSize: '0.9rem' }}>
                       <input type="radio" name="branch" value="trivandrum" checked={branch === 'trivandrum'} onChange={() => setBranch('trivandrum')} style={{ display: 'none' }} />
                       Trivandrum
+                    </label>
+                    <label style={{ flex: 1, padding: '12px', borderRadius: '4px', border: branch === 'bangalore' ? '2px solid var(--plum-800)' : '1px solid var(--silk-200)', backgroundColor: branch === 'bangalore' ? 'var(--plum-100)' : 'white', cursor: 'pointer', textAlign: 'center', fontWeight: '500', fontSize: '0.9rem' }}>
+                      <input type="radio" name="branch" value="bangalore" checked={branch === 'bangalore'} onChange={() => setBranch('bangalore')} style={{ display: 'none' }} />
+                      Bangalore
                     </label>
                   </div>
                 </div>

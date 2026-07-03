@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
           right: 0,
           bottom: 0,
           opacity: 0.05,
-          backgroundImage: 'radial-gradient(var(--plum-800) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--brand-pink) 1px, transparent 1px)',
           backgroundSize: '24px 24px'
         }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>

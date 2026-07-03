@@ -108,7 +108,7 @@ export default function BlogPage() {
       <section style={{
         position: 'relative',
         padding: '120px 0 80px',
-        background: 'linear-gradient(to right, #3b102f, #23071b)',
+        background: 'url("/cosmetic_treatment_premium.png") no-repeat center center/cover',
         color: 'white',
         textAlign: 'center',
         overflow: 'hidden'
@@ -120,7 +120,7 @@ export default function BlogPage() {
           right: 0,
           bottom: 0,
           opacity: 0.05,
-          backgroundImage: 'radial-gradient(var(--plum-800) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--brand-pink) 1px, transparent 1px)',
           backgroundSize: '24px 24px'
         }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>

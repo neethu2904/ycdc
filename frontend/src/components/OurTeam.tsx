@@ -160,7 +160,11 @@ const MOCK_DOCTORS: Doctor[] = [
   }
 ];
 
-export default function OurTeam() {
+interface OurTeamProps {
+  onOpenApplyModal: () => void;
+}
+
+export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(MOCK_DOCTORS);
   const loading = false;
 
@@ -188,7 +192,7 @@ export default function OurTeam() {
       <section style={{
         position: 'relative',
         padding: '120px 0 80px',
-        background: 'linear-gradient(to right, #3b102f, #23071b)',
+        background: 'url("/cosmetic_treatment_premium.png") no-repeat center center/cover',
         color: 'white',
         textAlign: 'center',
         overflow: 'hidden'
@@ -201,7 +205,7 @@ export default function OurTeam() {
           right: 0,
           bottom: 0,
           opacity: 0.05,
-          backgroundImage: 'radial-gradient(var(--plum-800) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--brand-pink) 1px, transparent 1px)',
           backgroundSize: '24px 24px'
         }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
@@ -342,8 +346,95 @@ export default function OurTeam() {
         </div>
       </section>
 
-      {/* Bengaluru Team Section */}
+      {/* Trivandrum Team Section */}
       <section className="section-padding" style={{ backgroundColor: 'var(--silk-100)' }}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+            <span className="badge badge-premium">Pattom Clinic</span>
+            <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
+              Our <span style={{ color: 'var(--plum-900)' }}>Trivandrum Specialists</span>
+            </h2>
+            <p style={{ color: 'var(--muted-charcoal)', maxWidth: '600px', margin: '12px auto 0' }}>
+              Consult our highly skilled clinical dermatologists and venereology specialists in Thiruvananthapuram.
+            </p>
+          </div>
+
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--muted-charcoal)' }}>Loading team...</div>
+          ) : (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+              gap: '30px'
+            }}>
+              {TRIVANDRUM_TEAM.map((doctor, idx) => (
+                <div
+                  key={doctor.id}
+                  className="glass doctor-card animate-fade-in-up"
+                  style={{
+                    padding: '30px 24px',
+                    borderRadius: '12px',
+                    border: '1px solid var(--silk-200)',
+                    boxShadow: 'var(--shadow-sm)',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    backgroundColor: 'white',
+                    animationDelay: `${idx * 100}ms`
+                  }}
+                >
+                  <div>
+                    {/* Doctor Avatar Badge / Photo */}
+                    <div style={{
+                      width: '90px',
+                      height: '90px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--gold-100)',
+                      color: 'var(--gold-500)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.8rem',
+                      fontWeight: 'bold',
+                      fontFamily: 'var(--font-serif)',
+                      marginBottom: '20px',
+                      border: '1px solid var(--gold-400)',
+                      overflow: 'hidden'
+                    }}>
+                      {doctor.image_path ? (
+                        <img src={doctor.image_path.startsWith('http') ? doctor.image_path : `http://localhost:8000${doctor.image_path}`} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        doctor.name.split(' ').slice(1).map(n => n[0]).join('')
+                      )}
+                    </div>
+
+                    <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--plum-900)', marginBottom: '6px' }}>
+                      {doctor.name}
+                    </h4>
+                    <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--gold-500)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                      {doctor.designation}
+                    </span>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.5' }}>
+                      {doctor.qualification}
+                    </p>
+                  </div>
+
+                  <div style={{ marginTop: '24px' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <MapPin size={12} style={{ color: 'var(--gold-500)' }} /> Trivandrum
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Bengaluru Team Section */}
+      <section className="section-padding" style={{ backgroundColor: 'white' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '50px' }}>
             <span className="badge badge-premium">Whitefield Clinic</span>
@@ -434,93 +525,6 @@ export default function OurTeam() {
         </div>
       </section>
 
-      {/* Trivandrum Team Section */}
-      <section className="section-padding" style={{ backgroundColor: 'white' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
-            <span className="badge badge-premium">Pattom Clinic</span>
-            <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
-              Our <span style={{ color: 'var(--plum-900)' }}>Trivandrum Specialists</span>
-            </h2>
-            <p style={{ color: 'var(--muted-charcoal)', maxWidth: '600px', margin: '12px auto 0' }}>
-              Consult our highly skilled clinical dermatologists and venereology specialists in Thiruvananthapuram.
-            </p>
-          </div>
-
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--muted-charcoal)' }}>Loading team...</div>
-          ) : (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-              gap: '30px'
-            }}>
-              {TRIVANDRUM_TEAM.map((doctor, idx) => (
-                <div
-                  key={doctor.id}
-                  className="glass doctor-card animate-fade-in-up"
-                  style={{
-                    padding: '30px 24px',
-                    borderRadius: '12px',
-                    border: '1px solid var(--silk-200)',
-                    boxShadow: 'var(--shadow-sm)',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    backgroundColor: 'white',
-                    animationDelay: `${idx * 100}ms`
-                  }}
-                >
-                  <div>
-                    {/* Doctor Avatar Badge / Photo */}
-                    <div style={{
-                      width: '90px',
-                      height: '90px',
-                      borderRadius: '50%',
-                      backgroundColor: 'var(--gold-100)',
-                      color: 'var(--gold-500)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.8rem',
-                      fontWeight: 'bold',
-                      fontFamily: 'var(--font-serif)',
-                      marginBottom: '20px',
-                      border: '1px solid var(--gold-400)',
-                      overflow: 'hidden'
-                    }}>
-                      {doctor.image_path ? (
-                        <img src={doctor.image_path.startsWith('http') ? doctor.image_path : `http://localhost:8000${doctor.image_path}`} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      ) : (
-                        doctor.name.split(' ').slice(1).map(n => n[0]).join('')
-                      )}
-                    </div>
-
-                    <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--plum-900)', marginBottom: '6px' }}>
-                      {doctor.name}
-                    </h4>
-                    <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--gold-500)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
-                      {doctor.designation}
-                    </span>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--muted-charcoal)', lineHeight: '1.5' }}>
-                      {doctor.qualification}
-                    </p>
-                  </div>
-
-                  <div style={{ marginTop: '24px' }}>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <MapPin size={12} style={{ color: 'var(--gold-500)' }} /> Trivandrum
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* Recruitment CTA Section */}
       <section className="section-padding" style={{
         background: 'linear-gradient(to right, var(--plum-900), var(--gold-600))',
@@ -538,13 +542,13 @@ export default function OurTeam() {
             <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '32px' }}>
               Be a part of our expert team at YCDC and make a difference in dermatology and cosmetology. Work with industry leaders, state-of-the-art facilities, and transform lives.
             </p>
-            <a
-              href="mailto:ycdcindia@gmail.com"
+            <button
+              onClick={onOpenApplyModal}
               className="btn btn-accent"
-              style={{ padding: '16px 40px', fontSize: '1rem', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+              style={{ padding: '16px 40px', fontSize: '1rem', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: '10px', border: 'none' }}
             >
               Apply Now <Mail size={18} />
-            </a>
+            </button>
           </div>
         </div>
       </section>

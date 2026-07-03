@@ -10,7 +10,7 @@ export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
     <div className="animate-fade-in" style={{ backgroundColor: 'var(--silk-100)', paddingBottom: '60px' }}>
       {/* Page Hero */}
       <section className="section-padding" style={{ 
-        background: 'linear-gradient(rgba(43, 20, 39, 0.9), rgba(43, 20, 39, 0.8)), url("/hero_video_thumbnail.jpg") no-repeat center center/cover', 
+        background: 'url("/clinic_lobby_premium.png") no-repeat center center/cover', 
         color: 'white',
         textAlign: 'center',
         padding: '80px 0'
@@ -43,7 +43,7 @@ export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
               Under his visionary guidance, we were among the first in South India to introduce medical hair restoration (FUE hair transplants) and FDA-approved laser skin treatments. We bridge the gap between pure clinical pathology and high-end aesthetic medicine.
             </p>
             <p style={{ color: 'var(--muted-charcoal)', lineHeight: '1.7' }}>
-              Today, YCDC operates modern ISO-certified clinics in Whitefield (Bengaluru) and Pattom (Trivandrum), combining advanced diagnostic tools with personalized, evidence-based therapy.
+              Today, YCDC operates modern ISO-certified clinics in Pattom (Trivandrum) and Whitefield (Bengaluru), combining advanced diagnostic tools with personalized, evidence-based therapy.
             </p>
           </div>
           <div className="reveal reveal-right" style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', height: '380px', boxShadow: 'var(--shadow-lg)' }}>

@@ -258,7 +258,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
     <div className="animate-fade-in" style={{ backgroundColor: 'var(--silk-100)', paddingBottom: '60px' }}>
       {/* Page Header */}
       <section className="section-padding" style={{ 
-        background: 'linear-gradient(rgba(43, 20, 39, 0.75), rgba(43, 20, 39, 0.75)), url("https://ycdc.in/wp-content/uploads/2025/07/beautiful-young-indian-woman-enjoying-face-lifting-2025-03-18-17-16-15-utc-scaled.jpg") no-repeat center center/cover', 
+        background: 'url("/skin_treatment_premium.png") no-repeat center center/cover', 
         color: 'white',
         textAlign: 'center',
         padding: '100px 0'
@@ -403,11 +403,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                       </div>
                     </div>
 
-                    <div style={{ borderTop: '1px solid var(--silk-200)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)', display: 'block', textTransform: 'uppercase' }}>Est. Cost</span>
-                        <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--gold-600)' }}>{t.price_range}</span>
-                      </div>
+                    <div style={{ borderTop: '1px solid var(--silk-200)', paddingTop: '16px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                       <button 
                         onClick={() => onBookTreatment(t.category, t.id)}
                         className="btn btn-primary"

@@ -19,18 +19,18 @@ interface CaseStudy {
 
 const CASE_STUDIES: CaseStudy[] = [
   {
-    id: "hair-transplant",
+    id: "gfc-treatment",
     category: "hair",
-    categoryLabel: "Hair Restoration",
-    title: "Vertex & Hairline Restoration",
-    description: "High-density hairline reconstruction after advanced FUE hair transplantation. Results observed after 9 months of healing.",
-    beforeImg: "/hair_before.png",
-    afterImg: "/hair_after.png",
+    categoryLabel: "GFC Therapy",
+    title: "Growth Factor Concentrate (GFC) Treatment",
+    description: "Growth Factor Concentrate (GFC) treatment is a cutting-edge therapy primarily used in dermatology to promote hair regrowth and skin rejuvenation. It harnesses the body's natural growth factors extracted from the patient's blood, concentrating them into a highly potent solution. At YCDC, our expert dermatologists use state-of-the-art technology and customized treatment plans to ensure optimal outcomes tailored to individual needs.",
+    beforeImg: "/gfc_before.jpg",
+    afterImg: "/gfc_after.jpg",
     details: {
-      doctor: "Dr. Vennela R",
-      technology: "FUE (Follicular Unit Extraction) & PRP Therapy",
-      sessions: "1 Session (8 hours) + 3 PRP followups",
-      concern: "Stage 4 androgenic alopecia, deep receding temples."
+      doctor: "Dr. K. Yogiraj & Team",
+      technology: "GFC Extraction & Micro-Needling",
+      sessions: "3 - 4 Sessions (spaced 4 weeks apart)",
+      concern: "Moderate Hair Thinning & Scalp Rejuvenation"
     }
   },
   {
@@ -50,8 +50,26 @@ const CASE_STUDIES: CaseStudy[] = [
   }
 ];
 
+const HAIRLINE_GLOWUP_GALLERY = [
+  "https://ycdc.in/wp-content/uploads/2023/03/5fddb6f0-402d-419a-ac5d-9b4716d93447.jpg",
+  "https://ycdc.in/wp-content/uploads/2023/03/95ffc2a7-ed00-42df-82ec-fd27d074fd22.jpg",
+  "https://ycdc.in/wp-content/uploads/2023/03/448ec6aa-652a-421b-88e3-282fd3dd90ec.jpg",
+  "https://ycdc.in/wp-content/uploads/2023/03/e589a126-2d7a-425b-bfa7-bc9ed4351008.jpg",
+  "https://ycdc.in/wp-content/uploads/2023/03/3ff92a54-3c57-4a85-a97a-e9848865b800.jpg",
+  "https://ycdc.in/wp-content/uploads/2023/03/a5e2e768-8737-4e0f-8758-00888c7d85fe.jpg"
+];
+
+const VERTEX_TRANSPLANT_GALLERY = [
+  "https://ycdc.in/wp-content/uploads/2025/08/d622b3e5-e69c-4a27-8227-644dfc48477b.jpg",
+  "https://ycdc.in/wp-content/uploads/2025/08/ba45cceb-bd4b-4ff5-bd86-dd506556a671.jpg",
+  "https://ycdc.in/wp-content/uploads/2025/08/eed5800b-c58f-4e3d-a7cf-36350a19166c.jpg",
+  "https://ycdc.in/wp-content/uploads/2025/08/8089c362-8010-4254-8c4b-a686eec46660.jpg",
+  "https://ycdc.in/wp-content/uploads/2025/08/4a056277-5f78-4db8-8f94-14f27003c12e.jpg"
+];
+
 export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (category: string, serviceId: string) => void }) {
   const [activeCategory, setActiveCategory] = useState<string>("hair");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const currentCase = CASE_STUDIES.find(c => c.category === activeCategory) || CASE_STUDIES[0];
 
   const [sliderPosition, setSliderPosition] = useState<number>(50);
@@ -112,7 +130,7 @@ export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (cat
       <section style={{
         position: 'relative',
         padding: '120px 0 80px',
-        background: 'linear-gradient(to right, #3b102f, #23071b)',
+        background: 'url("/laser_treatment_premium.png") no-repeat center center/cover',
         color: 'white',
         textAlign: 'center',
         overflow: 'hidden'
@@ -124,7 +142,7 @@ export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (cat
           right: 0,
           bottom: 0,
           opacity: 0.05,
-          backgroundImage: 'radial-gradient(var(--plum-800) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--brand-pink) 1px, transparent 1px)',
           backgroundSize: '24px 24px'
         }} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
@@ -410,6 +428,123 @@ export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (cat
           </div>
         </div>
       </section>
+
+      {/* Photo Galleries Section */}
+      <section className="section-padding" style={{ backgroundColor: 'white', borderTop: '1px solid var(--silk-200)', borderBottom: '1px solid var(--silk-200)', padding: '60px 0' }}>
+        <div className="container">
+          {/* Gallery 1 */}
+          <div className="reveal reveal-up" style={{ marginBottom: '60px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <span className="badge badge-premium">Results Gallery</span>
+              <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
+                Hairline <span style={{ color: 'var(--plum-800)' }}>Glowup Outcomes</span>
+              </h2>
+              <p style={{ maxWidth: '600px', margin: '12px auto 0', color: 'var(--muted-charcoal)' }}>
+                View our clinical cases showing progress and post-procedure hairline density improvement.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px' }}>
+              {HAIRLINE_GLOWUP_GALLERY.map((imgUrl, idx) => (
+                <div 
+                  key={idx} 
+                  className="hover-premium" 
+                  onClick={() => setSelectedImage(imgUrl)}
+                  style={{ 
+                    cursor: 'pointer', 
+                    borderRadius: '12px', 
+                    overflow: 'hidden', 
+                    border: '1px solid var(--silk-200)',
+                    aspectRatio: '1/1',
+                    background: 'var(--silk-100)',
+                    transition: 'var(--transition-smooth)'
+                  }}
+                >
+                  <img 
+                    src={imgUrl} 
+                    alt={`Hairline Glowup ${idx + 1}`} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Gallery 2 */}
+          <div className="reveal reveal-up">
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <span className="badge badge-premium">Results Gallery</span>
+              <h2 style={{ fontFamily: 'var(--font-serif)', color: 'var(--gold-500)', marginTop: '10px' }}>
+                Vertex Hair <span style={{ color: 'var(--plum-800)' }}>Transplantation Results</span>
+              </h2>
+              <p style={{ maxWidth: '600px', margin: '12px auto 0', color: 'var(--muted-charcoal)' }}>
+                Clinical results demonstrating crown and vertex area coverage following FUE hair transplants.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '20px' }}>
+              {VERTEX_TRANSPLANT_GALLERY.map((imgUrl, idx) => (
+                <div 
+                  key={idx} 
+                  className="hover-premium" 
+                  onClick={() => setSelectedImage(imgUrl)}
+                  style={{ 
+                    cursor: 'pointer', 
+                    borderRadius: '12px', 
+                    overflow: 'hidden', 
+                    border: '1px solid var(--silk-200)',
+                    aspectRatio: '1/1',
+                    background: 'var(--silk-100)',
+                    transition: 'var(--transition-smooth)'
+                  }}
+                >
+                  <img 
+                    src={imgUrl} 
+                    alt={`Vertex Transplant ${idx + 1}`} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div 
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(26, 8, 21, 0.85)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100000,
+            padding: '20px'
+          }}
+        >
+          <div style={{ position: 'relative', maxWidth: '90%', maxHeight: '90%' }}>
+            <img 
+              src={selectedImage} 
+              alt="High resolution clinical case result" 
+              style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', borderRadius: '12px', border: '2px solid var(--gold-500)', boxShadow: 'var(--shadow-lg)' }} 
+            />
+            <p style={{ color: 'white', textAlign: 'center', marginTop: '12px', fontSize: '0.9rem', opacity: 0.8 }}>
+              Click anywhere to close preview
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

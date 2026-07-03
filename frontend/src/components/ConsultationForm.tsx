@@ -20,8 +20,8 @@ interface ConsultationFormProps {
 }
 
 const BRANCHES = [
-  { id: 'bangalore', name: 'Whitefield, Bangalore' },
-  { id: 'trivandrum', name: 'Pattom, Trivandrum' }
+  { id: 'trivandrum', name: 'Pattom, Trivandrum' },
+  { id: 'bangalore', name: 'Whitefield, Bangalore' }
 ];
 
 const CONCERN_TYPES = [
@@ -35,7 +35,7 @@ const CONCERN_TYPES = [
 
 export default function ConsultationForm({ onSuccessClose }: ConsultationFormProps) {
   const [step, setStep] = useState(1);
-  const [branch, setBranch] = useState('bangalore');
+  const [branch, setBranch] = useState('trivandrum');
   const [concern, setConcern] = useState('acne');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
