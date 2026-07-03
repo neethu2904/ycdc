@@ -241,8 +241,17 @@ function AppContent() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [showDashboardModal, setShowDashboardModal] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Helper to map pathname to currentPage state
   const getPageFromPath = (path: string) => {
@@ -580,6 +589,7 @@ function AppContent() {
       }}>
         {/* Background Video */}
         <video
+          key={isMobile ? 'mobile-hero' : 'desktop-hero'}
           autoPlay
           loop
           muted
@@ -594,7 +604,7 @@ function AppContent() {
             zIndex: -2
           }}
         >
-          <source src="/hero_video.mp4" type="video/mp4" />
+          <source src={isMobile ? "/hero_video.mp4" : "/hero section.mp4"} type="video/mp4" />
         </video>
         {/* Dark overlay for contrast */}
         <div style={{

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, X, Image as ImageIcon, Video, Layers } from 'lucide-react';
+import { Play, X, Image as ImageIcon, Video, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 interface GalleryItem {
@@ -77,6 +77,52 @@ export default function GalleryPage() {
   const loading = false;
   const [filter, setFilter] = useState<'all' | 'image' | 'video' | 'infrastructure' | 'treatments'>('all');
   const [activeMedia, setActiveMedia] = useState<GalleryItem | null>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const filteredItems = galleryItems.filter(item => {
+    if (filter === 'all') return true;
+    if (filter === 'image' || filter === 'video') return item.type === filter;
+    return item.category === filter;
+  });
+
+  const handleNext = () => {
+    if (!activeMedia) return;
+    const currentIndex = filteredItems.findIndex(item => item.id === activeMedia.id);
+    if (currentIndex !== -1) {
+      const nextIndex = (currentIndex + 1) % filteredItems.length;
+      setActiveMedia(filteredItems[nextIndex]);
+    }
+  };
+
+  const handlePrev = () => {
+    if (!activeMedia) return;
+    const currentIndex = filteredItems.findIndex(item => item.id === activeMedia.id);
+    if (currentIndex !== -1) {
+      const prevIndex = (currentIndex - 1 + filteredItems.length) % filteredItems.length;
+      setActiveMedia(filteredItems[prevIndex]);
+    }
+  };
+
+  useEffect(() => {
+    if (!activeMedia) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        handleNext();
+      } else if (e.key === 'ArrowLeft') {
+        handlePrev();
+      } else if (e.key === 'Escape') {
+        setActiveMedia(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeMedia, filteredItems]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/gallery`)
@@ -91,11 +137,6 @@ export default function GalleryPage() {
       });
   }, []);
 
-  const filteredItems = galleryItems.filter(item => {
-    if (filter === 'all') return true;
-    if (filter === 'image' || filter === 'video') return item.type === filter;
-    return item.category === filter;
-  });
 
   const getMediaUrl = (path: string | undefined) => {
     if (!path) return '';
@@ -322,20 +363,20 @@ export default function GalleryPage() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(23, 5, 20, 0.95)',
+          backgroundColor: 'rgba(15, 4, 13, 0.97)', /* Deep plum tinted dark backdrop */
           zIndex: 9999,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '24px'
+          padding: isMobile ? '60px 16px 24px' : '40px 80px'
         }}
         onClick={() => setActiveMedia(null)}
         >
           {/* Close Button */}
           <button style={{
             position: 'absolute',
-            top: '24px',
-            right: '24px',
+            top: isMobile ? '16px' : '24px',
+            right: isMobile ? '16px' : '24px',
             backgroundColor: 'rgba(255,255,255,0.1)',
             border: 'none',
             color: 'white',
@@ -347,13 +388,85 @@ export default function GalleryPage() {
             alignItems: 'center',
             justifyContent: 'center',
             transition: 'var(--transition-fast)',
-            zIndex: 10
+            zIndex: 10010
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
           onClick={() => setActiveMedia(null)}
           >
             <X size={24} />
+          </button>
+
+          {/* Left Navigation Button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+            aria-label="Previous Media"
+            style={{
+              position: 'absolute',
+              left: isMobile ? '12px' : '24px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              border: 'none',
+              color: 'white',
+              width: isMobile ? '40px' : '52px',
+              height: isMobile ? '40px' : '52px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background-color 0.2s, transform 0.2s',
+              zIndex: 10005,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+              backdropFilter: 'blur(4px)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.08)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.12)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <ChevronLeft size={isMobile ? 22 : 28} />
+          </button>
+
+          {/* Right Navigation Button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handleNext(); }}
+            aria-label="Next Media"
+            style={{
+              position: 'absolute',
+              right: isMobile ? '12px' : '24px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              border: 'none',
+              color: 'white',
+              width: isMobile ? '40px' : '52px',
+              height: isMobile ? '40px' : '52px',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background-color 0.2s, transform 0.2s',
+              zIndex: 10005,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+              backdropFilter: 'blur(4px)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.25)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.08)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.12)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <ChevronRight size={isMobile ? 22 : 28} />
           </button>
 
           {/* Modal Container */}
@@ -403,19 +516,28 @@ export default function GalleryPage() {
               <img
                 src={getMediaUrl(activeMedia.thumbnail_path)}
                 alt={activeMedia.title}
-                style={{ width: '100%', maxHeight: '75vh', objectFit: 'contain', borderRadius: '12px', boxShadow: '0 12px 30px rgba(0,0,0,0.5)' }}
+                style={{
+                  width: 'auto',
+                  maxWidth: '100%',
+                  maxHeight: isMobile ? '55vh' : '70vh',
+                  objectFit: 'contain',
+                  borderRadius: '12px',
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.5)',
+                  margin: '0 auto',
+                  display: 'block'
+                }}
               />
             )}
 
             {/* Description Overlay */}
-            <div style={{ color: 'white', textAlign: 'left', padding: '10px 0' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--plum-800)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <div style={{ color: 'white', textAlign: 'left', padding: '10px 0', overflowY: 'auto', maxHeight: isMobile ? '20vh' : '15vh' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--gold-400)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 {activeMedia.category === 'infrastructure' ? 'Infrastructure facility' : 'clinical session'}
               </span>
-              <h3 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: '1.8rem', marginTop: '4px', marginBottom: '8px' }}>
+              <h3 style={{ color: 'white', fontFamily: 'var(--font-serif)', fontSize: isMobile ? '1.4rem' : '1.8rem', marginTop: '4px', marginBottom: '8px' }}>
                 {activeMedia.title}
               </h3>
-              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.95rem' }}>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: isMobile ? '0.85rem' : '0.95rem', lineHeight: '1.4' }}>
                 {activeMedia.description}
               </p>
             </div>
