@@ -12,9 +12,9 @@ import {
   ShieldCheck,
   Award,
   Briefcase,
-  Layers,
   Instagram,
   Facebook,
+  Youtube,
   Linkedin,
   Twitter,
   Zap,
@@ -1639,6 +1639,27 @@ function AppContent() {
                 <Facebook size={16} />
               </a>
               <a 
+                href="https://www.youtube.com/@YCDC_INDIA" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  transition: 'var(--transition-fast)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--plum-800)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                title="YouTube"
+              >
+                <Youtube size={16} />
+              </a>
+              <a 
                 href="https://linkedin.com" 
                 target="_blank" 
                 rel="noopener noreferrer" 
@@ -1804,50 +1825,7 @@ function AppContent() {
         </div>
       </div>
 
-      {/* 2. Receptionist Lead Dashboard Key Trigger (Secret Admin Icon) */}
-      <div style={{
-        position: 'fixed',
-        bottom: '30px',
-        right: '30px',
-        zIndex: 998
-      }}>
-        <button
-          onClick={() => setShowDashboardModal(true)}
-          style={{
-            width: '56px',
-            height: '56px',
-            borderRadius: '50%',
-            backgroundColor: 'var(--plum-800)',
-            color: 'var(--gold-300)',
-            border: '1px solid var(--gold-500)',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.2rem',
-            position: 'relative'
-          }}
-          title="Open Mock Reception CRM Dashboard"
-        >
-          <Layers size={22} />
-          {/* Badge counter representing active leads */}
-          <span style={{
-            position: 'absolute',
-            top: '-5px',
-            right: '-5px',
-            background: 'red',
-            color: 'white',
-            borderRadius: '50%',
-            fontSize: '0.65rem',
-            padding: '2px 6px',
-            fontWeight: 'bold',
-            border: '2px solid var(--plum-800)'
-          }}>
-            Demo
-          </span>
-        </button>
-      </div>
+
 
       {/* ----------------- POPUP MODALS ----------------- */}
 
