@@ -424,7 +424,7 @@ function AppContent() {
       </div>
 
       {/* Sticky Header / Navigation */}
-      <header className="glass" style={{ position: 'sticky', top: 0, zIndex: 999, borderBottom: '1px solid var(--silk-200)', padding: '16px 0' }}>
+      <header className={windowWidth < 768 ? "" : "glass"} style={{ position: 'sticky', top: 0, zIndex: 999, backgroundColor: windowWidth < 768 ? 'white' : undefined, borderBottom: '1px solid var(--silk-200)', padding: '16px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
           <a 
@@ -732,7 +732,15 @@ function AppContent() {
             </p>
             
             {/* Dr. Yogiraj Signature & Info */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '20px', borderTop: '1px solid var(--silk-200)', paddingTop: '20px' }}>
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: windowWidth < 768 ? 'column' : 'row', 
+              alignItems: windowWidth < 768 ? 'flex-start' : 'center', 
+              gap: windowWidth < 768 ? '10px' : '20px', 
+              marginTop: '20px', 
+              borderTop: '1px solid var(--silk-200)', 
+              paddingTop: '20px' 
+            }}>
               <img 
                 src="https://ycdc.in/wp-content/uploads/2025/05/Yogiraj-2.png" 
                 alt="Dr. K Yogiraj Signature" 
