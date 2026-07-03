@@ -1739,7 +1739,13 @@ function AppContent() {
         </div>
 
         <div className="container" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>
-          <span>© {new Date().getFullYear()} Yogiraj Centre for Dermatology & Cosmetology (YCDC). All rights reserved.</span>
+          <span>
+            © {new Date().getFullYear()} Yogiraj Centre for Dermatology & Cosmetology (YCDC). All rights reserved.
+            <span style={{ margin: '0 8px', color: 'rgba(255,255,255,0.15)' }}>|</span>
+            <span>
+              Designed &amp; Developed by <a href="https://chromologtechnologies.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--gold-400)'} onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}>Chromolog Technologies</a>
+            </span>
+          </span>
           <div style={{ display: 'flex', gap: '16px' }}>
             <button onClick={() => navigateToPage('privacy')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', cursor: 'pointer', padding: 0 }}>Privacy Policy</button>
             <span>|</span>
