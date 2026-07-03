@@ -531,7 +531,7 @@ function AppContent() {
 
         {/* Mobile Navigation Dropdown */}
         {mobileMenuOpen && (
-          <div className="glass" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', padding: '20px 24px', borderTop: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: 'var(--shadow-md)', textAlign: 'left' }}>
+          <div style={{ position: 'absolute', top: '100%', left: 0, width: '100%', padding: '20px 24px', backgroundColor: 'white', borderTop: '1px solid var(--silk-200)', borderBottom: '1px solid var(--silk-200)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: 'var(--shadow-md)', textAlign: 'left' }}>
             <button onClick={() => { navigateToPage('home'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'home' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Home</button>
             <button onClick={() => { navigateToPage('about'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'about' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>About Us</button>
             <button onClick={() => { navigateToPage('team'); setMobileMenuOpen(false); }} style={{ background: 'none', border: 'none', textAlign: 'left', fontSize: '1rem', fontWeight: currentPage === 'team' ? 'bold' : '500', color: 'var(--plum-900)', cursor: 'pointer', padding: 0 }}>Our Team</button>
