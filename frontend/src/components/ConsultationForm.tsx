@@ -14,10 +14,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface ConsultationFormProps {
-  onSuccessClose?: () => void;
-}
+import type { ConsultationFormProps } from '../types';
 
 const BRANCHES = [
   { id: 'trivandrum', name: 'Pattom, Trivandrum' },

@@ -1,11 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-
-interface AnimatedCounterProps {
-  target: number;
-  duration?: number; // duration in ms
-  suffix?: string;
-  prefix?: string;
-}
+import type { AnimatedCounterProps } from '../types';
 
 /**
  * A performance-optimized animated count-up text component.

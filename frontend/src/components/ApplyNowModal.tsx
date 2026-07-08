@@ -14,10 +14,7 @@ import {
   User
 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface ApplyNowModalProps {
-  onClose: () => void;
-}
+import type { ApplyNowModalProps } from '../types';
 
 const BRANCHES = [
   { id: 'trivandrum', name: 'Pattom Center, Thiruvananthapuram' },

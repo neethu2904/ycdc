@@ -1,9 +1,6 @@
 import { Award, ShieldCheck, Heart } from 'lucide-react';
-import AnimatedCounter from './AnimatedCounter';
-
-interface AboutUsProps {
-  onNavigateToContact: () => void;
-}
+import AnimatedCounter from '../components/AnimatedCounter';
+import type { AboutUsProps } from '../types';
 
 export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
   return (

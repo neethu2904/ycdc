@@ -1,54 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Calendar, ChevronRight } from 'lucide-react';
-
-interface CaseStudy {
-  id: string;
-  category: string;
-  categoryLabel: string;
-  title: string;
-  description: string;
-  beforeImg: string;
-  afterImg: string;
-  details: {
-    doctor: string;
-    technology: string;
-    sessions: string;
-    concern: string;
-  };
-}
-
-const CASE_STUDIES: CaseStudy[] = [
-  {
-    id: "gfc-treatment",
-    category: "hair",
-    categoryLabel: "GFC Therapy",
-    title: "Growth Factor Concentrate (GFC) Treatment",
-    description: "Growth Factor Concentrate (GFC) treatment is a cutting-edge therapy primarily used in dermatology to promote hair regrowth and skin rejuvenation. It harnesses the body's natural growth factors extracted from the patient's blood, concentrating them into a highly potent solution. At YCDC, our expert dermatologists use state-of-the-art technology and customized treatment plans to ensure optimal outcomes tailored to individual needs.",
-    beforeImg: "/gfc_before.jpg",
-    afterImg: "/gfc_after.jpg",
-    details: {
-      doctor: "Dr. K. Yogiraj & Team",
-      technology: "GFC Extraction & Micro-Needling",
-      sessions: "3 - 4 Sessions (spaced 4 weeks apart)",
-      concern: "Moderate Hair Thinning & Scalp Rejuvenation"
-    }
-  },
-  {
-    id: "acne-correction",
-    category: "skin",
-    categoryLabel: "Clinical Dermatology",
-    title: "Deep Acne Scar Resurfacing",
-    description: "Profound texture improvement and post-inflammatory erythema clearing using fractional radiofrequency and customized peeling.",
-    beforeImg: "/acne_before.png",
-    afterImg: "/acne_after.png",
-    details: {
-      doctor: "Dr. Niranjana Raj",
-      technology: "Secret Fractional RF Microneedling & Glycolic Peels",
-      sessions: "3 Sessions (spaced 4 weeks apart)",
-      concern: "Severe rolling scars, icepick scarring, active blemishes."
-    }
-  }
-];
+import { API_BASE_URL } from '../config';
+import type { BeforeAfterProps, CaseStudy } from '../types';
 
 const HAIRLINE_GLOWUP_GALLERY = [
   "https://ycdc.in/wp-content/uploads/2023/03/5fddb6f0-402d-419a-ac5d-9b4716d93447.jpg",
@@ -67,10 +20,57 @@ const VERTEX_TRANSPLANT_GALLERY = [
   "https://ycdc.in/wp-content/uploads/2025/08/4a056277-5f78-4db8-8f94-14f27003c12e.jpg"
 ];
 
-export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (category: string, serviceId: string) => void }) {
+export default function BeforeAfter({ onBookTreatment }: BeforeAfterProps) {
   const [activeCategory, setActiveCategory] = useState<string>("hair");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const currentCase = CASE_STUDIES.find(c => c.category === activeCategory) || CASE_STUDIES[0];
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/case-studies`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const mapped = data.map((item: any) => ({
+            id: item.id,
+            category: item.category,
+            categoryLabel: item.category_label,
+            title: item.title,
+            description: item.description,
+            beforeImg: item.before_img_path.startsWith('http') ? item.before_img_path : `http://localhost:8000${item.before_img_path}`,
+            afterImg: item.after_img_path.startsWith('http') ? item.after_img_path : `http://localhost:8000${item.after_img_path}`,
+            details: {
+              doctor: item.doctor,
+              technology: item.technology,
+              sessions: item.sessions,
+              concern: item.concern
+            }
+          }));
+          setCaseStudies(mapped);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error loading case studies:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const currentCase = caseStudies.find(c => c.category === activeCategory) || caseStudies[0] || {
+    id: "",
+    category: "",
+    categoryLabel: "",
+    title: "Loading Case Studies...",
+    description: "",
+    beforeImg: "",
+    afterImg: "",
+    details: {
+      doctor: "",
+      technology: "",
+      sessions: "",
+      concern: ""
+    }
+  };
 
   const [sliderPosition, setSliderPosition] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -162,30 +162,36 @@ export default function BeforeAfter({ onBookTreatment }: { onBookTreatment: (cat
       <section className="section-padding" style={{ padding: '60px 0' }}>
         <div className="container">
           {/* Category Tabs */}
-          <div className="reveal reveal-up" style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px' }}>
-            {CASE_STUDIES.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => {
-                  setActiveCategory(c.category);
-                  setSliderPosition(50);
-                }}
-                style={{
-                  padding: '12px 24px',
-                  borderRadius: '30px',
-                  border: '1px solid var(--silk-200)',
-                  backgroundColor: activeCategory === c.category ? 'var(--plum-900)' : 'white',
-                  color: activeCategory === c.category ? 'white' : 'var(--plum-900)',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  boxShadow: 'var(--shadow-sm)',
-                  transition: 'var(--transition-smooth)'
-                }}
-              >
-                {c.categoryLabel}
-              </button>
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '20px', color: 'var(--muted-charcoal)' }}>
+              Loading Case Studies...
+            </div>
+          ) : (
+            <div className="reveal reveal-up" style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px' }}>
+              {caseStudies.map((c: any) => (
+                <button
+                  key={c.id}
+                  onClick={() => {
+                    setActiveCategory(c.category);
+                    setSliderPosition(50);
+                  }}
+                  style={{
+                    padding: '12px 24px',
+                    borderRadius: '30px',
+                    border: '1px solid var(--silk-200)',
+                    backgroundColor: activeCategory === c.category ? 'var(--plum-900)' : 'white',
+                    color: activeCategory === c.category ? 'white' : 'var(--plum-900)',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    boxShadow: 'var(--shadow-sm)',
+                    transition: 'var(--transition-smooth)'
+                  }}
+                >
+                  {c.categoryLabel}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div style={{
             display: 'grid',

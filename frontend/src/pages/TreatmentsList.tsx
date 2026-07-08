@@ -1,24 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Clock, ChevronDown, ChevronUp, Search } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface Treatment {
-  id: string;
-  category: string;
-  category_name: string;
-  name: string;
-  description: string;
-  duration: string;
-  price_range: string;
-  science: string;
-  treats: string;
-  active: boolean;
-  image?: string;
-}
-
-interface TreatmentsListProps {
-  onBookTreatment: (category: string, serviceId: string) => void;
-}
+import type { Treatment, TreatmentsListProps } from '../types';
 
 const TREATMENT_IMAGES: Record<string, string> = {
   'acne-therapy': 'https://ycdc.in/wp-content/uploads/2025/05/studio-portrait-of-an-attractive-young-woman-squee-2025-04-06-11-50-34-utc-scaled-700x500.jpg',

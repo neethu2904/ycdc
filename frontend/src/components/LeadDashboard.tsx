@@ -10,11 +10,8 @@ import {
   Eye,
   Check
 } from 'lucide-react';
-import { API_BASE_URL } from '../config';
-
-interface LeadDashboardProps {
-  onClose?: () => void;
-}
+import { leadService } from '../services/leadService';
+import type { LeadDashboardProps } from '../types';
 
 const mapLeadFromDb = (dbLead: any) => {
   return {
@@ -57,8 +54,7 @@ export default function LeadDashboard({ onClose }: LeadDashboardProps) {
   // Initialize and load data
   const loadData = () => {
     setLoading(true);
-    fetch(`${API_BASE_URL}/leads`)
-      .then(res => res.json())
+    leadService.getLeads()
       .then(data => {
         if (Array.isArray(data)) {
           const mapped = data.map(mapLeadFromDb);
@@ -92,14 +88,7 @@ export default function LeadDashboard({ onClose }: LeadDashboardProps) {
   };
 
   const updateLeadStatus = (id: string, newStatus: string) => {
-    fetch(`${API_BASE_URL}/leads/${id}/status`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status: newStatus })
-    })
-      .then(res => res.json())
+    leadService.updateLeadStatus(id, newStatus)
       .then(result => {
         if (result.success) {
           loadData();
@@ -120,10 +109,7 @@ export default function LeadDashboard({ onClose }: LeadDashboardProps) {
   const deleteLead = (id: string) => {
     if (!confirm('Are you sure you want to delete this enquiry record?')) return;
     
-    fetch(`${API_BASE_URL}/leads/${id}`, {
-      method: 'DELETE'
-    })
-      .then(res => res.json())
+    leadService.deleteLead(id)
       .then(result => {
         if (result.success) {
           loadData();
@@ -141,10 +127,7 @@ export default function LeadDashboard({ onClose }: LeadDashboardProps) {
 
   const clearAll = () => {
     if (!confirm('CAUTION: This will reset all leads in the database to demo defaults. Proceed?')) return;
-    fetch(`${API_BASE_URL}/leads/reset`, {
-      method: 'POST'
-    })
-      .then(res => res.json())
+    leadService.resetLeads()
       .then(result => {
         if (result.success) {
           loadData();

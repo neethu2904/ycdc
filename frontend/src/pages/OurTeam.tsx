@@ -1,18 +1,7 @@
 import { Award, Briefcase, GraduationCap, Instagram, Mail, MapPin } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../config';
-
-interface Doctor {
-  id: number;
-  name: string;
-  qualification: string;
-  designation?: string;
-  bio?: string;
-  branch: string;
-  instagram_url?: string;
-  active: boolean;
-  image_path?: string;
-}
+import type { Doctor, OurTeamProps } from '../types';
 
 const MOCK_DOCTORS: Doctor[] = [
   {
@@ -159,10 +148,6 @@ const MOCK_DOCTORS: Doctor[] = [
     image_path: undefined,
   }
 ];
-
-interface OurTeamProps {
-  onOpenApplyModal: () => void;
-}
 
 export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(MOCK_DOCTORS);

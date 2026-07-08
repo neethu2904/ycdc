@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { 
   MapPin, 
   Calendar as CalendarIcon, 
@@ -13,13 +13,17 @@ import {
   UserCheck
 } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface BookingWidgetProps {
-  onClose?: () => void;
-  initialBranch?: string;
-  initialCategory?: string;
-  initialService?: string;
-}
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import {
+  nextBookingStep,
+  previousBookingStep,
+  resetBookingForm,
+  setBookingField,
+  setBookingSelection,
+  setBookingSubmitting,
+  setBookingSuccess
+} from '../store/bookingSlice';
+import type { BookingWidgetProps } from '../types';
 
 const BRANCHES = [
   { id: 'trivandrum', name: 'Pattom, Trivandrum', address: 'Marappalam Road, Opp. IndusInd Bank, Pattom' },
@@ -78,24 +82,35 @@ const DOCTORS = [
 
 
 export default function BookingWidget({ onClose, initialBranch, initialCategory, initialService }: BookingWidgetProps) {
-  const [step, setStep] = useState(initialCategory ? 3 : 1);
-  const [branch, setBranch] = useState(initialBranch || 'trivandrum');
-  const [category, setCategory] = useState(initialCategory || 'skin');
-  const [service, setService] = useState(initialService || 'acne-therapy');
-  const [doctor, setDoctor] = useState('yogiraj');
-  const [date, setDate] = useState('');
+  const dispatch = useAppDispatch();
+  const {
+    step,
+    branch,
+    category,
+    service,
+    doctor,
+    date,
+    patientName,
+    patientPhone,
+    patientEmail,
+    patientNotes,
+    bookingId,
+    isSuccess,
+    submitting
+  } = useAppSelector((state) => state.booking);
   const timeSlot = 'Flexible';
-  
-  // Patient details
-  const [patientName, setPatientName] = useState('');
-  const [patientPhone, setPatientPhone] = useState('');
-  const [patientEmail, setPatientEmail] = useState('');
-  const [patientNotes, setPatientNotes] = useState('');
-  
-  // Success states
-  const [bookingId, setBookingId] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const categoryValue = initialCategory || 'skin';
+    const defaultService = CATEGORIES.find(c => c.id === categoryValue)?.services[0]?.id || 'acne-therapy';
+
+    dispatch(resetBookingForm({
+      step: initialCategory ? 3 : 1,
+      branch: initialBranch || 'trivandrum',
+      category: categoryValue,
+      service: initialService || defaultService
+    }));
+  }, [dispatch, initialBranch, initialCategory, initialService]);
 
   // Filtered lists
   const availableServices = CATEGORIES.find(c => c.id === category)?.services || [];
@@ -105,17 +120,18 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
 
   // Auto select service when category changes
   const handleCategoryChange = (catId: string) => {
-    setCategory(catId);
     const services = CATEGORIES.find(c => c.id === catId)?.services || [];
+    const nextService = services.length > 0 ? services[0].id : service;
     if (services.length > 0) {
-      setService(services[0].id);
+      dispatch(setBookingSelection({ service: nextService }));
     }
     // Update doctor filter based on branch and new category
     const docs = DOCTORS.filter(d => d.branches.includes(branch) && d.specialty.includes(catId));
+    const nextDoctor = docs.length > 0 ? docs[0].id : 'yogiraj';
     if (docs.length > 0) {
-      setDoctor(docs[0].id);
+      dispatch(setBookingSelection({ category: catId, service: nextService, doctor: nextDoctor }));
     } else {
-      setDoctor('yogiraj'); // Fallback to MD
+      dispatch(setBookingSelection({ category: catId, service: nextService, doctor: 'yogiraj' }));
     }
   };
 
@@ -138,11 +154,11 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
         return;
       }
     }
-    setStep(prev => prev + 1);
+    dispatch(nextBookingStep());
   };
 
   const handleBack = () => {
-    setStep(prev => prev - 1);
+    dispatch(previousBookingStep());
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -152,7 +168,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
       return;
     }
 
-    setSubmitting(true);
+    dispatch(setBookingSubmitting(true));
     const branchName = BRANCHES.find(b => b.id === branch)?.name || branch;
     const servName = availableServices.find(s => s.id === service)?.name || service;
     const docName = DOCTORS.find(d => d.id === doctor)?.name || doctor;
@@ -175,17 +191,16 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
     })
       .then(res => res.json())
       .then(data => {
-        setSubmitting(false);
         if (data.success) {
-          setBookingId(`YCDC-${data.lead.id}`);
-          setIsSuccess(true);
+          dispatch(setBookingSuccess(`YCDC-${data.lead.id}`));
         } else {
+          dispatch(setBookingSubmitting(false));
           alert(data.message || 'Error creating appointment reservation.');
         }
       })
       .catch(err => {
         console.error("Error creating booking:", err);
-        setSubmitting(false);
+        dispatch(setBookingSubmitting(false));
         alert('Server error occurred. Please try again.');
       });
   };
@@ -325,7 +340,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
               {BRANCHES.map((b) => (
                 <div 
                   key={b.id}
-                  onClick={() => setBranch(b.id)}
+                  onClick={() => dispatch(setBookingSelection({ branch: b.id }))}
                   style={{
                     padding: '20px',
                     borderRadius: '8px',
@@ -402,7 +417,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                 {availableServices.map((s) => (
                   <div
                     key={s.id}
-                    onClick={() => setService(s.id)}
+                    onClick={() => dispatch(setBookingSelection({ service: s.id }))}
                     style={{
                       padding: '14px 20px',
                       borderRadius: '6px',
@@ -439,7 +454,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   availableDoctors.map((d) => (
                     <div
                       key={d.id}
-                      onClick={() => setDoctor(d.id)}
+                      onClick={() => dispatch(setBookingSelection({ doctor: d.id }))}
                       style={{
                         padding: '12px 16px',
                         borderRadius: '6px',
@@ -475,7 +490,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   ))
                 ) : (
                   <div
-                    onClick={() => setDoctor('yogiraj')}
+                    onClick={() => dispatch(setBookingSelection({ doctor: 'yogiraj' }))}
                     style={{
                       padding: '12px 16px',
                       borderRadius: '6px',
@@ -509,7 +524,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   type="date" 
                   min={getMinDate()}
                   value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  onChange={(e) => dispatch(setBookingField({ field: 'date', value: e.target.value }))}
                   className="form-input" 
                 />
               </div>
@@ -529,7 +544,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                 type="text" 
                 placeholder="Enter patient's full name"
                 value={patientName}
-                onChange={(e) => setPatientName(e.target.value)}
+                onChange={(e) => dispatch(setBookingField({ field: 'patientName', value: e.target.value }))}
                 className="form-input" 
                 required
               />
@@ -544,7 +559,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   type="tel" 
                   placeholder="10-digit number"
                   value={patientPhone}
-                  onChange={(e) => setPatientPhone(e.target.value)}
+                  onChange={(e) => dispatch(setBookingField({ field: 'patientPhone', value: e.target.value }))}
                   className="form-input" 
                   pattern="[0-9]{10}"
                   required
@@ -558,7 +573,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   type="email" 
                   placeholder="name@example.com"
                   value={patientEmail}
-                  onChange={(e) => setPatientEmail(e.target.value)}
+                  onChange={(e) => dispatch(setBookingField({ field: 'patientEmail', value: e.target.value }))}
                   className="form-input" 
                 />
               </div>
@@ -569,7 +584,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
               <textarea 
                 placeholder="Mention any symptoms, ongoing medications, or specific details..."
                 value={patientNotes}
-                onChange={(e) => setPatientNotes(e.target.value)}
+                onChange={(e) => dispatch(setBookingField({ field: 'patientNotes', value: e.target.value }))}
                 className="form-textarea"
               />
             </div>

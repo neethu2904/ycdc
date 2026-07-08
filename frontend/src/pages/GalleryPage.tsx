@@ -1,16 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Play, X, Image as ImageIcon, Video, Layers, ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface GalleryItem {
-  id: string;
-  type: 'image' | 'video';
-  category: 'infrastructure' | 'treatments';
-  title: string;
-  thumbnail_path: string;
-  video_path?: string;
-  description: string;
-}
+import type { GalleryItem } from '../types';
 
 const MOCK_GALLERY: GalleryItem[] = [
   {
@@ -331,8 +322,8 @@ export default function GalleryPage() {
                       backgroundColor: 'rgba(43, 20, 39, 0.1)',
                       transition: 'background-color 0.3s ease'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(43, 20, 39, 0.3)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(43, 20, 39, 0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(43, 20, 39, 0.3)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(43, 20, 39, 0.1)'}
                     />
                   </div>
 
@@ -363,14 +354,14 @@ export default function GalleryPage() {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(15, 4, 13, 0.97)', /* Deep plum tinted dark backdrop */
+          backgroundColor: 'rgba(141, 73, 128, 0.97)', /* Deep plum tinted dark backdrop */
           zIndex: 9999,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: isMobile ? '60px 16px 24px' : '40px 80px'
         }}
-        onClick={() => setActiveMedia(null)}
+          onClick={() => setActiveMedia(null)}
         >
           {/* Close Button */}
           <button style={{
@@ -390,9 +381,9 @@ export default function GalleryPage() {
             transition: 'var(--transition-fast)',
             zIndex: 10010
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-          onClick={() => setActiveMedia(null)}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+            onClick={() => setActiveMedia(null)}
           >
             <X size={24} />
           </button>
@@ -478,7 +469,7 @@ export default function GalleryPage() {
             flexDirection: 'column',
             gap: '16px'
           }}
-          onClick={(e) => e.stopPropagation()} // Prevent close on outer click
+            onClick={(e) => e.stopPropagation()} // Prevent close on outer click
           >
             {/* Display Video or Image */}
             {activeMedia.type === 'video' ? (

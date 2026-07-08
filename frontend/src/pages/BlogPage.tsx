@@ -1,19 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Calendar, User, Clock, ArrowLeft, BookOpen } from 'lucide-react';
 import { API_BASE_URL } from '../config';
-
-interface BlogPost {
-  id: string;
-  category: 'skin' | 'hair' | 'anti-aging';
-  category_label: string;
-  title: string;
-  author: string;
-  date: string;
-  read_time: string;
-  excerpt: string;
-  image_path: string;
-  body_content: string[];
-}
+import type { BlogPost } from '../types';
 
 const MOCK_BLOGS: BlogPost[] = [
   {

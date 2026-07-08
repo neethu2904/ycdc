@@ -161,35 +161,6 @@ export default function ContactUs() {
 
           {/* Contact Details & Info */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', textAlign: 'left' }}>
-            {/* Whitefield branch details */}
-            <div className="glass" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)' }}>
-              <div style={{ display: 'flex', justifySelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--plum-900)' }}>Whitefield, Bangalore</h4>
-                <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>Main Clinic</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.85rem' }}>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <MapPin size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
-                  <span>4th Floor, Premium Square, Whitefield Main Road, Near ITPL, Bengaluru - 560066</span>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Phone size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
-                  <a href="tel:+917593864264" style={{ color: 'var(--gold-600)', fontWeight: 'bold' }}>+91 75938 64264</a>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Mail size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
-                  <a href="mailto:info@ycdcdermatology.com">info@ycdcdermatology.com</a>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <Clock size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
-                  <span>Mon - Sat: 9:00 AM - 7:00 PM (Sunday Closed)</span>
-                </div>
-              </div>
-              <div style={{ marginTop: '16px', fontSize: '0.8rem' }}>
-                <a href="https://maps.google.com" target="_blank" style={{ textDecoration: 'underline', color: 'var(--gold-600)', fontWeight: 'bold' }}>Open Bangalore Map Navigation &rarr;</a>
-              </div>
-            </div>
-
             {/* Pattom branch details */}
             <div className="glass" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)' }}>
               <div style={{ display: 'flex', justifySelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -216,6 +187,35 @@ export default function ContactUs() {
               </div>
               <div style={{ marginTop: '16px', fontSize: '0.8rem' }}>
                 <a href="https://maps.google.com" target="_blank" style={{ textDecoration: 'underline', color: 'var(--gold-600)', fontWeight: 'bold' }}>Open Trivandrum Map Navigation &rarr;</a>
+              </div>
+            </div>
+
+            {/* Whitefield branch details */}
+            <div className="glass" style={{ padding: '30px', borderRadius: '12px', background: 'white', border: '1px solid var(--silk-200)' }}>
+              <div style={{ display: 'flex', justifySelf: 'stretch', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--plum-900)' }}>Whitefield, Bangalore</h4>
+                <span className="badge badge-gold" style={{ fontSize: '0.65rem' }}>Main Clinic</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <MapPin size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
+                  <span>4th Floor, Premium Square, Whitefield Main Road, Near ITPL, Bengaluru - 560066</span>
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <Phone size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
+                  <a href="tel:+917593864264" style={{ color: 'var(--gold-600)', fontWeight: 'bold' }}>+91 75938 64264</a>
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <Mail size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
+                  <a href="mailto:info@ycdcdermatology.com">info@ycdcdermatology.com</a>
+                </div>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <Clock size={16} style={{ color: 'var(--plum-800)', flexShrink: 0 }} />
+                  <span>Mon - Sat: 9:00 AM - 7:00 PM (Sunday Closed)</span>
+                </div>
+              </div>
+              <div style={{ marginTop: '16px', fontSize: '0.8rem' }}>
+                <a href="https://maps.google.com" target="_blank" style={{ textDecoration: 'underline', color: 'var(--gold-600)', fontWeight: 'bold' }}>Open Bangalore Map Navigation &rarr;</a>
               </div>
             </div>
           </div>

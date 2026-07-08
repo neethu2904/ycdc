@@ -9,6 +9,7 @@ use App\Models\GalleryItem;
 use App\Models\BlogPost;
 use App\Models\Lead;
 use App\Models\SeoConfig;
+use App\Models\CaseStudy;
 use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
@@ -30,7 +31,12 @@ class ApiController extends Controller
 
     public function getBlogs()
     {
-        return response()->json(BlogPost::all());
+        return response()->json(BlogPost::orderBy('created_at', 'desc')->get());
+    }
+
+    public function getCaseStudies()
+    {
+        return response()->json(CaseStudy::where('active', true)->get());
     }
 
     public function getSeo()

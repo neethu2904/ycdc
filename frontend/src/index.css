@@ -2,16 +2,16 @@
   /* Premium Multi-Tone Plum & Brand Pink Palette */
   --plum-950: #23071b; /* Deepest Dark Plum (Base overlays / footer) */
   --plum-900: #3b102f; /* Deep Rich Plum (Readable text contrast, bold subtitles) */
-  --plum-800: #75446f; /* Premium Medium-Light Plum (Heading color - suitable & good) */
-  --plum-700: #bb94b6; /* Brand Primary Pink (Logo color for highlights / primary actions) */
+  --plum-800: #774572; /* Deep Plum/Wine Purple (R:119, G:69, B:114) */
+  --plum-700: #c49cbe; /* Rose Pink/Lavender (R:196, G:156, B:190) */
   --plum-600: #cfb5ca; /* Dusty Light Plum (For borders, soft gradients, and subtle accents) */
   --plum-500: #e4cfde; /* Very Light Plum (Backdrops and hover backgrounds) */
   --plum-100: #faf5fa; /* Blush White (Soft tint base) */
-  --brand-pink: #bb94b6; /* Brand Logo Pink */
+  --brand-pink: #c49cbe; /* Rose Pink/Lavender (R:196, G:156, B:190) */
   
   --gold-600: #3b102f; /* Deep Plum */
-  --gold-500: #bb94b6; /* Brand Pink */
-  --gold-400: #75446f; /* Light Plum */
+  --gold-500: #c49cbe; /* Brand Pink/Lavender */
+  --gold-400: #774572; /* Deep Plum/Wine */
   --gold-300: #cfb5ca; /* Dusty Light Plum */
   --gold-100: #faf5fa; /* Soft Blush White */
 
@@ -128,7 +128,7 @@ a {
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-500) 50%, var(--gold-300) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f4e8f1 45%, rgb(196, 156, 190) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -464,10 +464,128 @@ a {
   cursor: pointer;
 }
 
+/* Hero Background Image Animation & Slide Carousel Styles */
+@keyframes kenburns {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hero-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.hero-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: kenburns 25s ease-in-out infinite;
+}
+
+.hero-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(59, 16, 47, 0.75) 0%,
+    rgba(196, 156, 190, 0.45) 45%,
+    rgba(255, 255, 255, 0.1) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: -1;
+}
+
+.hero-slide-container {
+  position: relative;
+  min-height: 220px;
+  width: 100%;
+}
+
+.hero-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+.hero-slide-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease;
+  pointer-events: none;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.hero-slide-item.active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.hero-indicator-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+  margin-bottom: 35px;
+  justify-content: flex-start;
+}
+
+/* Slide Indicator Bars style */
+.hero-indicator-bar {
+  height: 3px;
+  width: 40px;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-indicator-bar.active {
+  background-color: white;
+  width: 60px; /* Slight elongation for active slide indicator */
+}
+
+.hero-indicator-bar.inactive {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.hero-indicator-bar.inactive:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
 /* Hero Section */
 .hero-container {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.25fr 0.75fr;
   gap: 40px;
   align-items: center;
 }
@@ -542,8 +660,22 @@ a {
 @media (max-width: 991px) {
   /* Hero */
   .hero-container {
-    grid-template-columns: 1fr;
     text-align: center;
+  }
+  .hero-content-wrapper {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-slide-item {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-slide-item.active {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-indicator-container {
+    justify-content: center;
   }
   .hero-desc {
     margin-left: auto;
@@ -554,6 +686,7 @@ a {
   }
   .hero-features {
     justify-content: center;
+    text-align: center;
   }
   .desktop-only {
     display: none !important;
@@ -576,6 +709,9 @@ a {
 }
 
 @media (max-width: 768px) {
+  .hero-bg-overlay {
+    background: rgba(30, 8, 24, 0.72) !important;
+  }
   /* Header Top Bar */
   .top-bar-inner {
     flex-direction: column;
@@ -1126,6 +1262,123 @@ a {
     align-items: flex-start;
     gap: 12px;
   }
+}/* ================= PREMIUM BRANDED ANIMATIONS & GRAPHICS (peacheweb.io, spline.design style) ================= */
+
+/* Infinite Seamless Marquee Ticker */
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 24px;
+  position: relative;
+  width: 100%;
 }
 
+.marquee-content {
+  display: flex;
+  flex-shrink: 0;
+  gap: 24px;
+  min-width: 100%;
+  animation: marquee-scroll 45s linear infinite;
+}
 
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+/* Glassmorphic Glow Card (peacheweb.io / spline.design style) */
+.glass-glow-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 32px rgba(119, 69, 114, 0.05);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.glass-glow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glass-glow-card:hover::before {
+  left: 125%;
+}
+
+.glass-glow-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  border-color: var(--plum-700);
+  box-shadow: 0 20px 40px rgba(119, 69, 114, 0.12),
+              0 0 30px rgba(196, 156, 190, 0.2);
+}
+
+/* Floating Graphic Orb (spline / threlte style) */
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+  animation: float-around 20s ease-in-out infinite alternate;
+}
+
+@keyframes float-around {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(80px, -50px) scale(1.3) rotate(180deg); }
+  100% { transform: translate(-50px, 80px) scale(0.85) rotate(360deg); }
+}
+
+/* Spring Micro-interactions (theatre.js style) */
+.spring-button {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+}
+
+.spring-button:hover {
+  transform: scale(1.04) translateY(-3px);
+  box-shadow: 0 12px 24px rgba(119, 69, 114, 0.18);
+}
+
+.spring-button:active {
+  transform: scale(0.97) translateY(0);
+}
+
+/* Animated Border Glow */
+.glow-border {
+  position: relative;
+}
+
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--plum-700), var(--plum-800), var(--plum-900));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-border:hover::after {
+  opacity: 1;
+}
