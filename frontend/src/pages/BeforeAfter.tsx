@@ -3,74 +3,105 @@ import { Sparkles, Calendar, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import type { BeforeAfterProps, CaseStudy } from '../types';
 
+const DEFAULT_CASE_STUDIES: CaseStudy[] = [
+  {
+    id: "hair",
+    category: "hair",
+    categoryLabel: "Hair Restoration (FUE)",
+    title: "Advanced FUE Hairline & Density Restoration",
+    description: "Patient presented with Norwood Grade 3 hairline recession and diffuse thinning across the scalp crown. Following a 2,800 graft FUE hair transplant combined with post-op GFC micro-therapy, complete natural hairline density was successfully achieved over 8 months.",
+    beforeImg: "/hair_before.png",
+    afterImg: "/hair_after.png",
+    details: {
+      doctor: "Dr. K. Yogiraj & Dr. Vennela Reddy",
+      technology: "Sapphire FUE & Growth Factor Concentrate (GFC)",
+      sessions: "1 Surgical Session + 4 GFC Therapies",
+      concern: "Hairline Recession & Frontal Thinning"
+    }
+  },
+  {
+    id: "skin",
+    category: "skin",
+    categoryLabel: "Acne Scar Correction",
+    title: "Fractional RF Microneedling & TCA Cross",
+    description: "Deep rolling and boxcar acne scars treated with a multi-layered approach using Secret RF Fractional Microneedling and targeted medical peels. Skin texture dramatically smoothed with over 85% scar depth reduction.",
+    beforeImg: "/acne_before.png",
+    afterImg: "/acne_after.png",
+    details: {
+      doctor: "Dr. Niranjana Raj",
+      technology: "Secret RF Fractional Microneedling & Chemical Peels",
+      sessions: "4 Monthly Sessions",
+      concern: "Deep Acne Scars & Hyperpigmentation"
+    }
+  },
+  {
+    id: "laser",
+    category: "laser",
+    categoryLabel: "Laser & Scalp GFC",
+    title: "Autologous Growth Factor Scalp Rejuvenation",
+    description: "Advanced GFC scalp therapy for androgenetic alopecia in early stages. Stimulated dormant hair follicles resulting in visible hair shaft thickening and reduced daily shedding.",
+    beforeImg: "/gfc_before.jpg",
+    afterImg: "/gfc_after.jpg",
+    details: {
+      doctor: "Dr. Maya Vincent",
+      technology: "High-Concentration Scalp GFC Therapy",
+      sessions: "6 Sessions (4 weeks apart)",
+      concern: "Scalp Thinning & Hair Shedding"
+    }
+  }
+];
+
 const HAIRLINE_GLOWUP_GALLERY = [
-  "https://ycdc.in/wp-content/uploads/2023/03/5fddb6f0-402d-419a-ac5d-9b4716d93447.jpg",
-  "https://ycdc.in/wp-content/uploads/2023/03/95ffc2a7-ed00-42df-82ec-fd27d074fd22.jpg",
-  "https://ycdc.in/wp-content/uploads/2023/03/448ec6aa-652a-421b-88e3-282fd3dd90ec.jpg",
-  "https://ycdc.in/wp-content/uploads/2023/03/e589a126-2d7a-425b-bfa7-bc9ed4351008.jpg",
-  "https://ycdc.in/wp-content/uploads/2023/03/3ff92a54-3c57-4a85-a97a-e9848865b800.jpg",
-  "https://ycdc.in/wp-content/uploads/2023/03/a5e2e768-8737-4e0f-8758-00888c7d85fe.jpg"
+  "/hair_before.png",
+  "/hair_after.png",
+  "/gfc_before.jpg",
+  "/gfc_after.jpg",
+  "/hair_treatment_premium.png",
+  "/clinic_lobby_premium.png"
 ];
 
 const VERTEX_TRANSPLANT_GALLERY = [
-  "https://ycdc.in/wp-content/uploads/2025/08/d622b3e5-e69c-4a27-8227-644dfc48477b.jpg",
-  "https://ycdc.in/wp-content/uploads/2025/08/ba45cceb-bd4b-4ff5-bd86-dd506556a671.jpg",
-  "https://ycdc.in/wp-content/uploads/2025/08/eed5800b-c58f-4e3d-a7cf-36350a19166c.jpg",
-  "https://ycdc.in/wp-content/uploads/2025/08/8089c362-8010-4254-8c4b-a686eec46660.jpg",
-  "https://ycdc.in/wp-content/uploads/2025/08/4a056277-5f78-4db8-8f94-14f27003c12e.jpg"
+  "/hair_after.png",
+  "/acne_after.png",
+  "/gfc_after.jpg",
+  "/skin_treatment_premium.png",
+  "/laser_treatment_premium.png"
 ];
 
 export default function BeforeAfter({ onBookTreatment }: BeforeAfterProps) {
   const [activeCategory, setActiveCategory] = useState<string>("hair");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>(DEFAULT_CASE_STUDIES);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/case-studies`)
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const mapped = data.map((item: any) => ({
             id: item.id,
             category: item.category,
-            categoryLabel: item.category_label,
+            categoryLabel: item.category_label || item.title,
             title: item.title,
             description: item.description,
-            beforeImg: item.before_img_path.startsWith('http') ? item.before_img_path : `http://localhost:8000${item.before_img_path}`,
-            afterImg: item.after_img_path.startsWith('http') ? item.after_img_path : `http://localhost:8000${item.after_img_path}`,
+            beforeImg: item.before_img_path ? (item.before_img_path.startsWith('http') ? item.before_img_path : `http://localhost:8000${item.before_img_path}`) : '/hair_before.png',
+            afterImg: item.after_img_path ? (item.after_img_path.startsWith('http') ? item.after_img_path : `http://localhost:8000${item.after_img_path}`) : '/hair_after.png',
             details: {
-              doctor: item.doctor,
-              technology: item.technology,
-              sessions: item.sessions,
-              concern: item.concern
+              doctor: item.doctor || "Dr. K. Yogiraj & Team",
+              technology: item.technology || "Clinical Dermatology Protocol",
+              sessions: item.sessions || "3-6 Sessions",
+              concern: item.concern || item.title
             }
           }));
           setCaseStudies(mapped);
         }
-        setLoading(false);
       })
       .catch(err => {
-        console.error("Error loading case studies:", err);
-        setLoading(false);
+        console.error("Error loading case studies from backend API, using local fallbacks:", err);
       });
   }, []);
 
-  const currentCase = caseStudies.find(c => c.category === activeCategory) || caseStudies[0] || {
-    id: "",
-    category: "",
-    categoryLabel: "",
-    title: "Loading Case Studies...",
-    description: "",
-    beforeImg: "",
-    afterImg: "",
-    details: {
-      doctor: "",
-      technology: "",
-      sessions: "",
-      concern: ""
-    }
-  };
+  const currentCase = caseStudies.find(c => c.category === activeCategory) || caseStudies[0] || DEFAULT_CASE_STUDIES[0];
 
   const [sliderPosition, setSliderPosition] = useState<number>(50);
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -162,36 +193,30 @@ export default function BeforeAfter({ onBookTreatment }: BeforeAfterProps) {
       <section className="section-padding" style={{ padding: '60px 0' }}>
         <div className="container">
           {/* Category Tabs */}
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '20px', color: 'var(--muted-charcoal)' }}>
-              Loading Case Studies...
-            </div>
-          ) : (
-            <div className="reveal reveal-up" style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px' }}>
-              {caseStudies.map((c: any) => (
-                <button
-                  key={c.id}
-                  onClick={() => {
-                    setActiveCategory(c.category);
-                    setSliderPosition(50);
-                  }}
-                  style={{
-                    padding: '12px 24px',
-                    borderRadius: '30px',
-                    border: '1px solid var(--silk-200)',
-                    backgroundColor: activeCategory === c.category ? 'var(--plum-900)' : 'white',
-                    color: activeCategory === c.category ? 'white' : 'var(--plum-900)',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    boxShadow: 'var(--shadow-sm)',
-                    transition: 'var(--transition-smooth)'
-                  }}
-                >
-                  {c.categoryLabel}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="reveal reveal-up" style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' }}>
+            {caseStudies.map((c: any) => (
+              <button
+                key={c.id}
+                onClick={() => {
+                  setActiveCategory(c.category);
+                  setSliderPosition(50);
+                }}
+                style={{
+                  padding: '12px 26px',
+                  borderRadius: '50px',
+                  border: activeCategory === c.category ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                  backgroundColor: activeCategory === c.category ? '#c49cbe' : 'white',
+                  color: activeCategory === c.category ? 'white' : '#63335e',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  boxShadow: activeCategory === c.category ? '0 4px 15px rgba(196, 156, 190, 0.45)' : 'var(--shadow-sm)',
+                  transition: 'var(--transition-smooth)'
+                }}
+              >
+                {c.categoryLabel}
+              </button>
+            ))}
+          </div>
 
           <div style={{
             display: 'grid',

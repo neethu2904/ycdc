@@ -41,7 +41,6 @@ import { API_BASE_URL } from './config';
 import useScrollReveal from './hooks/useScrollReveal';
 import AnimatedCounter from './components/AnimatedCounter';
 import studio from '@theatre/studio';
-import SplineHero from './components/SplineHero';
 import { getPageFromPath, PAGE_PATHS } from './routes/pageRoutes';
 import type { PageId } from './types/navigation';
 import { scrollToTop } from './utils/scroll';
@@ -333,19 +332,22 @@ const HERO_SLIDES = [
   {
     badge: "ISO 9001:2015 CERTIFIED CLINIC",
     title: "50+ Years of Excellence",
-    highlight: "in Skin, Hair & Aesthetic Care",
+    highlightPrefix: "in Skin, Hair &",
+    highlightAccent: "Aesthetic Care",
     desc: "YCDC has blended clinical expertise with state-of-the-art aesthetic science to deliver exceptional care for your skin and hair under the leadership of Dr. K. Yogiraj."
   },
   {
     badge: "SCIENCE-DRIVEN DERMATOLOGY",
     title: "Clinical Expertise",
-    highlight: "Blended with Aesthetic Science",
+    highlightPrefix: "Blended with",
+    highlightAccent: "Aesthetic Science",
     desc: "Every skin type is unique. We provide customized, evidence-based dermatological treatments tailored to your individual needs."
   },
   {
     badge: "TRUSTED LEGACY",
     title: "State-of-the-Art",
-    highlight: "FDA-Approved Medical Lasers",
+    highlightPrefix: "FDA-Approved",
+    highlightAccent: "Medical Lasers",
     desc: "Equipped with the latest US-FDA approved technologies to deliver safe, effective, and permanent rejuvenation results."
   }
 ];
@@ -705,7 +707,7 @@ function AppContent() {
                   zIndex: -2
                 }}
               >
-                <source src="/hero section.mp4" type="video/mp4" />
+                <source src={isMobile ? "/mobile hero section.mp4" : "/hero section.mp4"} type="video/mp4" />
               </video>
               <div className="hero-bg-overlay" />
 
@@ -731,7 +733,8 @@ function AppContent() {
                           </span>
                           <h1 className="hero-title">
                             {slide.title} <br />
-                            <span className="gold-gradient-text">{slide.highlight}</span>
+                            <span>{slide.highlightPrefix} </span>
+                            <span className="hero-title-accent">{slide.highlightAccent}</span>
                           </h1>
                           <p className="hero-desc">
                             {slide.desc}
@@ -1834,17 +1837,27 @@ function AppContent() {
           {/* Floating Call Now Button */}
           <div className="floating-cta-phone">
             <div style={{ position: 'relative' }}>
+              <div style={{
+                position: 'absolute',
+                top: '-5px',
+                left: '-5px',
+                right: '-5px',
+                bottom: '-5px',
+                borderRadius: '50%',
+                border: '2px solid #c49cbe',
+                animation: 'pulse-ring 2s cubic-bezier(0.215, 0.610, 0.355, 1) infinite'
+              }} />
               <button
                 onClick={() => window.open(`tel:${phone}`, '_self')}
                 style={{
                   width: '56px',
                   height: '56px',
                   borderRadius: '50%',
-                  backgroundColor: 'var(--plum-900)',
-                  color: 'var(--gold-300)',
-                  border: '2px solid var(--gold-500)',
+                  backgroundColor: '#c49cbe',
+                  color: '#ffffff',
+                  border: '2px solid #ffffff',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                  boxShadow: '0 6px 20px rgba(196, 156, 190, 0.65)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -1853,12 +1866,12 @@ function AppContent() {
                   transition: 'var(--transition-fast)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.3)';
+                  e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(196, 156, 190, 0.8)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(196, 156, 190, 0.65)';
                 }}
                 title="Call Us Now"
               >

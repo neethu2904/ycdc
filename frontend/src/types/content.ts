@@ -61,4 +61,6 @@ export interface Treatment {
   treats: string;
   active: boolean;
   image?: string;
+  branch?: 'trivandrum' | 'bangalore' | 'both';
+  procedure_type?: 'dermatic' | 'cosmetic';
 }

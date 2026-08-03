@@ -105,7 +105,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
     const defaultService = CATEGORIES.find(c => c.id === categoryValue)?.services[0]?.id || 'acne-therapy';
 
     dispatch(resetBookingForm({
-      step: initialCategory ? 3 : 1,
+      step: 1,
       branch: initialBranch || 'trivandrum',
       category: categoryValue,
       service: initialService || defaultService

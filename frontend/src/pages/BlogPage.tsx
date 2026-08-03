@@ -13,7 +13,7 @@ const MOCK_BLOGS: BlogPost[] = [
     date: 'August 24, 2025',
     read_time: '3 min read',
     excerpt: 'Beautiful skin starts with the right care. At YCDC, we believe in simple yet effective skin care practices that keep your skin nourished, hydrated, and radiant every day.',
-    image_path: 'https://ycdc.in/wp-content/uploads/2025/07/beautiful-young-indian-woman-enjoying-face-lifting-2025-03-18-17-16-15-utc-scaled.jpg',
+    image_path: '/skin_treatment_premium.png',
     body_content: [
       'Beautiful skin starts with the right care. At YCDC, we believe in simple yet effective skin care practices that keep your skin nourished, hydrated, and radiant every day. Using cutting-edge ResurFX Laser and Secret RF Microneedling, we effectively target pimple scars, uneven texture, and active breakouts.',
       '1. Protect Your Skin from Sun Damage: Always use a broad-spectrum sunscreen with SPF 30 or higher. UVA and UVB rays accelerate skin aging and trigger hyperpigmentation. Reapply sunscreen every 3 hours if outdoors.',
@@ -30,7 +30,7 @@ const MOCK_BLOGS: BlogPost[] = [
     date: 'July 15, 2025',
     read_time: '4 min read',
     excerpt: 'Understand how US-FDA approved laser systems deliver permanent hair reduction safely across all skin types with zero downtime.',
-    image_path: 'https://ycdc.in/wp-content/uploads/2025/05/a-girl-in-black-underwear-gets-laser-hair-removal-2025-03-24-12-57-40-utc-scaled-500x450.jpg',
+    image_path: '/laser_treatment_premium.png',
     body_content: [
       'Embrace self-confidence and overcome the hassle of frequent waxing or shaving. Laser hair reduction uses selective photothermolysis to target melanin in hair follicles, disabling their growth cycle permanently without damaging surrounding skin tissue.',
       'At YCDC, we utilize US-FDA approved triple-wavelength lasers that are exceptionally safe for Indian skin types. The integrated cooling tips ensure the treatment is virtually painless.',
@@ -46,7 +46,7 @@ const MOCK_BLOGS: BlogPost[] = [
     date: 'June 10, 2025',
     read_time: '5 min read',
     excerpt: 'Experiencing hair thinning? Explore the biological reasons behind hair fall and clinical hair loss solutions including PRP and FUE transplants.',
-    image_path: 'https://ycdc.in/wp-content/uploads/2025/05/a-beautician-makes-injections-into-the-scalp-for-h-2024-12-01-11-09-23-utc-scaled.jpg',
+    image_path: '/hair_treatment_premium.png',
     body_content: [
       'Hair loss causing thinning or baldness is a very common concern. Understanding the root cause—whether it is genetic androgenetic alopecia, hormonal imbalances, nutritional deficiencies, or stress-induced telogen effluvium—is the first step to successful restoration.',
       'Modern trichology offers highly effective solutions: medications to block DHT, Platelet-Rich Plasma (PRP) scalp injections to stimulate hair bulbs, and FUE hair transplant surgery.',
@@ -149,7 +149,7 @@ export default function BlogPage() {
                   gap: '8px',
                   backgroundColor: 'transparent',
                   border: 'none',
-                  color: 'var(--plum-800)',
+                  color: '#c49cbe',
                   fontWeight: '600',
                   cursor: 'pointer',
                   marginBottom: '30px',
@@ -171,13 +171,13 @@ export default function BlogPage() {
               {/* Metadata */}
               <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: '20px', fontSize: '0.85rem', color: 'var(--muted-charcoal)', borderBottom: '1px solid var(--silk-200)', paddingBottom: '16px' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <User size={14} style={{ color: 'var(--plum-800)' }} /> {selectedPost.author}
+                  <User size={14} style={{ color: '#c49cbe' }} /> {selectedPost.author}
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Calendar size={14} style={{ color: 'var(--plum-800)' }} /> {selectedPost.date}
+                  <Calendar size={14} style={{ color: '#c49cbe' }} /> {selectedPost.date}
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Clock size={14} style={{ color: 'var(--plum-800)' }} /> {selectedPost.read_time}
+                  <Clock size={14} style={{ color: '#c49cbe' }} /> {selectedPost.read_time}
                 </span>
                 <span className="badge badge-plum" style={{ fontSize: '0.7rem' }}>
                   {selectedPost.category_label}
@@ -185,7 +185,7 @@ export default function BlogPage() {
               </div>
 
               {/* Article Title */}
-              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', color: 'var(--plum-900)', marginBottom: '24px', lineHeight: '1.2' }}>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', color: '#63335e', marginBottom: '24px', lineHeight: '1.2' }}>
                 {selectedPost.title}
               </h2>
 
@@ -203,7 +203,7 @@ export default function BlogPage() {
                 borderTop: '1px solid var(--silk-200)',
                 textAlign: 'center'
               }}>
-                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: 'var(--plum-900)', marginBottom: '8px' }}>
+                <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', color: '#63335e', marginBottom: '8px' }}>
                   Have questions about this topic?
                 </h4>
                 <p style={{ fontSize: '0.9rem', color: 'var(--muted-charcoal)', marginBottom: '20px' }}>
@@ -241,13 +241,14 @@ export default function BlogPage() {
                       key={cat}
                       onClick={() => setActiveCategory(cat)}
                       style={{
-                        padding: '10px 20px',
-                        borderRadius: '30px',
-                        border: '1px solid var(--silk-200)',
-                        backgroundColor: activeCategory === cat ? 'var(--plum-900)' : 'white',
-                        color: activeCategory === cat ? 'white' : 'var(--plum-900)',
+                        padding: '10px 22px',
+                        borderRadius: '50px',
+                        border: activeCategory === cat ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                        backgroundColor: activeCategory === cat ? '#c49cbe' : 'white',
+                        color: activeCategory === cat ? 'white' : '#63335e',
                         fontWeight: '600',
                         cursor: 'pointer',
+                        boxShadow: activeCategory === cat ? '0 4px 15px rgba(196, 156, 190, 0.4)' : 'none',
                         textTransform: 'capitalize',
                         transition: 'var(--transition-fast)'
                       }}

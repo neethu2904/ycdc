@@ -5,59 +5,59 @@ import type { GalleryItem } from '../types';
 
 const MOCK_GALLERY: GalleryItem[] = [
   {
-    id: 'before-after-4',
+    id: 'before-after-hair',
     type: 'image',
     category: 'treatments',
-    title: 'Before After - Hair Transplant Density',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/08/eed5800b-c58f-4e3d-a7cf-36350a19166c.jpg',
+    title: 'Before After - FUE Hair Restoration',
+    thumbnail_path: '/hair_after.png',
     description: 'Excellent density and natural hairline restoration 6 months after a FUE hair transplant session.'
   },
   {
-    id: 'before-after-3',
-    type: 'image',
-    category: 'treatments',
-    title: 'Before After - Hair Line Restoration',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/05/ycdc-before-after2-880x808.jpeg',
-    description: 'Frontal hairline restoration showing significant density and natural growth.'
-  },
-  {
-    id: 'before-after-2',
+    id: 'before-after-acne',
     type: 'image',
     category: 'treatments',
     title: 'Before After - Acne Scar Correction',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/08/eed5800b-c58f-4e3d-a7cf-36350a19166c.jpg',
+    thumbnail_path: '/acne_after.png',
     description: 'Visible skin smoothing and reduction of deep pitted acne scars after 3 sessions of Secret RF Microneedling.'
   },
   {
-    id: 'image-1',
+    id: 'before-after-gfc',
     type: 'image',
     category: 'treatments',
-    title: 'Trichoscopy Scalp Examination',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/05/cosmetologist-doing-trichoscopy-and-watching-resul-2024-10-18-10-16-52-utc-scaled.jpg',
+    title: 'Before After - GFC Hair Density',
+    thumbnail_path: '/gfc_after.jpg',
+    description: 'Scalp GFC growth factor concentrate therapy for hair shaft thickening and density.'
+  },
+  {
+    id: 'trichoscopy-exam',
+    type: 'image',
+    category: 'treatments',
+    title: 'Advanced Diagnostic Hair & Scalp Trichoscopy',
+    thumbnail_path: '/hair_treatment_premium.png',
     description: 'Digital trichoscopy scalp analysis to evaluate hair root health and map out custom treatments.'
   },
   {
     id: 'clinic-lobby',
     type: 'image',
     category: 'infrastructure',
-    title: 'YCDC Luxury Lobby & Reception',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/05/DSC09954-scaled.jpg',
+    title: 'YCDC Luxury Reception Lounge',
+    thumbnail_path: '/clinic_lobby_premium.png',
     description: 'Our welcoming reception lounge designed to provide patients with a calming and premium clinical environment.'
   },
   {
-    id: 'before-after-6',
+    id: 'laser-infra',
     type: 'image',
-    category: 'treatments',
-    title: 'Before After - Pigmentation Treatment',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/05/ycdc-before-after6-880x808.jpeg',
-    description: 'Advanced Q-Switched laser toning and chemical peel results for melasma and dark spots.'
+    category: 'infrastructure',
+    title: 'US-FDA Approved Laser Suite',
+    thumbnail_path: '/laser_treatment_premium.png',
+    description: 'State-of-the-art laser procedure room equipped for pain-free permanent hair reduction and skin toning.'
   },
   {
     id: 'treatment-showcase-video',
     type: 'video',
     category: 'treatments',
-    title: 'YCDC Clinic Experience Tour',
-    thumbnail_path: 'https://ycdc.in/wp-content/uploads/2025/05/Dr.-NR-Opd.jpg',
+    title: 'YCDC Clinic Experience & Facility Tour',
+    thumbnail_path: '/cosmetic_treatment_premium.png',
     video_path: 'https://www.youtube.com/watch?v=RWr8XeBUxTU',
     description: 'Detailed clinical video tour demonstrating our professional environment, FDA-approved lasers, and workflows.'
   }
@@ -189,16 +189,17 @@ export default function GalleryPage() {
             <button
               onClick={() => setFilter('all')}
               style={{
-                padding: '10px 20px',
-                borderRadius: '30px',
-                border: '1px solid var(--silk-200)',
-                backgroundColor: filter === 'all' ? 'var(--plum-900)' : 'white',
-                color: filter === 'all' ? 'white' : 'var(--plum-900)',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                border: filter === 'all' ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                backgroundColor: filter === 'all' ? '#c49cbe' : 'white',
+                color: filter === 'all' ? 'white' : '#63335e',
                 fontWeight: '600',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
+                boxShadow: filter === 'all' ? '0 4px 15px rgba(196, 156, 190, 0.4)' : 'none',
                 transition: 'var(--transition-fast)'
               }}
             >
@@ -207,13 +208,14 @@ export default function GalleryPage() {
             <button
               onClick={() => setFilter('infrastructure')}
               style={{
-                padding: '10px 20px',
-                borderRadius: '30px',
-                border: '1px solid var(--silk-200)',
-                backgroundColor: filter === 'infrastructure' ? 'var(--plum-900)' : 'white',
-                color: filter === 'infrastructure' ? 'white' : 'var(--plum-900)',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                border: filter === 'infrastructure' ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                backgroundColor: filter === 'infrastructure' ? '#c49cbe' : 'white',
+                color: filter === 'infrastructure' ? 'white' : '#63335e',
                 fontWeight: '600',
                 cursor: 'pointer',
+                boxShadow: filter === 'infrastructure' ? '0 4px 15px rgba(196, 156, 190, 0.4)' : 'none',
                 transition: 'var(--transition-fast)'
               }}
             >
@@ -222,13 +224,14 @@ export default function GalleryPage() {
             <button
               onClick={() => setFilter('treatments')}
               style={{
-                padding: '10px 20px',
-                borderRadius: '30px',
-                border: '1px solid var(--silk-200)',
-                backgroundColor: filter === 'treatments' ? 'var(--plum-900)' : 'white',
-                color: filter === 'treatments' ? 'white' : 'var(--plum-900)',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                border: filter === 'treatments' ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                backgroundColor: filter === 'treatments' ? '#c49cbe' : 'white',
+                color: filter === 'treatments' ? 'white' : '#63335e',
                 fontWeight: '600',
                 cursor: 'pointer',
+                boxShadow: filter === 'treatments' ? '0 4px 15px rgba(196, 156, 190, 0.4)' : 'none',
                 transition: 'var(--transition-fast)'
               }}
             >
@@ -237,16 +240,17 @@ export default function GalleryPage() {
             <button
               onClick={() => setFilter('video')}
               style={{
-                padding: '10px 20px',
-                borderRadius: '30px',
-                border: '1px solid var(--silk-200)',
-                backgroundColor: filter === 'video' ? 'var(--plum-900)' : 'white',
-                color: filter === 'video' ? 'white' : 'var(--plum-900)',
+                padding: '10px 22px',
+                borderRadius: '50px',
+                border: filter === 'video' ? '2px solid #c49cbe' : '1px solid var(--silk-200)',
+                backgroundColor: filter === 'video' ? '#c49cbe' : 'white',
+                color: filter === 'video' ? 'white' : '#63335e',
                 fontWeight: '600',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
+                boxShadow: filter === 'video' ? '0 4px 15px rgba(196, 156, 190, 0.4)' : 'none',
                 transition: 'var(--transition-fast)'
               }}
             >

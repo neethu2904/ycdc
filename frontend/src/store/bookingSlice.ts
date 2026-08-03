@@ -23,7 +23,7 @@ const bookingSlice = createSlice({
   reducers: {
     resetBookingForm: (state, action: PayloadAction<Partial<BookingState> | undefined>) => {
       Object.assign(state, initialState, action.payload);
-      state.step = action.payload?.category ? 3 : action.payload?.step ?? 1;
+      state.step = action.payload?.step ?? 1;
       state.isSuccess = false;
       state.submitting = false;
       state.bookingId = '';
