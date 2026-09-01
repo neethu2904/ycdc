@@ -13,7 +13,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: 'https://ycdc.in/wp-content/uploads/2025/05/DSC09955-scaled-880x952.jpg',
+    image_path: '/doctor_yogiraj.png',
   },
   {
     id: 2,
@@ -68,7 +68,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: 'https://ycdc.in/wp-content/uploads/2025/05/Dr.-NR-Opd.jpg',
+    image_path: '/doctor_maya.png',
   },
   {
     id: 7,
@@ -79,7 +79,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_sunil.png',
   },
   {
     id: 8,
@@ -90,7 +90,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_bismi.png',
   },
   {
     id: 9,
@@ -101,7 +101,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_deepthi.png',
   },
   {
     id: 10,
@@ -112,7 +112,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_ryan.png',
   },
   {
     id: 11,
@@ -123,7 +123,7 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_devi.png',
   },
   {
     id: 12,
@@ -134,20 +134,28 @@ const MOCK_DOCTORS: Doctor[] = [
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_shruthi.png',
   },
   {
     id: 13,
-    name: 'Dr. Amy',
+    name: 'Dr. Amy Mary Sebastian',
     qualification: 'MBBS, MD Dermatology, Venereology & Leprology',
     designation: 'Clinical Consultant',
     bio: 'Consulting clinical dermatologist focusing on general dermatological wellness.',
     branch: 'trivandrum',
     instagram_url: undefined,
     active: true,
-    image_path: undefined,
+    image_path: '/doctor_amy.png',
   }
 ];
+
+const getDoctorImageUrl = (path?: string) => {
+  if (!path) return '';
+  if (path.startsWith('http') || path.startsWith('/')) {
+    return path;
+  }
+  return `http://localhost:8000${path}`;
+};
 
 export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
   const [doctors, setDoctors] = useState<Doctor[]>(MOCK_DOCTORS);
@@ -237,7 +245,7 @@ export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
             }}>
               {leader.image_path ? (
                 <img 
-                  src={leader.image_path} 
+                  src={getDoctorImageUrl(leader.image_path)} 
                   alt={leader.name} 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
@@ -389,7 +397,7 @@ export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
                       overflow: 'hidden'
                     }}>
                       {doctor.image_path ? (
-                        <img src={doctor.image_path.startsWith('http') ? doctor.image_path : `http://localhost:8000${doctor.image_path}`} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={getDoctorImageUrl(doctor.image_path)} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
                         doctor.name.split(' ').slice(1).map(n => n[0]).join('')
                       )}
@@ -476,7 +484,7 @@ export default function OurTeam({ onOpenApplyModal }: OurTeamProps) {
                       overflow: 'hidden'
                     }}>
                       {doctor.image_path ? (
-                        <img src={doctor.image_path.startsWith('http') ? doctor.image_path : `http://localhost:8000${doctor.image_path}`} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={getDoctorImageUrl(doctor.image_path)} alt={doctor.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
                         doctor.name.split(' ').slice(1).map(n => n[0]).join('')
                       )}

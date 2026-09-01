@@ -39,7 +39,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_yogiraj.png',
             ],
             // Bangalore Team
             [
@@ -91,7 +91,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_maya.png',
             ],
             [
                 'name' => 'Dr. Sunil Menon',
@@ -101,7 +101,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_sunil.png',
             ],
             [
                 'name' => 'Dr. Bismi Sherief',
@@ -111,7 +111,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_bismi.png',
             ],
             [
                 'name' => 'Dr. Deepthi Benny',
@@ -121,7 +121,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_deepthi.png',
             ],
             [
                 'name' => 'Dr. Ryan Raju',
@@ -131,7 +131,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_ryan.png',
             ],
             [
                 'name' => 'Dr. Devi Menon',
@@ -141,7 +141,7 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_devi.png',
             ],
             [
                 'name' => 'Dr. Shruthi S Kumar',
@@ -151,17 +151,17 @@ class ClinicSeeder extends Seeder
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_shruthi.png',
             ],
             [
-                'name' => 'Dr. Amy',
+                'name' => 'Dr. Amy Mary Sebastian',
                 'qualification' => 'MBBS, MD Dermatology, Venereology & Leprology',
                 'designation' => 'Clinical Consultant',
                 'bio' => 'Consulting clinical dermatologist focusing on general dermatological wellness.',
                 'branch' => 'trivandrum',
                 'instagram_url' => null,
                 'active' => true,
-                'image_path' => null,
+                'image_path' => '/doctor_amy.png',
             ],
         ];
 
