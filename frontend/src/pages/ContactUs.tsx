@@ -253,13 +253,10 @@ export default function ContactUs() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', textAlign: 'left', width: '100%' }}>
             {/* Pattom branch details */}
             <div className="glass" style={{ padding: 'clamp(20px, 3.5vw, 32px)', borderRadius: '16px', background: 'white', border: '1px solid var(--silk-200)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', width: '100%', boxSizing: 'border-box' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', marginBottom: '18px', width: '100%' }}>
+              <div style={{ marginBottom: '18px', width: '100%' }}>
                 <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.2rem, 2.5vw, 1.45rem)', color: '#536B4C', fontWeight: 600, margin: 0, lineHeight: 1.25 }}>
                   Pattom, Trivandrum
                 </h4>
-                <span className="badge badge-premium" style={{ fontSize: '0.72rem', whiteSpace: 'nowrap', flexShrink: 0, padding: '5px 12px' }}>
-                  Active Center
-                </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.9rem' }}>
                 <div style={{ display: 'flex', gap: '12px' }}>
@@ -276,7 +273,7 @@ export default function ContactUs() {
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                   <Clock size={18} style={{ color: '#536B4C', flexShrink: 0 }} />
-                  <span style={{ color: '#565F55' }}>Mon - Sat: 9:00 AM - 7:00 PM (Sunday Closed)</span>
+                  <span style={{ color: '#565F55' }}>Mon - Sat: 9:00 AM - 7:00 PM (Sunday: Open till 2:00 PM)</span>
                 </div>
               </div>
               <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #EFE9DF' }}>
@@ -294,13 +291,10 @@ export default function ContactUs() {
 
             {/* Whitefield branch details */}
             <div className="glass" style={{ padding: 'clamp(20px, 3.5vw, 32px)', borderRadius: '16px', background: 'white', border: '1px solid var(--silk-200)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', width: '100%', boxSizing: 'border-box' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', marginBottom: '18px', width: '100%' }}>
+              <div style={{ marginBottom: '18px', width: '100%' }}>
                 <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.2rem, 2.5vw, 1.45rem)', color: '#536B4C', fontWeight: 600, margin: 0, lineHeight: 1.25 }}>
                   Whitefield, Bangalore
                 </h4>
-                <span className="badge badge-gold" style={{ fontSize: '0.72rem', whiteSpace: 'nowrap', flexShrink: 0, padding: '5px 12px' }}>
-                  Main Clinic
-                </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.9rem' }}>
                 <div style={{ display: 'flex', gap: '12px' }}>
@@ -317,7 +311,7 @@ export default function ContactUs() {
                 </div>
                 <div style={{ display: 'flex', gap: '12px' }}>
                   <Clock size={18} style={{ color: '#536B4C', flexShrink: 0 }} />
-                  <span style={{ color: '#565F55' }}>Mon - Sat: 9:00 AM - 7:00 PM (Sunday Closed)</span>
+                  <span style={{ color: '#565F55' }}>Mon - Sat: 9:00 AM - 7:00 PM (Sunday: Open till 2:00 PM)</span>
                 </div>
               </div>
               <div style={{ marginTop: '20px', paddingTop: '14px', borderTop: '1px solid #EFE9DF' }}>

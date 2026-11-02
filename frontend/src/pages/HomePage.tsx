@@ -326,8 +326,7 @@ const PATIENT_CARE_STANDARDS_DATA: PatientCareStandard[] = [
 
 export const HomePage: React.FC<HomePageProps> = ({
   onNavigateToPage,
-  onOpenBookingModal,
-  onBookTreatment: _onBookTreatment
+  onOpenBookingModal
 }) => {
   const [activeCareCategory, setActiveCareCategory] = useState<CareCategory>('skin');
   const [activeStage, setActiveStage] = useState<number>(1);
@@ -543,7 +542,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="container master-hero-container">
           <div className="master-hero-main-row">
             {/* Left Content Column */}
-            <div className="master-hero-text-col reveal reveal-left">
+            <div className="master-hero-text-col">
               {/* Gold Luxury Provenance Eyebrow */}
               <div className="hero-luxury-eyebrow">
                 <span className="hero-eyebrow-accent">✦</span>
@@ -552,8 +551,12 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <h1 className="master-hero-title">
-                Expert care.<br />
-                <span className="master-hero-italic">Beautifully personal.</span>
+                <span className="hero-title-line-wrap">
+                  <span className="hero-title-line hero-title-line-1">Expert care.</span>
+                </span>
+                <span className="hero-title-line-wrap">
+                  <span className="hero-title-line hero-title-line-2 master-hero-italic">Beautifully personal.</span>
+                </span>
               </h1>
 
               {/* Poetic Authority Editorial Subtitle */}
@@ -1345,7 +1348,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="facility-meta-group">
                   <div className="facility-meta-label">Working Hours</div>
                   <div className="facility-meta-val">
-                    Mon - Sat: 9:00 AM - 7:00 PM (Sundays Closed)
+                    Mon - Sat: 9:00 AM - 7:00 PM (Sunday: Open till 2:00 PM)
                   </div>
                 </div>
 
@@ -1397,7 +1400,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <div className="facility-meta-group">
                   <div className="facility-meta-label">Working Hours</div>
                   <div className="facility-meta-val">
-                    Mon - Sat: 9:00 AM - 7:00 PM (Sundays Closed)
+                    Mon - Sat: 9:00 AM - 7:00 PM (Sunday: Open till 2:00 PM)
                   </div>
                 </div>
 

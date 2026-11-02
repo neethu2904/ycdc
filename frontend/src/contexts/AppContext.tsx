@@ -7,7 +7,7 @@ const appContextValue: AppContextValue = {
   phone: '+917593864264',
   whatsapp: '+918884254545',
   email: 'info@ycdc.in',
-  workingHours: 'Mon - Sat: 9:00 AM - 7:00 PM',
+  workingHours: 'Mon - Sat: 9:00 AM - 7:00 PM (Sunday: Open till 2:00 PM)',
   branches: [
     {
       id: 'trivandrum',
@@ -41,6 +41,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAppContext() {
   const context = useContext(AppContext);
 
