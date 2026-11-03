@@ -60,7 +60,6 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
   services: Array<{
     title: string;
     desc: string;
-    duration: string;
     serviceId: string;
   }>;
 }> = {
@@ -73,25 +72,21 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
       {
         title: 'Advanced Acne & Scar Revision',
         desc: 'Targeted laser and RF therapies to calm active acne and smooth deep scar tissue.',
-        duration: '45 mins',
         serviceId: 'acne'
       },
       {
         title: 'Medical Chemical Peels',
         desc: 'Clinical-strength formulation resurfacing to clarify texture and restore luminosity.',
-        duration: '30 mins',
         serviceId: 'peels'
       },
       {
         title: 'Dermatological Microdermabrasion',
         desc: 'Gentle mechanical exfoliation to eliminate cellular debris and refine skin grain.',
-        duration: '40 mins',
         serviceId: 'microdermabrasion'
       },
       {
         title: 'Eczema & Psoriasis Protocols',
         desc: 'Systemic evaluation and targeted clinical plans for chronic inflammatory disorders.',
-        duration: 'Consultation',
         serviceId: 'eczema'
       }
     ]
@@ -105,25 +100,21 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
       {
         title: 'Advanced FUE Hairline & Density Restoration',
         desc: 'Follicular unit extraction for permanent, natural density hairline design.',
-        duration: '4-6 hrs',
         serviceId: 'fue-hair-transplant'
       },
       {
         title: 'Autologous Growth Factor Scalp Rejuvenation (GFC)',
         desc: 'High-concentration platelet bio-therapy targeting follicular root strength.',
-        duration: '45 mins',
         serviceId: 'gfc-therapy'
       },
       {
         title: 'Digital Scalp Trichoscopy Examination',
         desc: 'High-magnification microscopic scalp analysis to map density and follicle health.',
-        duration: '30 mins',
         serviceId: 'trichoscopy'
       },
       {
         title: 'Alopecia Areata Clinical Protocols',
         desc: 'Targeted intralesional and systemic clinical therapies for rapid hair regrowth.',
-        duration: 'Consultation',
         serviceId: 'alopecia'
       }
     ]
@@ -137,25 +128,21 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
       {
         title: 'RevLite Q-Switched Laser Toning',
         desc: 'Dual-wavelength photoacoustic pulses to clear deep melasma and sun pigmentation.',
-        duration: '45 mins',
         serviceId: 'revlite-laser'
       },
       {
         title: 'ResurFX Fractional Non-Ablative Laser',
         desc: 'Deep dermal collagen remodelling to smooth surgical scars and fine lines.',
-        duration: '45 mins',
         serviceId: 'resurfx-laser'
       },
       {
         title: 'Advanced Triple-Wavelength Laser Hair Reduction',
         desc: 'Advanced contact cooling technology for permanent hair reduction across Indian skin.',
-        duration: '30-60 mins',
         serviceId: 'laser-hair-removal'
       },
       {
         title: 'Vascular Laser for Rosacea & Angiomas',
         desc: 'Specific light absorption to collapse dilated facial capillaries safely.',
-        duration: '30 mins',
         serviceId: 'vascular-laser'
       }
     ]
@@ -169,25 +156,21 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
       {
         title: 'Advanced Anti-Aging & Wrinkle Correction',
         desc: 'Targeted neuromodulator therapies to soften dynamic forehead and eye lines.',
-        duration: '45 mins',
         serviceId: 'anti-aging'
       },
       {
         title: 'Hyaluronic Dermal Volume Restructuring',
         desc: 'Restores youthful mid-face contour, cheek fullness, and structural harmony.',
-        duration: '45 mins',
         serviceId: 'dermal-fillers'
       },
       {
         title: 'Medical Hydration & Radiance Infusion',
         desc: 'Multi-step ultrasound active serum infusion and oxygenation for healthy glow.',
-        duration: '50 mins',
         serviceId: 'hydra-glow'
       },
       {
         title: 'Double Chin Lipolysis & Jawline Sculpting',
         desc: 'Non-invasive submental contouring to sculpt a defined cervical profile.',
-        duration: '40 mins',
         serviceId: 'lipolysis'
       }
     ]
@@ -300,9 +283,9 @@ const PATIENT_CARE_STANDARDS_DATA: PatientCareStandard[] = [
   },
   {
     id: '4',
-    title: 'ISO 9001:2015 Safety Protocols',
-    mandate: 'International Quality Standards',
-    description: 'Strict adherence to hospital-grade disinfection, single-use consumables, calibrated medical laser energy, and aseptic clinical suites.',
+    title: 'NABH & ISO Safety Protocols',
+    mandate: 'NABH Accredited (Trivandrum) & ISO 9001:2015',
+    description: 'NABH accreditation for our Trivandrum centre and strict ISO 9001:2015 quality standards for hospital-grade disinfection, sterile consumables, and aseptic clinical suites.',
     categoryTag: 'Clinical Safety',
     icon: <ShieldCheck size={16} />
   },
@@ -546,7 +529,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* Gold Luxury Provenance Eyebrow */}
               <div className="hero-luxury-eyebrow">
                 <span className="hero-eyebrow-accent">✦</span>
-                <span>EST. 1980 &bull; CLINICAL EXCELLENCE &bull; ISO 9001:2015</span>
+                <span>EST. 1980 &bull; NABH ACCREDITED (TRIVANDRUM) &bull; ISO 9001:2015</span>
                 <span className="hero-eyebrow-accent">✦</span>
               </div>
 
@@ -713,17 +696,17 @@ export const HomePage: React.FC<HomePageProps> = ({
                   alignItems: 'center',
                   gap: '6px'
                 }}>
-                  <ShieldCheck size={14} color="#B49A68" /> YCDC ISO Certified Badge
+                  <ShieldCheck size={14} color="#B49A68" /> NABH ACCREDITED (TRIVANDRUM) &bull; ISO 9001:2015
                 </span>
               </div>
 
               <h2 className="heritage-title">
-                Evidence-Based Dermatology &amp; Trichology &ndash; ISO 9001:2015 Certified
+                Evidence-Based Dermatology &amp; Trichology &ndash; NABH Accredited &amp; ISO 9001:2015 Certified
               </h2>
 
               <div className="heritage-quote-box">
                 <p className="heritage-quote-text" style={{ fontSize: '1.08rem' }}>
-                  &ldquo;ISO Certified for quality and safety, YCDC meets rigorous international standards, giving you peace of mind along with effective, personalized solutions.&rdquo;
+                  &ldquo;NABH Accredited for our Trivandrum centre and ISO Certified for quality and safety, YCDC meets rigorous national healthcare and international standards, giving you peace of mind along with effective, personalized solutions.&rdquo;
                 </p>
               </div>
 
@@ -751,7 +734,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <Check size={16} color="#536B4C" /> Over 50 Years of Clinical Expertise
                   </strong>
                   <span className="heritage-badge-subtitle">
-                    ISO 9001:2015 Certified &bull; National Dermatological Standards
+                    NABH Accredited (Trivandrum) &bull; ISO 9001:2015 Certified &bull; National Healthcare Standards
                   </span>
                 </div>
               </div>
@@ -812,7 +795,6 @@ export const HomePage: React.FC<HomePageProps> = ({
                     <p className="care-service-item-desc">{srv.desc}</p>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className="care-service-badge">{srv.duration}</span>
                     <ChevronRight size={16} style={{ color: '#889988', opacity: 0.8 }} />
                   </div>
                 </div>
@@ -1334,8 +1316,12 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="facility-card reveal reveal-left">
               <div>
                 <div className="facility-card-header">
-                  <h3 className="facility-card-name">Pattom, Trivandrum</h3>
-                  <span className="facility-operating-pill">OPERATING CENTRE</span>
+                  <div>
+                    <h3 className="facility-card-name">Pattom, Trivandrum</h3>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#536B4C', letterSpacing: '0.05em', marginTop: '3px' }}>
+                      NABH ACCREDITED &bull; ISO CERTIFIED
+                    </div>
+                  </div>
                 </div>
 
                 <div className="facility-meta-group">
@@ -1387,7 +1373,6 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div>
                 <div className="facility-card-header">
                   <h3 className="facility-card-name">Whitefield, Bangalore</h3>
-                  <span className="facility-operating-pill">OPERATING CENTRE</span>
                 </div>
 
                 <div className="facility-meta-group">

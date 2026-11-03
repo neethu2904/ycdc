@@ -116,7 +116,7 @@ export default function PrivacyPolicy() {
                   Patient Data Commitment
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: '#657766', marginTop: '4px', margin: 0 }}>
-                  Last Updated: 2026 | ISO 9001:2015 &amp; Medical Practitioner Ethics Compliant
+                  Last Updated: 2026 | NABH (Trivandrum) &bull; ISO 9001:2015 &amp; Medical Practitioner Ethics Compliant
                 </p>
               </div>
             </div>

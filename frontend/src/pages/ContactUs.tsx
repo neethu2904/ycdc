@@ -257,6 +257,9 @@ export default function ContactUs() {
                 <h4 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(1.2rem, 2.5vw, 1.45rem)', color: '#536B4C', fontWeight: 600, margin: 0, lineHeight: 1.25 }}>
                   Pattom, Trivandrum
                 </h4>
+                <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#536B4C', letterSpacing: '0.05em', marginTop: '4px' }}>
+                  NABH ACCREDITED &bull; ISO 9001:2015 CERTIFIED
+                </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '0.9rem' }}>
                 <div style={{ display: 'flex', gap: '12px' }}>

@@ -435,55 +435,9 @@ export default function BeforeAfter({ onBookTreatment }: BeforeAfterProps) {
               }}>
                 {currentCase.title}
               </h2>
-              <p style={{ color: '#4A584C', lineHeight: '1.68', marginBottom: '24px', fontSize: '0.96rem' }}>
+              <p style={{ color: '#4A584C', lineHeight: '1.68', marginBottom: '32px', fontSize: '0.96rem' }}>
                 {currentCase.description}
               </p>
-
-              {/* Technical Specifications */}
-              <div style={{
-                backgroundColor: '#FFFFFF',
-                padding: '24px',
-                borderRadius: '16px',
-                border: '1px solid rgba(215, 203, 190, 0.65)',
-                boxShadow: '0 4px 16px rgba(83, 107, 76, 0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                marginBottom: '28px'
-              }}>
-                <div>
-                  <strong style={{ display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', color: '#536B4C', letterSpacing: '0.08em', fontWeight: 700 }}>
-                    Primary Concern
-                  </strong>
-                  <span style={{ fontSize: '0.96rem', color: '#1E271F', fontWeight: 600 }}>
-                    {currentCase.details.concern}
-                  </span>
-                </div>
-                <div>
-                  <strong style={{ display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', color: '#536B4C', letterSpacing: '0.08em', fontWeight: 700 }}>
-                    Treating Physician
-                  </strong>
-                  <span style={{ fontSize: '0.96rem', color: '#1E271F', fontWeight: 600 }}>
-                    {currentCase.details.doctor}
-                  </span>
-                </div>
-                <div>
-                  <strong style={{ display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', color: '#536B4C', letterSpacing: '0.08em', fontWeight: 700 }}>
-                    Technology / Protocol Applied
-                  </strong>
-                  <span style={{ fontSize: '0.96rem', color: '#1E271F', fontWeight: 600 }}>
-                    {currentCase.details.technology}
-                  </span>
-                </div>
-                <div>
-                  <strong style={{ display: 'block', fontSize: '0.72rem', textTransform: 'uppercase', color: '#536B4C', letterSpacing: '0.08em', fontWeight: 700 }}>
-                    Total Treatment Duration
-                  </strong>
-                  <span style={{ fontSize: '0.96rem', color: '#1E271F', fontWeight: 600 }}>
-                    {currentCase.details.sessions}
-                  </span>
-                </div>
-              </div>
 
               {/* Book Consultation */}
               <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>

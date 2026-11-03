@@ -802,11 +802,11 @@ function AppContent() {
                 <div>
                   <h5 className="footer-col-title">YCDC India</h5>
                   <p className="footer-col-desc">
-                    Yogiraj Centre for Dermatology &amp; Cosmetology is an ISO 9001:2015 certified clinical and cosmetic dermatology institution providing evidence-based skin, hair, and laser therapies under the clinical leadership of Dr. K. Yogiraj.
+                    Yogiraj Centre for Dermatology &amp; Cosmetology is an NABH accredited (Trivandrum) &amp; ISO 9001:2015 certified clinical and cosmetic dermatology institution providing evidence-based skin, hair, and laser therapies under the clinical leadership of Dr. K. Yogiraj.
                   </p>
                   <div className="footer-iso-badge">
                     <ShieldCheck size={14} style={{ color: '#B49A68' }} />
-                    <span>ISO 9001:2015 Accredited</span>
+                    <span>NABH (Trivandrum) &bull; ISO 9001:2015</span>
                   </div>
                 </div>
 
@@ -851,7 +851,7 @@ function AppContent() {
                   <h5 className="footer-col-title">Standards &amp; Privacy</h5>
                   <div className="footer-col-list">
                     <span className="footer-standard-item">
-                      <ShieldCheck size={14} style={{ color: '#E7C2C2' }} /> ISO 9001:2015 Certified Quality
+                      <ShieldCheck size={14} style={{ color: '#E7C2C2' }} /> NABH (Trivandrum) &bull; ISO 9001:2015
                     </span>
                     <span className="footer-standard-item">
                       <Lock size={14} style={{ color: '#E7C2C2' }} /> Clinical Data Privacy Compliant

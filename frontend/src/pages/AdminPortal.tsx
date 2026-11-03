@@ -1769,8 +1769,8 @@ export default function AdminPortal() {
                             </div>
                           </div>
                           <div>
-                            <label className="form-label">Procedure Duration</label>
-                            <input type="text" name="duration" defaultValue={currentTreatment?.duration || ''} required className="form-input" placeholder="e.g. 45-60 mins" />
+                            <label className="form-label">Procedure Duration (Optional / Personalized)</label>
+                            <input type="text" name="duration" defaultValue={currentTreatment?.duration || ''} className="form-input" placeholder="e.g. Personalized / Varies by patient" />
                           </div>
                           <div>
                             <label className="form-label">Estimate Price Range</label>
@@ -1835,7 +1835,7 @@ export default function AdminPortal() {
                                   {tr.category}
                                   <div style={{ fontSize: '0.75rem', color: 'var(--muted-charcoal)' }}>{tr.category_name}</div>
                                 </td>
-                                <td style={{ padding: '12px' }}>{tr.duration}</td>
+                                <td style={{ padding: '12px' }}>{tr.duration || 'Personalized'}</td>
                                 <td style={{ padding: '12px' }}>{tr.price_range}</td>
                                 <td style={{ padding: '12px' }}>
                                   <span style={{ fontSize: '0.75rem', padding: '3px 8px', borderRadius: '30px', backgroundColor: tr.active ? '#dcfce7' : '#fee2e2', color: tr.active ? '#15803d' : '#b91c1c', fontWeight: 'bold' }}>

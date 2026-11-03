@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { 
-  Clock, 
   ChevronDown, 
   ChevronUp, 
   Search, 
@@ -545,13 +544,10 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                   {/* Card Content Details */}
                   <div style={{ padding: 'clamp(14px, 4vw, 20px)', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     <div>
-                      {/* Category and duration */}
+                      {/* Category */}
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '4px' }}>
                         <span style={{ fontSize: '0.72rem', fontWeight: '700', color: '#536B4C', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                           {t.category_name}
-                        </span>
-                        <span style={{ fontSize: '0.75rem', color: '#B49A68', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
-                          <Clock size={12} /> {t.duration}
                         </span>
                       </div>
 
@@ -771,20 +767,6 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                     {activeModalTreatment.category_name}
                   </span>
                 </div>
-
-                <span style={{
-                  fontSize: '0.75rem',
-                  fontWeight: '600',
-                  padding: '5px 12px',
-                  borderRadius: '20px',
-                  backgroundColor: 'rgba(0, 0, 0, 0.55)',
-                  color: '#F3E5AB',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  <Clock size={13} /> {activeModalTreatment.duration}
-                </span>
               </div>
             </div>
 
@@ -883,7 +865,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#565F55' }}>
                   <ShieldCheck size={16} style={{ color: '#536B4C', flexShrink: 0 }} />
-                  <span>ISO 9001:2015 Clinical Safety</span>
+                  <span>NABH (TVM) &bull; ISO 9001:2015</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', color: '#565F55' }}>
                   <Award size={16} style={{ color: '#536B4C', flexShrink: 0 }} />

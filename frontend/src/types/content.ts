@@ -55,7 +55,7 @@ export interface Treatment {
   category_name: string;
   name: string;
   description: string;
-  duration: string;
+  duration?: string;
   price_range: string;
   science: string;
   treats: string;

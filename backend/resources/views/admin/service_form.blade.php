@@ -56,8 +56,8 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="duration">Session Duration</label>
-                <input type="text" name="duration" id="duration" class="form-control" placeholder="e.g. 45 mins" value="{{ old('duration', $service ? $service->duration : '') }}" required>
+                <label class="form-label" for="duration">Session Duration (Optional)</label>
+                <input type="text" name="duration" id="duration" class="form-control" placeholder="e.g. Personalized / Varies" value="{{ old('duration', $service ? $service->duration : '') }}">
                 @error('duration')
                     <span style="color: red; font-size: 0.8rem; margin-top: 4px; display: block;">{{ $message }}</span>
                 @enderror

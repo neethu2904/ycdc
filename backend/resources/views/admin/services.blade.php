@@ -36,7 +36,7 @@
                                     <div style="font-weight: 600; color: var(--plum-900);">{{ $service->name }}</div>
                                     <div style="font-size: 0.75rem; color: var(--muted-charcoal);">Key: {{ $service->id }}</div>
                                 </td>
-                                <td>{{ $service->duration }}</td>
+                                <td>{{ $service->duration ?: '—' }}</td>
                                 <td style="font-weight: bold; color: var(--gold-600);">{{ $service->price_range }}</td>
                                 <td style="max-width: 250px; font-size: 0.85rem; color: var(--muted-charcoal);">
                                     {{ $service->treats }}

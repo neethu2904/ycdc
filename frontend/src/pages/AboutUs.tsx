@@ -55,7 +55,7 @@ export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
               Under his visionary guidance, we were among the first in South India to introduce medical hair restoration (FUE hair transplants) and FDA-approved laser skin treatments. We bridge the gap between pure clinical pathology and high-end aesthetic medicine.
             </p>
             <p style={{ color: 'var(--muted-charcoal)', lineHeight: '1.7' }}>
-              Today, YCDC operates modern ISO-certified clinics in Pattom (Trivandrum) and Whitefield (Bengaluru), combining advanced diagnostic tools with personalized, evidence-based therapy.
+              Today, YCDC operates modern clinics in Pattom (Trivandrum) — featuring prestigious NABH accreditation alongside ISO 9001:2015 certification — and Whitefield (Bengaluru), combining advanced diagnostic tools with personalized, evidence-based therapy.
             </p>
           </div>
           <div className="reveal reveal-right" style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', height: '400px', boxShadow: '0 12px 32px rgba(0,0,0,0.1)' }}>
@@ -98,9 +98,9 @@ export default function AboutUs({ onNavigateToContact }: AboutUsProps) {
               <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'rgba(83, 107, 76, 0.1)', color: '#536B4C', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <ShieldCheck size={24} />
               </div>
-              <h5 style={{ fontWeight: 'bold', color: '#536B4C', fontSize: '1.2rem', marginBottom: '10px' }}>ISO Certified Protocols</h5>
+              <h5 style={{ fontWeight: 'bold', color: '#536B4C', fontSize: '1.2rem', marginBottom: '10px' }}>NABH &amp; ISO Certified Protocols</h5>
               <p style={{ fontSize: '0.9rem', color: 'var(--muted-charcoal)', lineHeight: '1.6' }}>
-                Our clinics maintain strict ISO 9001:2015 certified standards for sanitization, laser safety, and records management to ensure patient safety first.
+                Our Trivandrum centre holds prestigious NABH Accreditation alongside ISO 9001:2015 certification across our clinics for sanitization, laser safety, and clinical governance to ensure patient safety first.
               </p>
             </div>
 
