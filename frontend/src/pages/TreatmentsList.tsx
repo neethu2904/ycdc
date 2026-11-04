@@ -567,7 +567,8 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          onBookTreatment(t.category, t.id);
+                          const branchPrefill = selectedBranch !== 'all' ? selectedBranch : (t.branch === 'bangalore' ? 'bangalore' : 'trivandrum');
+                          onBookTreatment(t.category, t.id, branchPrefill);
                         }}
                         style={{
                           padding: '6px 14px',
@@ -934,8 +935,9 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                   onClick={() => {
                     const cat = activeModalTreatment.category;
                     const sId = activeModalTreatment.id;
+                    const branchPrefill = selectedBranch !== 'all' ? selectedBranch : (activeModalTreatment.branch === 'bangalore' ? 'bangalore' : 'trivandrum');
                     setActiveModalTreatment(null);
-                    onBookTreatment(cat, sId);
+                    onBookTreatment(cat, sId, branchPrefill);
                   }}
                   style={{
                     padding: '10px 24px',

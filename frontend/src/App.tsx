@@ -175,8 +175,8 @@ function AppContent() {
     scrollToTop();
   };
 
-  const handleBookTreatment = (category: string, serviceId: string) => {
-    dispatch(openBookingModal({ category, service: serviceId }));
+  const handleBookTreatment = (category: string, serviceId: string, branch?: string) => {
+    dispatch(openBookingModal({ category, service: serviceId, branch }));
   };
 
   const handleWhatsAppConnect = (branch: string) => {
@@ -997,6 +997,7 @@ function AppContent() {
           <div style={{ width: '100%', maxWidth: '600px', maxHeight: '92vh', overflowY: 'auto', borderRadius: '16px' }}>
             <BookingWidget
               onClose={() => dispatch(closeBookingModal())}
+              initialBranch={bookingPrefills.branch}
               initialCategory={bookingPrefills.category}
               initialService={bookingPrefills.service}
             />

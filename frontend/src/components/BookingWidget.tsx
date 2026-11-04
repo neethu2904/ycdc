@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { 
   MapPin, 
   Calendar as CalendarIcon, 
@@ -24,50 +24,64 @@ import {
   setBookingSuccess
 } from '../store/bookingSlice';
 import type { BookingWidgetProps } from '../types';
+import { MOCK_SERVICES } from '../data/treatmentsData';
 
 const BRANCHES = [
   { id: 'trivandrum', name: 'Pattom, Trivandrum', address: 'Marappalam Road, Opp. IndusInd Bank, Pattom' },
   { id: 'bangalore', name: 'Whitefield, Bangalore', address: '4th Floor, Premium Square, Whitefield Main Road' }
 ];
 
-const CATEGORIES = [
-  { 
-    id: 'skin', 
-    name: 'Skin Care', 
-    services: [
-      { id: 'acne-therapy', name: 'Advanced Anti-Acne Therapy', price: '₹1,800 - ₹3,500' },
-      { id: 'peels', name: 'Premium Chemical Peels', price: '₹2,500 - ₹5,000' },
-      { id: 'microderm', name: 'Microdermabrasion & Polish', price: '₹3,000' }
-    ] 
-  },
-  { 
-    id: 'hair', 
-    name: 'Hair & Scalp', 
-    services: [
-      { id: 'prp', name: 'PRP Hair Growth Therapy', price: '₹4,500/session' },
-      { id: 'transplant', name: 'Follicular Hair Transplant Consultation', price: '₹500 (Consultation)' },
-      { id: 'scalp-regen', name: 'Scalp Rejuvenation Treatment', price: '₹3,200' }
-    ] 
-  },
-  { 
-    id: 'laser', 
-    name: 'Laser & RF', 
-    services: [
-      { id: 'secret-rf', name: 'Secret RF Microneedling (Scar/Aging)', price: '₹8,000 - ₹12,000' },
-      { id: 'hair-reduction', name: 'Laser Hair Reduction (Full Face)', price: '₹4,000' },
-      { id: 'q-switch', name: 'Q-Switched Laser (Pigment/Tattoo)', price: '₹5,000 - ₹9,000' }
-    ] 
-  },
-  { 
-    id: 'aesthetics', 
-    name: 'Cosmetic Aesthetics', 
-    services: [
-      { id: 'botox', name: 'Anti-Wrinkle Botox & Dermal Fillers', price: 'Price on Consultation' },
-      { id: 'hydrafacial', name: 'Luxurious Hydrafacial Medi-Facial', price: '₹5,500' },
-      { id: 'carbon-peel', name: 'Hollywood Carbon Laser Glow Peel', price: '₹4,500' }
-    ] 
-  }
+const CATEGORY_DEFINITIONS = [
+  { id: 'skin', name: 'Skin Care' },
+  { id: 'hair', name: 'Hair & Scalp' },
+  { id: 'laser', name: 'Laser & RF' },
+  { id: 'aesthetics', name: 'Cosmetic Aesthetics' }
 ];
+
+const LEGACY_SERVICES: Record<string, Array<{ id: string; name: string; price: string }>> = {
+  skin: [
+    { id: 'acne-therapy', name: 'Advanced Anti-Acne Therapy', price: '₹1,800 - ₹3,500' },
+    { id: 'peels', name: 'Premium Chemical Peels', price: '₹2,500 - ₹5,000' },
+    { id: 'microderm', name: 'Microdermabrasion & Polish', price: '₹3,000' }
+  ],
+  hair: [
+    { id: 'prp', name: 'PRP Hair Growth Therapy', price: '₹4,500/session' },
+    { id: 'transplant', name: 'Follicular Hair Transplant Consultation', price: '₹500 (Consultation)' },
+    { id: 'scalp-regen', name: 'Scalp Rejuvenation Treatment', price: '₹3,200' }
+  ],
+  laser: [
+    { id: 'secret-rf', name: 'Secret RF Microneedling (Scar/Aging)', price: '₹8,000 - ₹12,000' },
+    { id: 'hair-reduction', name: 'Laser Hair Reduction (Full Face)', price: '₹4,000' },
+    { id: 'q-switch', name: 'Q-Switched Laser (Pigment/Tattoo)', price: '₹5,000 - ₹9,000' }
+  ],
+  aesthetics: [
+    { id: 'botox', name: 'Anti-Wrinkle Botox & Dermal Fillers', price: 'Price on Consultation' },
+    { id: 'hydrafacial', name: 'Luxurious Hydrafacial Medi-Facial', price: '₹5,500' },
+    { id: 'carbon-peel', name: 'Hollywood Carbon Laser Glow Peel', price: '₹4,500' }
+  ]
+};
+
+const CATEGORIES = CATEGORY_DEFINITIONS.map((cat) => {
+  const catalogServices = MOCK_SERVICES
+    .filter((t) => t.category === cat.id && t.active !== false)
+    .map((t) => ({
+      id: t.id,
+      name: t.name,
+      price: t.price_range || 'Price on Consultation',
+      branch: t.branch
+    }));
+
+  const existingIds = new Set(catalogServices.map((s) => s.id));
+  const fallbackLegacy = (LEGACY_SERVICES[cat.id] || []).filter((s) => !existingIds.has(s.id));
+
+  return {
+    id: cat.id,
+    name: cat.name,
+    services: [...catalogServices, ...fallbackLegacy]
+  };
+});
+
+const ALL_SERVICES = CATEGORIES.flatMap((c) => c.services);
 
 const DOCTORS = [
   { id: 'yogiraj', name: 'Dr. K. Yogiraj', role: 'Chairman & Director', branches: ['bangalore', 'trivandrum'], specialty: ['skin', 'hair', 'laser', 'aesthetics'] },
@@ -100,17 +114,46 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
   } = useAppSelector((state) => state.booking);
   const timeSlot = 'Flexible';
 
-  useEffect(() => {
-    const categoryValue = initialCategory || 'skin';
-    const defaultService = CATEGORIES.find(c => c.id === categoryValue)?.services[0]?.id || 'acne-therapy';
+  const selectedServiceRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    // 1. Resolve Category: prioritize the category that owns initialService
+    let resolvedCategory = initialCategory;
+    if (initialService) {
+      const foundCategory = CATEGORIES.find(c => c.services.some(s => s.id === initialService));
+      if (foundCategory) {
+        resolvedCategory = foundCategory.id;
+      }
+    }
+    resolvedCategory = resolvedCategory || 'skin';
+
+    // 2. Resolve Service: ensure initialService exists in that category, or default to first
+    const catServices = CATEGORIES.find(c => c.id === resolvedCategory)?.services || [];
+    const resolvedService = (initialService && catServices.some(s => s.id === initialService))
+      ? initialService
+      : (catServices[0]?.id || 'dust-allergy-test');
+
+    // 3. Resolve Branch & Doctor
+    const branchValue = initialBranch || 'trivandrum';
+    const docs = DOCTORS.filter(d => d.branches.includes(branchValue) && d.specialty.includes(resolvedCategory!));
+    const doctorValue = docs.length > 0 ? docs[0].id : 'yogiraj';
+
+    // 4. If a specific treatment was chosen, start at Step 2 so the user immediately sees it selected!
     dispatch(resetBookingForm({
-      step: 1,
-      branch: initialBranch || 'trivandrum',
-      category: categoryValue,
-      service: initialService || defaultService
+      step: initialService ? 2 : 1,
+      branch: branchValue,
+      category: resolvedCategory,
+      service: resolvedService,
+      doctor: doctorValue
     }));
   }, [dispatch, initialBranch, initialCategory, initialService]);
+
+  // Auto-scroll selected treatment into view when Step 2 renders
+  useEffect(() => {
+    if (step === 2 && selectedServiceRef.current) {
+      selectedServiceRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [step, category, service]);
 
   // Filtered lists
   const availableServices = CATEGORIES.find(c => c.id === category)?.services || [];
@@ -122,17 +165,10 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
   const handleCategoryChange = (catId: string) => {
     const services = CATEGORIES.find(c => c.id === catId)?.services || [];
     const nextService = services.length > 0 ? services[0].id : service;
-    if (services.length > 0) {
-      dispatch(setBookingSelection({ service: nextService }));
-    }
     // Update doctor filter based on branch and new category
     const docs = DOCTORS.filter(d => d.branches.includes(branch) && d.specialty.includes(catId));
     const nextDoctor = docs.length > 0 ? docs[0].id : 'yogiraj';
-    if (docs.length > 0) {
-      dispatch(setBookingSelection({ category: catId, service: nextService, doctor: nextDoctor }));
-    } else {
-      dispatch(setBookingSelection({ category: catId, service: nextService, doctor: 'yogiraj' }));
-    }
+    dispatch(setBookingSelection({ category: catId, service: nextService, doctor: nextDoctor }));
   };
 
   const handleNext = () => {
@@ -170,7 +206,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
 
     dispatch(setBookingSubmitting(true));
     const branchName = BRANCHES.find(b => b.id === branch)?.name || branch;
-    const servName = availableServices.find(s => s.id === service)?.name || service;
+    const servName = ALL_SERVICES.find(s => s.id === service)?.name || availableServices.find(s => s.id === service)?.name || service;
     const docName = DOCTORS.find(d => d.id === doctor)?.name || doctor;
 
     fetch(`${API_BASE_URL}/leads`, {
@@ -214,7 +250,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
 
   if (isSuccess) {
     const branchDetail = BRANCHES.find(b => b.id === branch);
-    const selectedService = availableServices.find(s => s.id === service);
+    const selectedService = ALL_SERVICES.find(s => s.id === service) || availableServices.find(s => s.id === service);
     const selectedDoctor = DOCTORS.find(d => d.id === doctor);
 
     return (
@@ -444,30 +480,44 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
 
             <div className="form-group">
               <label className="form-label">Available Treatments</label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '240px', overflowY: 'auto', paddingRight: '4px' }}>
-                {availableServices.map((s) => (
-                  <div
-                    key={s.id}
-                    onClick={() => dispatch(setBookingSelection({ service: s.id }))}
-                    style={{
-                      padding: '14px 20px',
-                      borderRadius: '10px',
-                      border: service === s.id ? '2px solid #536B4C' : '1.5px solid #E2DCD2',
-                      backgroundColor: service === s.id ? 'rgba(83, 107, 76, 0.06)' : 'white',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Sparkles size={16} style={{ color: service === s.id ? '#536B4C' : '#B49A68' }} />
-                      <span style={{ fontSize: '0.95rem', fontWeight: service === s.id ? '700' : '500', color: service === s.id ? '#536B4C' : '#242923' }}>{s.name}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '280px', overflowY: 'auto', paddingRight: '4px' }}>
+                {availableServices.map((s) => {
+                  const isSelected = service === s.id;
+                  return (
+                    <div
+                      key={s.id}
+                      ref={isSelected ? selectedServiceRef : null}
+                      onClick={() => dispatch(setBookingSelection({ service: s.id }))}
+                      style={{
+                        padding: '14px 18px',
+                        borderRadius: '10px',
+                        border: isSelected ? '2px solid #536B4C' : '1.5px solid #E2DCD2',
+                        backgroundColor: isSelected ? 'rgba(83, 107, 76, 0.08)' : 'white',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        boxShadow: isSelected ? '0 2px 8px rgba(83, 107, 76, 0.12)' : 'none'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left', flex: 1 }}>
+                        <Sparkles size={16} style={{ color: isSelected ? '#536B4C' : '#B49A68', flexShrink: 0 }} />
+                        <div>
+                          <span style={{ fontSize: '0.92rem', fontWeight: isSelected ? '700' : '500', color: isSelected ? '#536B4C' : '#242923', display: 'block', lineHeight: 1.35 }}>
+                            {s.name}
+                          </span>
+                          {s.price && (
+                            <span style={{ fontSize: '0.78rem', color: isSelected ? '#536B4C' : '#889988', fontWeight: '600' }}>
+                              {s.price}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {isSelected && <Check size={18} style={{ color: '#536B4C', flexShrink: 0, marginLeft: '8px' }} />}
                     </div>
-                    {service === s.id && <Check size={18} style={{ color: '#536B4C' }} />}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

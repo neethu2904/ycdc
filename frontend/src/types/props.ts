@@ -22,9 +22,9 @@ export interface OurTeamProps {
 }
 
 export interface TreatmentsListProps {
-  onBookTreatment: (category: string, serviceId: string) => void;
+  onBookTreatment: (category: string, serviceId: string, branch?: string) => void;
 }
 
 export interface BeforeAfterProps {
-  onBookTreatment: (category: string, serviceId: string) => void;
+  onBookTreatment: (category: string, serviceId: string, branch?: string) => void;
 }
