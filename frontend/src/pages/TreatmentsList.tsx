@@ -29,7 +29,7 @@ const FAQS = [
   },
   {
     q: "Which procedures are currently available at Trivandrum Branch?",
-    a: "All 37 procedures listed above—including advanced Allergy Panels (Dust & Food), Micro-surgeries, Revlite/Soprano/ResurFX/Secret RF Lasers, Botox, Fillers, Hydrafacial, GFC, PRP, and Hair Transplants—are fully operational at our Pattom, Trivandrum center."
+    a: "All clinical and aesthetic procedures listed above—including advanced MedLite & Erbium Lasers, Laser Hair Reduction (LHR), Specialized Peels, Dermato-Surgeries, Allergy Diagnostic Panels, Botox, Fillers, Hydrafacial, GFC, PRP, and Hair Transplants—are fully operational at our Pattom, Trivandrum center."
   },
   {
     q: "When will the Bangalore Branch procedure list be updated?",
