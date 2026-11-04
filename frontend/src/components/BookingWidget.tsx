@@ -84,13 +84,24 @@ const CATEGORIES = CATEGORY_DEFINITIONS.map((cat) => {
 const ALL_SERVICES = CATEGORIES.flatMap((c) => c.services);
 
 const DOCTORS = [
-  { id: 'yogiraj', name: 'Dr. K. Yogiraj', role: 'Chairman & Director', branches: ['bangalore', 'trivandrum'], specialty: ['skin', 'hair', 'laser', 'aesthetics'] },
-  { id: 'niranjana', name: 'Dr. Niranjana Raj', role: 'Chief Dermatologist', branches: ['bangalore'], specialty: ['skin', 'laser', 'aesthetics'] },
-  { id: 'yasmin', name: 'Dr. Yasmin Abdul Rahman', role: 'Senior Cosmetic Dermatologist', branches: ['bangalore'], specialty: ['skin', 'aesthetics'] },
-  { id: 'vennela', name: 'Dr. Vennela Reddy', role: 'Hair Transplant Specialist', branches: ['bangalore'], specialty: ['hair'] },
-  { id: 'maya', name: 'Dr. Maya Vincent', role: 'Senior Consultant Dermatologist', branches: ['trivandrum'], specialty: ['skin', 'laser'] },
-  { id: 'devi', name: 'Dr. Devi Menon', role: 'Dermatologist & Trichologist', branches: ['trivandrum'], specialty: ['skin', 'hair'] },
-  { id: 'sunil', name: 'Dr. Sunil Menon', role: 'Aesthetic Surgeon', branches: ['trivandrum'], specialty: ['aesthetics', 'laser'] }
+  // Trivandrum & Bangalore
+  { id: 'yogiraj', name: 'Dr. K. Yogiraj', role: 'Chairman & Director', branches: ['bangalore', 'trivandrum'] },
+
+  // Bangalore Clinic Specialists
+  { id: 'niranjana', name: 'Dr. Niranjana Raj', role: 'Chief Dermatologist', branches: ['bangalore'] },
+  { id: 'yasmin', name: 'Dr. Yasmin Abdul Rahman', role: 'Senior Cosmetic Dermatologist', branches: ['bangalore'] },
+  { id: 'vignessh', name: 'Dr. Vignessh Raj', role: 'Aesthetic Dermatologist', branches: ['bangalore'] },
+  { id: 'vennela', name: 'Dr. Vennela Reddy', role: 'Hair Transplant Specialist', branches: ['bangalore'] },
+
+  // Trivandrum Clinic Specialists
+  { id: 'maya', name: 'Dr. Maya Vincent', role: 'Senior Consultant Dermatologist', branches: ['trivandrum'] },
+  { id: 'sunil', name: 'Dr. Sunil Menon', role: 'Consultant Dermatologist', branches: ['trivandrum'] },
+  { id: 'bismi', name: 'Dr. Bismi Sherief', role: 'Consultant Dermatologist', branches: ['trivandrum'] },
+  { id: 'deepthi', name: 'Dr. Deepthi Benny', role: 'Consultant Dermatologist', branches: ['trivandrum'] },
+  { id: 'ryan', name: 'Dr. Ryan Raju', role: 'Aesthetic Specialist', branches: ['trivandrum'] },
+  { id: 'devi', name: 'Dr. Devi Menon', role: 'Dermatologist & Trichologist', branches: ['trivandrum'] },
+  { id: 'shruthi', name: 'Dr. Shruthi S Kumar', role: 'Consultant Dermatologist', branches: ['trivandrum'] },
+  { id: 'amy', name: 'Dr. Amy Mary Sebastian', role: 'Clinical Consultant', branches: ['trivandrum'] }
 ];
 
 
@@ -133,10 +144,12 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
       ? initialService
       : (catServices[0]?.id || 'dust-allergy-test');
 
-    // 3. Resolve Branch & Doctor
+    // 3. Resolve Branch & Doctor (Doctors are filtered only by clinic branch, no procedure mapping)
     const branchValue = initialBranch || 'trivandrum';
-    const docs = DOCTORS.filter(d => d.branches.includes(branchValue) && d.specialty.includes(resolvedCategory!));
-    const doctorValue = docs.length > 0 ? docs[0].id : 'yogiraj';
+    const branchDocs = DOCTORS.filter(d => d.branches.includes(branchValue));
+    const doctorValue = branchDocs.some(d => d.id === doctor)
+      ? doctor
+      : (branchDocs.length > 0 ? branchDocs[0].id : 'yogiraj');
 
     // 4. If a specific treatment was chosen, start at Step 2 so the user immediately sees it selected!
     dispatch(resetBookingForm({
@@ -155,20 +168,15 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
     }
   }, [step, category, service]);
 
-  // Filtered lists
+  // Filtered lists (Doctors available at chosen clinic location without procedure restriction)
   const availableServices = CATEGORIES.find(c => c.id === category)?.services || [];
-  const availableDoctors = DOCTORS.filter(d => 
-    d.branches.includes(branch) && d.specialty.includes(category)
-  );
+  const availableDoctors = DOCTORS.filter(d => d.branches.includes(branch));
 
-  // Auto select service when category changes
+  // Select first service in new category without resetting doctor
   const handleCategoryChange = (catId: string) => {
     const services = CATEGORIES.find(c => c.id === catId)?.services || [];
     const nextService = services.length > 0 ? services[0].id : service;
-    // Update doctor filter based on branch and new category
-    const docs = DOCTORS.filter(d => d.branches.includes(branch) && d.specialty.includes(catId));
-    const nextDoctor = docs.length > 0 ? docs[0].id : 'yogiraj';
-    dispatch(setBookingSelection({ category: catId, service: nextService, doctor: nextDoctor }));
+    dispatch(setBookingSelection({ category: catId, service: nextService }));
   };
 
   const handleNext = () => {
@@ -404,7 +412,11 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
               {BRANCHES.map((b) => (
                 <div 
                   key={b.id}
-                  onClick={() => dispatch(setBookingSelection({ branch: b.id }))}
+                  onClick={() => {
+                    const branchDocs = DOCTORS.filter(d => d.branches.includes(b.id));
+                    const nextDoctor = branchDocs.some(d => d.id === doctor) ? doctor : (branchDocs[0]?.id || 'yogiraj');
+                    dispatch(setBookingSelection({ branch: b.id, doctor: nextDoctor }));
+                  }}
                   style={{
                     padding: '20px',
                     borderRadius: '12px',
@@ -449,7 +461,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
         {step === 2 && (
           <div className="animate-fade-in">
             <h5 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: '#536B4C', marginBottom: '16px', fontWeight: 600 }}>
-              Step 2: Select Specialty & Treatment
+              Step 2: Select Treatment
             </h5>
             <div className="form-group">
               <label className="form-label">Category</label>
@@ -531,7 +543,7 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
             
             <div className="form-group">
               <label className="form-label">Specialist Doctor</label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '260px', overflowY: 'auto', paddingRight: '4px', marginBottom: '20px' }}>
                 {availableDoctors.length > 0 ? (
                   availableDoctors.map((d) => (
                     <div
