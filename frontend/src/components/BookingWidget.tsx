@@ -88,10 +88,10 @@ const DOCTORS = [
   { id: 'yogiraj', name: 'Dr. K. Yogiraj', role: 'Chairman & Director', branches: ['bangalore', 'trivandrum'] },
 
   // Bangalore Clinic Specialists
-  { id: 'niranjana', name: 'Dr. Niranjana Raj', role: 'Chief Dermatologist', branches: ['bangalore'] },
-  { id: 'yasmin', name: 'Dr. Yasmin Abdul Rahman', role: 'Senior Cosmetic Dermatologist', branches: ['bangalore'] },
-  { id: 'vignessh', name: 'Dr. Vignessh Raj', role: 'Aesthetic Dermatologist', branches: ['bangalore'] },
-  { id: 'vennela', name: 'Dr. Vennela Reddy', role: 'Hair Transplant Specialist', branches: ['bangalore'] },
+  { id: 'niranjana', name: 'Dr. Niranjana Raj', role: 'Dermatologist & Hair Transplant Surgeon', branches: ['bangalore'] },
+  { id: 'yasmin', name: 'Dr. Yasmin Abdul Rahman', role: 'Dermatologist & Hair Transplant Surgeon', branches: ['bangalore'] },
+  { id: 'vignessh', name: 'Dr. Vignessh Raj', role: 'Dermatologist & Hair Transplant Surgeon (Visiting Consultant)', branches: ['bangalore'] },
+  { id: 'vennela', name: 'Dr. Vennela Reddy', role: 'Dermatologist & Hair Transplant Surgeon', branches: ['bangalore'] },
 
   // Trivandrum Clinic Specialists
   { id: 'maya', name: 'Dr. Maya Vincent', role: 'Senior Consultant Dermatologist', branches: ['trivandrum'] },

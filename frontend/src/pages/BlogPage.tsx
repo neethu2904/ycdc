@@ -42,7 +42,7 @@ const MOCK_BLOGS: BlogPost[] = [
     category: 'hair',
     category_label: 'Hair Care',
     title: 'Restoring Hair Health: Reasons and Modern Treatments for Hair Loss',
-    author: 'Dr. Vennela R (Hair Specialist)',
+    author: 'Dr. Vennela Reddy (Hair Specialist)',
     date: 'June 10, 2025',
     read_time: '5 min read',
     excerpt: 'Experiencing hair thinning? Explore the biological reasons behind hair fall and clinical hair loss solutions including PRP and FUE transplants.',
