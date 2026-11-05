@@ -154,6 +154,16 @@ class ClinicSeeder extends Seeder
                 'active' => true,
                 'image_path' => '/doctor_amy.png',
             ],
+            [
+                'name' => 'Dr. Hridya K',
+                'qualification' => 'MBBS, MD (Dermatology, Venereology & Leprosy)',
+                'designation' => 'Consultant Dermatologist',
+                'bio' => 'Specialist in clinical dermatology, pediatric skin conditions, acne therapies, and aesthetic dermatology.',
+                'branch' => 'trivandrum',
+                'instagram_url' => null,
+                'active' => true,
+                'image_path' => '/doctor_hridya.png',
+            ],
         ];
 
         foreach ($doctors as $doc) {

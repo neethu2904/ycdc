@@ -101,7 +101,8 @@ const DOCTORS = [
   { id: 'ryan', name: 'Dr. Ryan Raju', role: 'Aesthetic Specialist', branches: ['trivandrum'] },
   { id: 'devi', name: 'Dr. Devi Menon', role: 'Dermatologist & Trichologist', branches: ['trivandrum'] },
   { id: 'shruthi', name: 'Dr. Shruthi S Kumar', role: 'Consultant Dermatologist', branches: ['trivandrum'] },
-  { id: 'amy', name: 'Dr. Amy Mary Sebastian', role: 'Clinical Consultant', branches: ['trivandrum'] }
+  { id: 'amy', name: 'Dr. Amy Mary Sebastian', role: 'Clinical Consultant', branches: ['trivandrum'] },
+  { id: 'hridya', name: 'Dr. Hridya K', role: 'Consultant Dermatologist', branches: ['trivandrum'] }
 ];
 
 

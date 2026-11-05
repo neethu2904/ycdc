@@ -146,6 +146,17 @@ const MOCK_DOCTORS: Doctor[] = [
     instagram_url: undefined,
     active: true,
     image_path: '/doctor_amy.png',
+  },
+  {
+    id: 14,
+    name: 'Dr. Hridya K',
+    qualification: 'MBBS, MD (Dermatology, Venereology & Leprosy)',
+    designation: 'Consultant Dermatologist',
+    bio: 'Specialist in clinical dermatology, pediatric skin conditions, acne therapies, and aesthetic dermatology.',
+    branch: 'trivandrum',
+    instagram_url: undefined,
+    active: true,
+    image_path: '/doctor_hridya.png',
   }
 ];
 
