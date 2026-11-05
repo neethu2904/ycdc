@@ -17,9 +17,9 @@
                         <tr>
                             <th>Category</th>
                             <th>Treatment Name</th>
-                            <th>Duration</th>
+                            <th>Branch</th>
+                            <th>Type</th>
                             <th>Estimated Price</th>
-                            <th>Target Indications</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -33,14 +33,30 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div style="font-weight: 600; color: var(--plum-900);">{{ $service->name }}</div>
-                                    <div style="font-size: 0.75rem; color: var(--muted-charcoal);">Key: {{ $service->id }}</div>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        @if($service->image_path)
+                                            <img src="{{ $service->image_path }}" alt="{{ $service->name }}" style="width: 38px; height: 38px; border-radius: 6px; object-fit: cover; border: 1px solid var(--silk-200);">
+                                        @endif
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--plum-900);">{{ $service->name }}</div>
+                                            <div style="font-size: 0.75rem; color: var(--muted-charcoal);">Key: {{ $service->id }}</div>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>{{ $service->duration ?: '—' }}</td>
+                                <td>
+                                    @php
+                                        $branch = $service->branch ?? 'trivandrum';
+                                    @endphp
+                                    <span class="badge" style="background-color: {{ $branch === 'bangalore' ? 'rgba(76, 175, 80, 0.1)' : ($branch === 'both' ? 'rgba(156, 39, 176, 0.1)' : 'rgba(33, 150, 243, 0.1)') }}; color: {{ $branch === 'bangalore' ? '#2e7d32' : ($branch === 'both' ? '#7b1fa2' : '#1565c0') }};">
+                                        {{ ucfirst($branch) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge" style="background-color: {{ ($service->procedure_type ?? 'cosmetic') === 'dermatic' ? 'rgba(230, 81, 0, 0.1)' : 'rgba(0, 150, 136, 0.1)' }}; color: {{ ($service->procedure_type ?? 'cosmetic') === 'dermatic' ? '#e65100' : '#00796b' }};">
+                                        {{ ucfirst($service->procedure_type ?? 'cosmetic') }}
+                                    </span>
+                                </td>
                                 <td style="font-weight: bold; color: var(--gold-600);">{{ $service->price_range }}</td>
-                                <td style="max-width: 250px; font-size: 0.85rem; color: var(--muted-charcoal);">
-                                    {{ $service->treats }}
-                                </td>
                                 <td>
                                     <span class="badge" style="background-color: {{ $service->active ? 'rgba(0,128,0,0.1)' : 'rgba(0,0,0,0.05)' }}; color: {{ $service->active ? 'green' : 'var(--muted-charcoal)' }};">
                                         {{ $service->active ? 'Active' : 'Inactive' }}

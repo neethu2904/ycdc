@@ -149,4 +149,35 @@ class SecurityHardeningTest extends TestCase
         $this->post('/admin/logout')->assertRedirect(route('admin.login'));
         $this->get('/admin/dashboard')->assertRedirect(route('admin.login'));
     }
+
+    public function test_blade_admin_renders_case_studies_testimonials_and_users(): void
+    {
+        $super = User::where('email', 'admin@ycdc.com')->first();
+        $super->update(['password' => bcrypt('secret-pass')]);
+
+        $this->post('/admin/login', ['email' => $super->email, 'password' => 'secret-pass'])
+            ->assertRedirect(route('admin.dashboard'));
+
+        // Dashboard overview renders stats
+        $this->get('/admin/dashboard')
+            ->assertOk()
+            ->assertSee('Before / After')
+            ->assertSee('Testimonials');
+
+        // Case Studies
+        $this->get('/admin/case-studies')->assertOk();
+        $this->get('/admin/case-studies/create')->assertOk();
+
+        // Testimonials
+        $this->get('/admin/testimonials')->assertOk();
+        $this->get('/admin/testimonials/create')->assertOk();
+
+        // Users
+        $this->get('/admin/users')->assertOk();
+        $this->get('/admin/users/create')->assertOk();
+
+        // Services
+        $this->get('/admin/services')->assertOk();
+        $this->get('/admin/services/create')->assertOk();
+    }
 }

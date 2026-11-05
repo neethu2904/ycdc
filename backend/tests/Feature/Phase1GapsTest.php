@@ -46,8 +46,8 @@ class Phase1GapsTest extends TestCase
     {
         $this->seed(DatabaseSeeder::class);
 
-        $this->assertSame(37, Service::count());
-        $this->assertSame(13, Doctor::count());
+        $this->assertSame(70, Service::count());
+        $this->assertSame(14, Doctor::count());
         $this->assertSame(0, Service::whereNull('procedure_type')->count());
     }
 

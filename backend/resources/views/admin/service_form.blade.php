@@ -10,7 +10,7 @@
             <a href="{{ route('admin.services') }}" class="btn btn-outline btn-sm">Back to Services</a>
         </div>
 
-        <form action="{{ $service ? route('admin.services.update', $service->id) : route('admin.services.store') }}" method="POST">
+        <form action="{{ $service ? route('admin.services.update', $service->id) : route('admin.services.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             @if(!$service)
@@ -91,6 +91,46 @@
                 <label class="form-label" for="treats">Indications (What it treats)</label>
                 <input type="text" name="treats" id="treats" class="form-control" placeholder="e.g. Active acne, rolling scars, dark spots." value="{{ old('treats', $service ? $service->treats : '') }}" required>
                 @error('treats')
+                    <span style="color: red; font-size: 0.8rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                    <label class="form-label" for="branch">Clinic Branch</label>
+                    <select name="branch" id="branch" class="form-control" required>
+                        <option value="trivandrum" {{ old('branch', $service ? $service->branch : 'trivandrum') === 'trivandrum' ? 'selected' : '' }}>Trivandrum (Pattom)</option>
+                        <option value="bangalore" {{ old('branch', $service ? $service->branch : '') === 'bangalore' ? 'selected' : '' }}>Bangalore (Whitefield)</option>
+                        <option value="both" {{ old('branch', $service ? $service->branch : '') === 'both' ? 'selected' : '' }}>Both Branches</option>
+                    </select>
+                    @error('branch')
+                        <span style="color: red; font-size: 0.8rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="procedure_type">Procedure Type</label>
+                    <select name="procedure_type" id="procedure_type" class="form-control" required>
+                        <option value="cosmetic" {{ old('procedure_type', $service ? $service->procedure_type : 'cosmetic') === 'cosmetic' ? 'selected' : '' }}>Cosmetic Aesthetic</option>
+                        <option value="dermatic" {{ old('procedure_type', $service ? $service->procedure_type : '') === 'dermatic' ? 'selected' : '' }}>Clinical Dermatic / Diagnostic</option>
+                    </select>
+                    @error('procedure_type')
+                        <span style="color: red; font-size: 0.8rem; margin-top: 4px; display: block;">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="image">Treatment Image (Optional)</label>
+                @if($service && $service->image_path)
+                    <div style="margin-bottom: 8px; display: flex; align-items: center; gap: 12px;">
+                        <img src="{{ $service->image_path }}" alt="{{ $service->name }}" style="height: 60px; width: 60px; object-fit: cover; border-radius: 6px; border: 1px solid var(--silk-200);">
+                        <span style="font-size: 0.8rem; color: var(--muted-charcoal);">Current Image (Upload a new image below to replace)</span>
+                    </div>
+                @endif
+                <input type="file" name="image" id="image" class="form-control" accept="image/jpeg,image/png,image/webp">
+                <p style="font-size: 0.75rem; color: var(--muted-charcoal); margin-top: 4px;">Supported: JPG, PNG, WebP (Max 2MB)</p>
+                @error('image')
                     <span style="color: red; font-size: 0.8rem; margin-top: 4px; display: block;">{{ $message }}</span>
                 @enderror
             </div>

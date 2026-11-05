@@ -9,6 +9,7 @@ use App\Models\GalleryItem;
 use App\Models\BlogPost;
 use App\Models\Lead;
 use App\Models\SeoConfig;
+use App\Models\Testimonial;
 
 class ClinicSeeder extends Seeder
 {
@@ -167,7 +168,7 @@ class ClinicSeeder extends Seeder
         ];
 
         foreach ($doctors as $doc) {
-            Doctor::create($doc);
+            Doctor::updateOrCreate(['name' => $doc['name']], $doc);
         }
 
         // 3. Seed Services
@@ -1226,7 +1227,7 @@ class ClinicSeeder extends Seeder
         ];
 
         foreach ($gallery as $g) {
-            GalleryItem::create($g);
+            GalleryItem::updateOrCreate(['id' => $g['id']], $g);
         }
 
         // 5. Seed Blogs
@@ -1283,7 +1284,7 @@ class ClinicSeeder extends Seeder
         ];
 
         foreach ($blogs as $b) {
-            BlogPost::create($b);
+            BlogPost::updateOrCreate(['id' => $b['id']], $b);
         }
 
         // 6. Seed SEO Configs
@@ -1339,7 +1340,7 @@ class ClinicSeeder extends Seeder
         ];
 
         foreach ($seo as $s) {
-            SeoConfig::create($s);
+            SeoConfig::updateOrCreate(['route_name' => $s['route_name']], $s);
         }
 
         // 7. Seed Leads
@@ -1411,7 +1412,36 @@ class ClinicSeeder extends Seeder
         ];
 
         foreach ($leads as $l) {
-            Lead::create($l);
+            Lead::firstOrCreate(['patient_phone' => $l['patient_phone'], 'patient_name' => $l['patient_name']], $l);
+        }
+
+        // 7. Seed Testimonials
+        $testimonials = [
+            [
+                'name' => 'Ananya Sharma',
+                'rating' => 5,
+                'treatment' => 'Secret RF & Acne Resurfacing',
+                'text' => 'The clinical precision at YCDC Whitefield is unmatched. My stubborn acne scars improved significantly within three sessions under Dr. Niranjana Raj.',
+                'active' => true,
+            ],
+            [
+                'name' => 'Rahul Nair',
+                'rating' => 5,
+                'treatment' => 'PRP & GFC Hair Restoration',
+                'text' => 'Honest diagnosis and authentic medical care. The GFC sessions at Trivandrum Pattom halted my diffuse hair fall with visible hair thickening.',
+                'active' => true,
+            ],
+            [
+                'name' => 'Dr. Priya Menon',
+                'rating' => 5,
+                'treatment' => 'HydraFacial Elite & Medical Peels',
+                'text' => 'As a physician myself, I appreciate Dr. Yogiraj\'s evidence-based dermatological protocols. Zero aggressive marketing, only genuine patient care.',
+                'active' => true,
+            ],
+        ];
+
+        foreach ($testimonials as $t) {
+            Testimonial::updateOrCreate(['name' => $t['name'], 'treatment' => $t['treatment']], $t);
         }
     }
 }

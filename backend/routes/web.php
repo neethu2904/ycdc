@@ -76,4 +76,28 @@ Route::middleware(['admin.auth'])->prefix('admin')->group(function () {
     // SEO Management
     Route::get('/seo', [AdminController::class, 'seo'])->name('admin.seo');
     Route::post('/seo/{id}/update', [AdminController::class, 'updateSeo'])->name('admin.seo.update');
+
+    // Case Studies (Before & After) Management
+    Route::get('/case-studies', [AdminController::class, 'caseStudies'])->name('admin.case_studies');
+    Route::get('/case-studies/create', [AdminController::class, 'createCaseStudy'])->name('admin.case_studies.create');
+    Route::post('/case-studies/create', [AdminController::class, 'storeCaseStudy'])->name('admin.case_studies.store');
+    Route::get('/case-studies/{id}/edit', [AdminController::class, 'editCaseStudy'])->name('admin.case_studies.edit');
+    Route::post('/case-studies/{id}/edit', [AdminController::class, 'updateCaseStudy'])->name('admin.case_studies.update');
+    Route::delete('/case-studies/{id}', [AdminController::class, 'deleteCaseStudy'])->name('admin.case_studies.delete');
+
+    // Testimonials Management
+    Route::get('/testimonials', [AdminController::class, 'testimonials'])->name('admin.testimonials');
+    Route::get('/testimonials/create', [AdminController::class, 'createTestimonial'])->name('admin.testimonials.create');
+    Route::post('/testimonials/create', [AdminController::class, 'storeTestimonial'])->name('admin.testimonials.store');
+    Route::get('/testimonials/{id}/edit', [AdminController::class, 'editTestimonial'])->name('admin.testimonials.edit');
+    Route::post('/testimonials/{id}/edit', [AdminController::class, 'updateTestimonial'])->name('admin.testimonials.update');
+    Route::delete('/testimonials/{id}', [AdminController::class, 'deleteTestimonial'])->name('admin.testimonials.delete');
+
+    // Staff Users Management
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('admin.users.create');
+    Route::post('/users/create', [AdminController::class, 'storeUser'])->name('admin.users.store');
+    Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
+    Route::post('/users/{id}/edit', [AdminController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 });

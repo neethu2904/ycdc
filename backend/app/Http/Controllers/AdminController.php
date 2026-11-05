@@ -10,6 +10,9 @@ use App\Models\GalleryItem;
 use App\Models\BlogPost;
 use App\Models\Lead;
 use App\Models\SeoConfig;
+use App\Models\CaseStudy;
+use App\Models\Testimonial;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -65,6 +68,8 @@ class AdminController extends Controller
             'doctors' => Doctor::count(),
             'services' => Service::count(),
             'blogs' => BlogPost::count(),
+            'casestudies' => CaseStudy::count(),
+            'testimonials' => Testimonial::count(),
         ];
 
         $recentLeads = Lead::orderBy('created_at', 'desc')->take(5)->get();
@@ -191,7 +196,17 @@ class AdminController extends Controller
             'description' => 'required|string',
             'science' => 'required|string',
             'treats' => 'required|string',
+            'branch' => 'nullable|in:trivandrum,bangalore,both',
+            'procedure_type' => 'nullable|in:cosmetic,dermatic',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . Str::slug($request->name) . '.' . $request->file('image')->guessExtension();
+            $request->file('image')->move(public_path('uploads/services'), $imageName);
+            $imagePath = '/uploads/services/' . $imageName;
+        }
 
         Service::create([
             'id' => Str::slug($request->id),
@@ -203,6 +218,9 @@ class AdminController extends Controller
             'description' => $request->description,
             'science' => $request->science,
             'treats' => $request->treats,
+            'branch' => $request->input('branch', 'trivandrum'),
+            'procedure_type' => $request->input('procedure_type', 'cosmetic'),
+            'image_path' => $imagePath,
             'active' => $request->has('active'),
         ]);
 
@@ -228,7 +246,17 @@ class AdminController extends Controller
             'description' => 'required|string',
             'science' => 'required|string',
             'treats' => 'required|string',
+            'branch' => 'nullable|in:trivandrum,bangalore,both',
+            'procedure_type' => 'nullable|in:cosmetic,dermatic',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048'
         ]);
+
+        $imagePath = $service->image_path;
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . Str::slug($request->name) . '.' . $request->file('image')->guessExtension();
+            $request->file('image')->move(public_path('uploads/services'), $imageName);
+            $imagePath = '/uploads/services/' . $imageName;
+        }
 
         $service->update([
             'category' => $request->category,
@@ -239,6 +267,9 @@ class AdminController extends Controller
             'description' => $request->description,
             'science' => $request->science,
             'treats' => $request->treats,
+            'branch' => $request->input('branch', $service->branch ?? 'trivandrum'),
+            'procedure_type' => $request->input('procedure_type', $service->procedure_type ?? 'cosmetic'),
+            'image_path' => $imagePath,
             'active' => $request->has('active'),
         ]);
 
@@ -535,5 +566,275 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.seo')->with('success', 'SEO configuration updated for ' . $config->route_name);
+    }
+
+    // ==========================================
+    // Case Studies (Before & After) Management
+    // ==========================================
+    public function caseStudies()
+    {
+        $caseStudies = CaseStudy::orderBy('id', 'desc')->get();
+        return view('admin.case_studies', compact('caseStudies'));
+    }
+
+    public function createCaseStudy()
+    {
+        return view('admin.case_study_form', ['caseStudy' => null]);
+    }
+
+    public function storeCaseStudy(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|string|unique:case_studies,id|max:100',
+            'category' => 'required|string|max:100',
+            'category_label' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'before_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'after_image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'doctor' => 'required|string|max:255',
+            'technology' => 'required|string|max:255',
+            'sessions' => 'required|string|max:255',
+            'concern' => 'required|string|max:255',
+        ]);
+
+        $id = Str::slug($request->id ?: $request->title);
+
+        $beforeName = time() . '_before_' . $id . '.' . $request->file('before_image')->guessExtension();
+        $request->file('before_image')->move(public_path('uploads/casestudies'), $beforeName);
+        $beforePath = '/uploads/casestudies/' . $beforeName;
+
+        $afterName = time() . '_after_' . $id . '.' . $request->file('after_image')->guessExtension();
+        $request->file('after_image')->move(public_path('uploads/casestudies'), $afterName);
+        $afterPath = '/uploads/casestudies/' . $afterName;
+
+        CaseStudy::create([
+            'id' => $id,
+            'category' => $request->category,
+            'category_label' => $request->category_label,
+            'title' => $request->title,
+            'description' => $request->description,
+            'before_img_path' => $beforePath,
+            'after_img_path' => $afterPath,
+            'doctor' => $request->doctor,
+            'technology' => $request->technology,
+            'sessions' => $request->sessions,
+            'concern' => $request->concern,
+            'active' => $request->has('active'),
+        ]);
+
+        return redirect()->route('admin.case_studies')->with('success', 'Case study added successfully!');
+    }
+
+    public function editCaseStudy($id)
+    {
+        $caseStudy = CaseStudy::findOrFail($id);
+        return view('admin.case_study_form', compact('caseStudy'));
+    }
+
+    public function updateCaseStudy(Request $request, $id)
+    {
+        $caseStudy = CaseStudy::findOrFail($id);
+
+        $request->validate([
+            'category' => 'required|string|max:100',
+            'category_label' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'before_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'after_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'doctor' => 'required|string|max:255',
+            'technology' => 'required|string|max:255',
+            'sessions' => 'required|string|max:255',
+            'concern' => 'required|string|max:255',
+        ]);
+
+        $beforePath = $caseStudy->before_img_path;
+        if ($request->hasFile('before_image')) {
+            $beforeName = time() . '_before_' . $caseStudy->id . '.' . $request->file('before_image')->guessExtension();
+            $request->file('before_image')->move(public_path('uploads/casestudies'), $beforeName);
+            $beforePath = '/uploads/casestudies/' . $beforeName;
+        }
+
+        $afterPath = $caseStudy->after_img_path;
+        if ($request->hasFile('after_image')) {
+            $afterName = time() . '_after_' . $caseStudy->id . '.' . $request->file('after_image')->guessExtension();
+            $request->file('after_image')->move(public_path('uploads/casestudies'), $afterName);
+            $afterPath = '/uploads/casestudies/' . $afterName;
+        }
+
+        $caseStudy->update([
+            'category' => $request->category,
+            'category_label' => $request->category_label,
+            'title' => $request->title,
+            'description' => $request->description,
+            'before_img_path' => $beforePath,
+            'after_img_path' => $afterPath,
+            'doctor' => $request->doctor,
+            'technology' => $request->technology,
+            'sessions' => $request->sessions,
+            'concern' => $request->concern,
+            'active' => $request->has('active'),
+        ]);
+
+        return redirect()->route('admin.case_studies')->with('success', 'Case study updated!');
+    }
+
+    public function deleteCaseStudy($id)
+    {
+        $caseStudy = CaseStudy::findOrFail($id);
+        $caseStudy->delete();
+        return redirect()->route('admin.case_studies')->with('success', 'Case study deleted.');
+    }
+
+    // ==========================================
+    // Testimonials Management
+    // ==========================================
+    public function testimonials()
+    {
+        $testimonials = Testimonial::orderBy('id', 'desc')->get();
+        return view('admin.testimonials', compact('testimonials'));
+    }
+
+    public function createTestimonial()
+    {
+        return view('admin.testimonial_form', ['testimonial' => null]);
+    }
+
+    public function storeTestimonial(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'text' => 'required|string',
+            'treatment' => 'nullable|string|max:255',
+        ]);
+
+        Testimonial::create([
+            'name' => $request->name,
+            'rating' => $request->rating,
+            'text' => $request->text,
+            'treatment' => $request->treatment,
+            'active' => $request->has('active'),
+        ]);
+
+        return redirect()->route('admin.testimonials')->with('success', 'Testimonial added successfully!');
+    }
+
+    public function editTestimonial($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        return view('admin.testimonial_form', compact('testimonial'));
+    }
+
+    public function updateTestimonial(Request $request, $id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'text' => 'required|string',
+            'treatment' => 'nullable|string|max:255',
+        ]);
+
+        $testimonial->update([
+            'name' => $request->name,
+            'rating' => $request->rating,
+            'text' => $request->text,
+            'treatment' => $request->treatment,
+            'active' => $request->has('active'),
+        ]);
+
+        return redirect()->route('admin.testimonials')->with('success', 'Testimonial updated!');
+    }
+
+    public function deleteTestimonial($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->delete();
+        return redirect()->route('admin.testimonials')->with('success', 'Testimonial deleted.');
+    }
+
+    // ==========================================
+    // Staff Users Management
+    // ==========================================
+    public function users()
+    {
+        $users = User::with('roles')->orderBy('id', 'desc')->get();
+        return view('admin.users', compact('users'));
+    }
+
+    public function createUser()
+    {
+        $roles = Role::all();
+        return view('admin.user_form', ['user' => null, 'roles' => $roles]);
+    }
+
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:6',
+            'branch' => 'nullable|in:trivandrum,bangalore',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'branch' => $request->branch,
+        ]);
+
+        $user->assignRole($request->role);
+
+        return redirect()->route('admin.users')->with('success', 'Staff account created successfully!');
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        return view('admin.user_form', compact('user', 'roles'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id . '|max:255',
+            'password' => 'nullable|string|min:6',
+            'branch' => 'nullable|in:trivandrum,bangalore',
+            'role' => 'required|string|exists:roles,name',
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'branch' => $request->branch,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+        $user->syncRoles([$request->role]);
+
+        return redirect()->route('admin.users')->with('success', 'Staff account updated!');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user->id === session('admin_user_id')) {
+            return redirect()->route('admin.users')->with('error', 'You cannot delete your own account while logged in.');
+        }
+        $user->delete();
+        return redirect()->route('admin.users')->with('success', 'Staff account deleted.');
     }
 }

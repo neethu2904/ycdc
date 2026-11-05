@@ -465,6 +465,12 @@
             <li class="{{ Route::is('admin.services*') ? 'active' : '' }}">
                 <a href="{{ route('admin.services') }}"><i>💆</i> Services</a>
             </li>
+            <li class="{{ Route::is('admin.case_studies*') ? 'active' : '' }}">
+                <a href="{{ route('admin.case_studies') }}"><i>✨</i> Before & After</a>
+            </li>
+            <li class="{{ Route::is('admin.testimonials*') ? 'active' : '' }}">
+                <a href="{{ route('admin.testimonials') }}"><i>💬</i> Testimonials</a>
+            </li>
             <li class="{{ Route::is('admin.gallery*') ? 'active' : '' }}">
                 <a href="{{ route('admin.gallery') }}"><i>🖼️</i> Gallery</a>
             </li>
@@ -473,6 +479,9 @@
             </li>
             <li class="{{ Route::is('admin.seo*') ? 'active' : '' }}">
                 <a href="{{ route('admin.seo') }}"><i>🔍</i> SEO Settings</a>
+            </li>
+            <li class="{{ Route::is('admin.users*') ? 'active' : '' }}">
+                <a href="{{ route('admin.users') }}"><i>🛡️</i> Staff Accounts</a>
             </li>
         </ul>
         <div class="sidebar-footer">
