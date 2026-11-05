@@ -38,48 +38,18 @@ const CATEGORY_DEFINITIONS = [
   { id: 'aesthetics', name: 'Cosmetic Aesthetics' }
 ];
 
-const LEGACY_SERVICES: Record<string, Array<{ id: string; name: string; price: string; branch?: string }>> = {
-  skin: [
-    { id: 'acne-therapy', name: 'Advanced Anti-Acne Therapy', price: '₹1,800 - ₹3,500' },
-    { id: 'peels', name: 'Premium Chemical Peels', price: '₹2,500 - ₹5,000' },
-    { id: 'microderm', name: 'Microdermabrasion & Polish', price: '₹3,000' }
-  ],
-  hair: [
-    { id: 'prp', name: 'PRP Hair Growth Therapy', price: '₹4,500/session' },
-    { id: 'transplant', name: 'Follicular Hair Transplant Consultation', price: '₹500 (Consultation)' },
-    { id: 'scalp-regen', name: 'Scalp Rejuvenation Treatment', price: '₹3,200' }
-  ],
-  laser: [
-    { id: 'secret-rf', name: 'Secret RF Microneedling (Scar/Aging)', price: '₹8,000 - ₹12,000' },
-    { id: 'hair-reduction', name: 'Laser Hair Reduction (Full Face)', price: '₹4,000' },
-    { id: 'q-switch', name: 'Q-Switched Laser (Pigment/Tattoo)', price: '₹5,000 - ₹9,000' }
-  ],
-  aesthetics: [
-    { id: 'botox', name: 'Anti-Wrinkle Botox & Dermal Fillers', price: 'Price on Consultation' },
-    { id: 'hydrafacial', name: 'Luxurious Hydrafacial Medi-Facial', price: '₹5,500' },
-    { id: 'carbon-peel', name: 'Hollywood Carbon Laser Glow Peel', price: '₹4,500' }
-  ]
-};
-
-const CATEGORIES = CATEGORY_DEFINITIONS.map((cat) => {
-  const catalogServices = MOCK_SERVICES
+const CATEGORIES = CATEGORY_DEFINITIONS.map((cat) => ({
+  id: cat.id,
+  name: cat.name,
+  services: MOCK_SERVICES
     .filter((t) => t.category === cat.id && t.active !== false)
     .map((t) => ({
       id: t.id,
       name: t.name,
       price: t.price_range || 'Price on Consultation',
       branch: t.branch
-    }));
-
-  const existingIds = new Set(catalogServices.map((s) => s.id));
-  const fallbackLegacy = (LEGACY_SERVICES[cat.id] || []).filter((s) => !existingIds.has(s.id));
-
-  return {
-    id: cat.id,
-    name: cat.name,
-    services: [...catalogServices, ...fallbackLegacy]
-  };
-});
+    }))
+}));
 
 const ALL_SERVICES = CATEGORIES.flatMap((c) => c.services);
 
@@ -129,7 +99,14 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
   const selectedServiceRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // 1. Resolve Category: prioritize the category that owns initialService
+    // 1. Resolve Branch & Doctor (Doctors are filtered only by clinic branch, no procedure mapping)
+    const branchValue = initialBranch || 'trivandrum';
+    const branchDocs = DOCTORS.filter(d => d.branches.includes(branchValue));
+    const doctorValue = branchDocs.some(d => d.id === doctor)
+      ? doctor
+      : (branchDocs.length > 0 ? branchDocs[0].id : 'yogiraj');
+
+    // 2. Resolve Category: prioritize the category that owns initialService
     let resolvedCategory = initialCategory;
     if (initialService) {
       const foundCategory = CATEGORIES.find(c => c.services.some(s => s.id === initialService));
@@ -139,18 +116,12 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
     }
     resolvedCategory = resolvedCategory || 'skin';
 
-    // 2. Resolve Service: ensure initialService exists in that category, or default to first
+    // 3. Resolve Service: prioritize initialService if available, otherwise pick first valid for chosen branch
     const catServices = CATEGORIES.find(c => c.id === resolvedCategory)?.services || [];
+    const validBranchServices = catServices.filter(s => !s.branch || s.branch === branchValue || s.branch === 'both');
     const resolvedService = (initialService && catServices.some(s => s.id === initialService))
       ? initialService
-      : (catServices[0]?.id || 'dust-allergy-test');
-
-    // 3. Resolve Branch & Doctor (Doctors are filtered only by clinic branch, no procedure mapping)
-    const branchValue = initialBranch || 'trivandrum';
-    const branchDocs = DOCTORS.filter(d => d.branches.includes(branchValue));
-    const doctorValue = branchDocs.some(d => d.id === doctor)
-      ? doctor
-      : (branchDocs.length > 0 ? branchDocs[0].id : 'yogiraj');
+      : (validBranchServices[0]?.id || catServices[0]?.id || 'dust-allergy-test');
 
     // 4. If a specific treatment was chosen, start at Step 2 so the user immediately sees it selected!
     dispatch(resetBookingForm({

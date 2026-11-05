@@ -7,8 +7,6 @@ import {
   MapPin, 
   Sparkles, 
   Stethoscope, 
-  AlertCircle, 
-  Phone, 
   MessageSquare,
   ArrowRight,
   X,
@@ -52,7 +50,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const { phone, whatsapp } = useAppContext();
+  const { whatsapp } = useAppContext();
   const [activeModalTreatment, setActiveModalTreatment] = useState<Treatment | null>(null);
 
   const [searchParams] = useSearchParams();
@@ -123,18 +121,12 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
     return matchesBranch && matchesType && matchesCategory && matchesSearch;
   });
 
+  const branchProceduresCount = treatments.filter(t => selectedBranch === 'all' || t.branch === selectedBranch || t.branch === 'both').length;
   const dermaticCount = treatments.filter(t => t.procedure_type === 'dermatic' && (selectedBranch === 'all' || t.branch === selectedBranch || t.branch === 'both')).length;
   const cosmeticCount = treatments.filter(t => t.procedure_type === 'cosmetic' && (selectedBranch === 'all' || t.branch === selectedBranch || t.branch === 'both')).length;
 
   const toggleFaq = (index: number) => {
     setExpandedFaq(prev => prev === index ? null : index);
-  };
-
-  const handleWhatsAppClick = (branchName: string) => {
-    // Clinic WhatsApp line from AppContext (previously placeholder numbers per branch)
-    const phone = whatsapp.replace(/\D/g, '');
-    const message = encodeURIComponent(`Hello YCDC ${branchName} Clinic, I would like to inquire about clinical procedures and appointments.`);
-    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
   };
 
   // Helper for small card descriptions (around 1-2 clean lines)
@@ -264,7 +256,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                   flexShrink: 0
                 }}
               >
-                All Procedures ({selectedBranch === 'bangalore' ? 0 : 37})
+                All Procedures ({branchProceduresCount})
               </button>
               <button
                 onClick={() => setSelectedType('dermatic')}
@@ -285,7 +277,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                   flexShrink: 0
                 }}
               >
-                <Stethoscope size={16} /> Dermatic Procedures ({selectedBranch === 'bangalore' ? 0 : dermaticCount})
+                <Stethoscope size={16} /> Dermatic Procedures ({dermaticCount})
               </button>
               <button
                 onClick={() => setSelectedType('cosmetic')}
@@ -306,7 +298,7 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                   flexShrink: 0
                 }}
               >
-                <Sparkles size={16} /> Cosmetic Procedures ({selectedBranch === 'bangalore' ? 0 : cosmeticCount})
+                <Sparkles size={16} /> Cosmetic Procedures ({cosmeticCount})
               </button>
             </div>
 
@@ -390,56 +382,6 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
           </div>
         </div>
       </section>
-
-      {/* Notice Banner for Bangalore Branch */}
-      {selectedBranch === 'bangalore' && (
-        <section style={{ marginTop: '40px' }}>
-          <div className="container">
-            <div style={{
-              background: 'linear-gradient(135deg, #fff9e6 0%, #fff0f5 100%)',
-              border: '2px dashed var(--gold-500)',
-              borderRadius: '16px',
-              padding: '40px 30px',
-              textAlign: 'center',
-              boxShadow: 'var(--shadow-sm)'
-            }}>
-              <AlertCircle size={44} style={{ color: 'var(--gold-600)', marginBottom: '14px' }} />
-              <h3 style={{ fontFamily: 'var(--font-serif)', color: '#536B4C', fontSize: '1.8rem', marginBottom: '10px' }}>
-                Bangalore Branch Procedures Updating Soon
-              </h3>
-              <p style={{ maxWidth: '650px', margin: '0 auto 24px', color: 'var(--muted-charcoal)', fontSize: '1rem', lineHeight: '1.6' }}>
-                The full catalog of clinical and cosmetic procedures specifically customized for our <strong>Whitefield, Bangalore</strong> branch is currently being updated and will be published here shortly.
-              </p>
-              <p style={{ fontSize: '0.9rem', color: '#536B4C', fontWeight: '600', marginBottom: '24px' }}>
-                All core treatments, consultations, lasers, and hair care are fully active at our Whitefield clinic. Reach out to our Bangalore care team directly:
-              </p>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
-                <button
-                  onClick={() => handleWhatsAppClick('Bangalore')}
-                  className="btn btn-primary"
-                  style={{ padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#25D366', borderColor: '#25D366', color: 'white', fontWeight: 'bold' }}
-                >
-                  <MessageSquare size={16} /> WhatsApp Bangalore Clinic
-                </button>
-                <a
-                  href={`tel:${phone}`}
-                  className="btn btn-outline"
-                  style={{ padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '8px', color: '#536B4C', borderColor: '#536B4C', fontWeight: 'bold' }}
-                >
-                  <Phone size={16} /> Call Whitefield Branch
-                </a>
-                <button
-                  onClick={() => setSelectedBranch('trivandrum')}
-                  className="btn btn-secondary"
-                  style={{ padding: '12px 24px', cursor: 'pointer' }}
-                >
-                  View Trivandrum Procedures ({37})
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Treatments Cards Grid */}
       <section className="section-padding" style={{ padding: '40px 0 60px' }}>
@@ -598,11 +540,11 @@ export default function TreatmentsList({ onBookTreatment }: TreatmentsListProps)
                 </div>
               ))}
             </div>
-          ) : selectedBranch !== 'bangalore' ? (
+          ) : (
             <div style={{ textAlign: 'center', padding: '60px 0', background: 'white', borderRadius: '12px', border: '1px solid var(--silk-200)' }}>
               <p style={{ color: 'var(--muted-charcoal)', fontSize: '1.1rem' }}>No procedures found matching your criteria. Try adjusting your search query or filter.</p>
             </div>
-          ) : null}
+          )}
         </div>
       </section>
 
