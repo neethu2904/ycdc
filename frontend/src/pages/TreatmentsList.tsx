@@ -29,11 +29,11 @@ const FAQS = [
   },
   {
     q: "Which procedures are currently available at Trivandrum Branch?",
-    a: "All clinical and aesthetic procedures listed above—including advanced MedLite & Erbium Lasers, Laser Hair Reduction (LHR), Specialized Peels, Dermato-Surgeries, Allergy Diagnostic Panels, Botox, Fillers, Hydrafacial, GFC, PRP, and Hair Transplants—are fully operational at our Pattom, Trivandrum center."
+    a: "Our Pattom, Trivandrum center specializes in advanced Dermatic diagnostics (Dust & Food allergy prick & blood tests, ASST, DIF immunofluorescence, biopsies), Dermato-Surgeries (cryotherapy, electrocautery, vitiligo grafting, nail avulsion, keloid excision), Medical Lasers (RevLite, ResurFX, Soprano Diode, Secret RF, TriBeam), Botox, Dermal Fillers, Hydrafacial, PRP, GFC, and FUE Hair Transplantation."
   },
   {
-    q: "When will the Bangalore Branch procedure list be updated?",
-    a: "The Bangalore (Whitefield) clinic procedure catalog is being compiled and will be published online very soon. However, consultations, clinical dermatological treatments, lasers, and hair care are already available at Whitefield. Please contact us via WhatsApp or Phone to book your Bangalore appointment."
+    q: "Which procedures are available at our Whitefield, Bangalore Branch?",
+    a: "Our Bangalore (Whitefield) clinic offers our complete 38-procedure menu—including the full MedLite Q-Switched laser suite (Face, Under Eye, Underarms, Feet, Back, Lips, Hands, Tattoo Removal), Erbium (ERBM) and MNRF laser resurfacing, full-body Laser Hair Reduction (LHR), specialized medical chemical peels (Azee, Double Peel, Inno, Mandelac, NMF series, Lip & Eye peels), Exoluxe and HydraFacial JLO Medi-Facials, Botox, and Dermato-Surgeries (Skin tags, Mole surgeries, Sebaceous cyst, and minor excisions)."
   },
   {
     q: "Are allergy skin prick tests and patch tests safe?",

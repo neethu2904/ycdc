@@ -38,7 +38,7 @@ const CATEGORY_DEFINITIONS = [
   { id: 'aesthetics', name: 'Cosmetic Aesthetics' }
 ];
 
-const LEGACY_SERVICES: Record<string, Array<{ id: string; name: string; price: string }>> = {
+const LEGACY_SERVICES: Record<string, Array<{ id: string; name: string; price: string; branch?: string }>> = {
   skin: [
     { id: 'acne-therapy', name: 'Advanced Anti-Acne Therapy', price: '₹1,800 - ₹3,500' },
     { id: 'peels', name: 'Premium Chemical Peels', price: '₹2,500 - ₹5,000' },
@@ -169,14 +169,16 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
     }
   }, [step, category, service]);
 
-  // Filtered lists (Doctors available at chosen clinic location without procedure restriction)
-  const availableServices = CATEGORIES.find(c => c.id === category)?.services || [];
+  // Filtered lists (Treatments and Doctors available at chosen clinic location)
+  const categoryServices = CATEGORIES.find(c => c.id === category)?.services || [];
+  const availableServices = categoryServices.filter(s => !s.branch || s.branch === branch || s.branch === 'both');
   const availableDoctors = DOCTORS.filter(d => d.branches.includes(branch));
 
   // Select first service in new category without resetting doctor
   const handleCategoryChange = (catId: string) => {
-    const services = CATEGORIES.find(c => c.id === catId)?.services || [];
-    const nextService = services.length > 0 ? services[0].id : service;
+    const rawServices = CATEGORIES.find(c => c.id === catId)?.services || [];
+    const validServices = rawServices.filter(s => !s.branch || s.branch === branch || s.branch === 'both');
+    const nextService = validServices.length > 0 ? validServices[0].id : (rawServices[0]?.id || service);
     dispatch(setBookingSelection({ category: catId, service: nextService }));
   };
 
@@ -416,7 +418,12 @@ export default function BookingWidget({ onClose, initialBranch, initialCategory,
                   onClick={() => {
                     const branchDocs = DOCTORS.filter(d => d.branches.includes(b.id));
                     const nextDoctor = branchDocs.some(d => d.id === doctor) ? doctor : (branchDocs[0]?.id || 'yogiraj');
-                    dispatch(setBookingSelection({ branch: b.id, doctor: nextDoctor }));
+                    const catServices = CATEGORIES.find(c => c.id === category)?.services || [];
+                    const validServices = catServices.filter(s => !s.branch || s.branch === b.id || s.branch === 'both');
+                    const nextService = validServices.some(s => s.id === service)
+                      ? service
+                      : (validServices[0]?.id || catServices[0]?.id || service);
+                    dispatch(setBookingSelection({ branch: b.id, doctor: nextDoctor, service: nextService }));
                   }}
                   style={{
                     padding: '20px',

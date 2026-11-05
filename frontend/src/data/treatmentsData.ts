@@ -337,7 +337,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Controlled electro-coagulation targeting the vascular pedicle of the tag, preventing bleeding and leaving healthy tissue intact.',
     treats: 'Acrochordons, skin tags, cutaneous papillomas on neck, face, and axillae.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'dermatic',
     image: TREATMENT_IMAGES['skin-tag-removal']
   },
@@ -351,7 +351,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Elliptical full-thickness excision under local lidocaine anesthesia followed by sub-cuticular cosmetic suturing.',
     treats: 'Deep melanocytic naevi, intradermal moles, suspicious or cosmetically bothersome pigmented lesions.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'dermatic',
     image: TREATMENT_IMAGES['mole-surgery']
   },
@@ -365,7 +365,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Serial radiofrequency ablation or micro-excisions performed systematically under sterile local anesthesia.',
     treats: 'Multiple facial moles, body naevi, congenital or acquired dermal lesions.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'dermatic',
     image: TREATMENT_IMAGES['moles-removal-3']
   },
@@ -379,7 +379,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Sterile puncture or minimal-incision dissection with complete sac removal followed by tension-free cosmetic suturing.',
     treats: 'Sebaceous cysts, epidermoid cysts, scalp pilar cysts, infected or enlarged subcutaneous nodules.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'dermatic',
     image: TREATMENT_IMAGES['seb-cyst-excision']
   },
@@ -393,7 +393,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Aseptic tissue dissection along relaxed skin tension lines (RSTLs) to deliver superior functional and aesthetic healing.',
     treats: 'Dermatofibromas, benign subcutaneous nodules, skin fibromas, minor soft tissue growths.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'dermatic',
     image: TREATMENT_IMAGES['minor-surgical-excision']
   },
@@ -409,7 +409,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'PhotoAcoustic nanosecond pulses shatter dermal melanin clusters without thermal heat damage to surrounding tissue.',
     treats: 'Facial tanning, melasma, sun freckles, uneven skin tone, enlarged pores, dull complexion.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-face']
   },
@@ -423,7 +423,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Sub-millisecond acoustic shockwaves selectively break down infra-orbital venous pooling pigment and dermal melanin.',
     treats: 'Periorbital hyperpigmentation, under-eye dark circles, genetic eye hollow darkening.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-under-eye']
   },
@@ -437,7 +437,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: '1064nm deep penetrating laser targets buried axillary melanophages, restoring even skin color across delicate folds.',
     treats: 'Dark underarms, friction hyperpigmentation, post-waxing dark patches, acanthosis nigricans.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-underarms']
   },
@@ -451,7 +451,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Selective photothermolysis shatters stubborn hyperpigmentation on thicker pedal skin while promoting dermal renewal.',
     treats: 'Footwear tan lines, ankle friction darkening, sun-tanned dorsal feet, post-inflammatory pigmentation.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-feet']
   },
@@ -465,7 +465,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'High-speed scanning delivers acoustic acoustic waves across large surface areas to homogenize skin tone.',
     treats: 'Bacne scars, back tanning, post-inflammatory hyperpigmentation, sun spots on shoulders.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-back']
   },
@@ -479,7 +479,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Low-fluence Q-switched pulses selectively vaporize melanin pigments in the vermilion lip border without blistering.',
     treats: 'Smoker lips, genetically dark lips, post-inflammatory hyperpigmented vermilion borders.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-lips']
   },
@@ -493,7 +493,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Acoustic photo-fragmentation clears solar lentigines and age-related liver spots while boosting collagen.',
     treats: 'Hand sunspots, age spots, mottled forearm pigmentation, photoaged hand skin.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-hands']
   },
@@ -507,7 +507,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Ultra-fast nanosecond acoustic pulses shatter tattoo ink particles into microscopic fragments cleared by natural macrophages.',
     treats: 'Unwanted tattoos, amateur inkings, cosmetic micro-tattoos, traumatic blast pigments.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['medlite-tattoo-removal']
   },
@@ -523,7 +523,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Erbium wavelength offers exact water absorption with minimal thermal collateral damage, enabling rapid re-epithelialization.',
     treats: 'Acne scars, superficial wrinkles, enlarged pores, skin irregularities, surgical scars.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['erbm-laser']
   },
@@ -537,7 +537,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'MNRF delivers deep dermal radiofrequency to lift tethered scar bases while Erbium:YAG polishes the epidermal surface in one session.',
     treats: 'Severe boxcar & rolling acne scars, deep facial crevices, extensive skin laxity, uneven dermal texture.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['mnrf-erbm-combination']
   },
@@ -595,7 +595,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Direct dermal delivery of RF heat at exact microneedle depths to contract collagen fibers and flatten deep pits.',
     treats: 'Deep rolling & boxcar acne scars, sagging jawline, neck lines, stretch marks.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['mnrf-laser']
   },
@@ -639,7 +639,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Selective photothermolysis destroys follicular germ cells without damaging sensitive facial skin.',
     treats: 'Facial hirsutism, upper lip hair, sideburns, PCOS-related facial hair growth.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-face']
   },
@@ -653,7 +653,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'High-fluence pulsed laser targeting deep underarm hair bulbs with chilled sapphire tip contact cooling.',
     treats: 'Underarm coarse hair, recurring folliculitis, ingrown hair bumps.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-underarms']
   },
@@ -667,7 +667,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Comprehensive multi-wavelength clinical laser coverage providing systematic follicle permanent reduction across the entire body.',
     treats: 'Full body unwanted hair, chronic body hair management, strawberry legs, folliculitis.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-full-body']
   },
@@ -681,7 +681,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Calibrated gentle wavelengths penetrate coarse intimate hair while maximum contact cooling ensures skin comfort.',
     treats: 'Bikini line coarse hair, wax bumps, ingrown hairs, intimate friction darkening.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-bikini']
   },
@@ -695,7 +695,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Wide-spot laser scanning penetrates deep thick hair roots across the dense dorsal cutaneous surface.',
     treats: 'Dense back hair, shoulder hair, back sweat irritation, post-waxing breakouts.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-back']
   },
@@ -709,7 +709,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Focused high-precision diode pulses thermalize deep chin follicular roots preventing coarse hair regrowth.',
     treats: 'Hormonal chin hair, stubborn coarse bristles, jawline hirsutism.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lhr-chin']
   },
@@ -725,7 +725,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Azelaic acid provides potent anti-inflammatory, anti-microbial, and tyrosinase-inhibiting biological actions.',
     treats: 'Rosacea, active inflammatory papules, erythema, epidermal melasma, post-acne redness.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['azee-peel']
   },
@@ -739,7 +739,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Synergistic multi-acid layering breaks through epidermal hyperkeratosis then directly clears resistant dermal pigment.',
     treats: 'Stubborn recalcitrant melasma, heavy facial tanning, deep blemish patches, mixed hyperpigmentation.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['double-peel']
   },
@@ -753,7 +753,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Bioactive retinoic, salicylic, and whitening actives accelerate epidermal cell renewal and block melanin transfer.',
     treats: 'Chloasma, sun-induced pigmentation, post-inflammatory dark marks, dull weathered skin.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['inno-peel']
   },
@@ -767,7 +767,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Large-molecule mandelic acid gently loosens dead stratum corneum cells with zero peeling visible flaking.',
     treats: 'Pre-wedding dullness, congested event-ready skin, minor blemishes, sensitive skin glow.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['mandelac-party-peel']
   },
@@ -781,7 +781,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Natural Moisturizing Factor amino acids combined with mild exfoliating hydroxy acids restore hydration and cellular turnover.',
     treats: 'Acanthosis nigricans, neck creases, dark neck rings, sun damaged throat skin.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['nmf-neck-peel']
   },
@@ -795,7 +795,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'High-concentration NMF barrier-restoring complex accelerates dermal regeneration on thick hand skin.',
     treats: 'Aging hands, sun spots, rough dry cuticles, photoaged dorsal hands.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['nmf-hand-peel']
   },
@@ -809,7 +809,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Mild keratolytic acids with soothing botanical NMF buffers exfoliate dark folded skin without burning.',
     treats: 'Dark underarms, friction hyperpigmentation, rough follicular bumps.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['nmf-underarms-peel']
   },
@@ -823,7 +823,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Ultra-mild formulation engineered for non-keratinized mucosal transitions to clear melanin without irritation.',
     treats: 'Smoker lip staining, dark outer lip borders, chapped pigmented lip texture.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['lip-peel']
   },
@@ -837,7 +837,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Ophthalmologist-safe organic acids tighten thin peri-orbital skin and diminish accumulated periorbital pigments.',
     treats: 'Under-eye circles, peri-orbital darkness, eyelid hyperpigmentation, fine periorbital lines.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['eye-peel']
   },
@@ -867,7 +867,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Exosomes act as intercellular messengers transmitting genetic signals for deep cellular regeneration and collagen synthesis.',
     treats: 'Dull tired skin, fine aging lines, loss of firmness, compromised skin barrier, pre-event glow.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['exoluxe-facial']
   },
@@ -881,7 +881,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Vortex-fusion spiral suction delivering salicylic acid, glycolic acid, and hyaluronic peptides.',
     treats: 'Clogged pores, dry dehydrated skin, oily skin, pre-event glowing skin.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['hydrafacial']
   },
@@ -895,7 +895,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Vortex-fusion delivers concentrated niacinamide, olive leaf extract, and proprietary polyglutamic acid for unmatched radiance.',
     treats: 'Dull dry skin, loss of radiance, pre-wedding rejuvenation, VIP event glow.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['hydrafacial-jlo']
   },
@@ -909,7 +909,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Targeted nerve signal blockage inhibiting dynamic muscle contractions that cause deep skin creases.',
     treats: 'Forehead lines, crow’s feet, frown lines, masseter jaw slimming.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['botox']
   },
@@ -981,7 +981,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'High-concentration platelet-derived growth factors (PDGF, VEGF, IGF-1) injected and rolled directly into the follicular hair bulb layer.',
     treats: 'Androgenetic alopecia, telogen effluvium, post-illness hair fall, progressive scalp thinning.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['gfc']
   },
@@ -995,7 +995,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Infusion of concentrated signal factors that prolong the anagen growth phase of dormant hair follicles.',
     treats: 'Progressive thinning, hair shedding, weak fragile hair shafts, early stage balding.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['stem-cell-therapy']
   },
@@ -1009,7 +1009,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Centrifuged autologous blood plasma delivering active growth factors to hair root stems to reverse miniaturization.',
     treats: 'Hair thinning, hair fall, pattern baldness, receding hair.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['prp']
   },
@@ -1051,7 +1051,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'Follicular Unit Extraction (FUE) delivering natural hairline definition and durable follicle growth.',
     treats: 'Male pattern baldness, female hairline thinning, crown balding.',
     active: true,
-    branch: 'trivandrum',
+    branch: 'both',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['transplant']
   },
