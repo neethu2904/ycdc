@@ -67,7 +67,7 @@ const CARE_CATEGORIES_DATA: Record<CareCategory, {
     tabLabel: 'Clinical Dermatology',
     protocolTitle: 'Clinical Dermatology',
     protocolDesc: 'Evidence-based therapies for healthy, clear, and resilient skin.',
-    protocolImage: '/luxury_treatment_suite.jpg',
+    protocolImage: '/skin_treatment_premium.png',
     services: [
       {
         title: 'Advanced Acne & Scar Revision',
