@@ -1041,6 +1041,20 @@ class ClinicSeeder extends Seeder
                 'procedure_type' => 'cosmetic'
             ],
             [
+                'id' => 'gfc-treatment',
+                'category' => 'hair',
+                'category_name' => 'Cosmetic Hair Care',
+                'name' => 'GFC Treatment (Growth Factor Concentrate)',
+                'description' => 'Next-generation acellular growth factor concentrate therapy extracted from autologous blood to halt hair shedding, prolong anagen growth phase, and stimulate dormant follicles.',
+                'duration' => null,
+                'price_range' => '₹5,500 - ₹9,000 / session',
+                'science' => 'High-concentration platelet-derived growth factors (PDGF, VEGF, IGF-1) injected cleanly into the scalp without RBC or WBC inflammatory contaminants.',
+                'treats' => 'Androgenetic alopecia, telogen effluvium, post-illness hair fall, progressive scalp thinning.',
+                'active' => true,
+                'branch' => 'trivandrum',
+                'procedure_type' => 'cosmetic'
+            ],
+            [
                 'id' => 'gfc',
                 'category' => 'hair',
                 'category_name' => 'Cosmetic Hair Care',
@@ -1051,7 +1065,7 @@ class ClinicSeeder extends Seeder
                 'science' => 'High-concentration platelet-derived growth factors (PDGF, VEGF, IGF-1) injected and rolled directly into the follicular hair bulb layer.',
                 'treats' => 'Androgenetic alopecia, telogen effluvium, post-illness hair fall, progressive scalp thinning.',
                 'active' => true,
-                'branch' => 'both',
+                'branch' => 'bangalore',
                 'procedure_type' => 'cosmetic'
             ],
             [

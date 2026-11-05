@@ -36,6 +36,8 @@ export const TREATMENT_IMAGES: Record<string, string> = {
   'mesotherapy': '/images/site/treatment-of-hair-loss-injection-for-hair-growth-2025-04-29-00-57-22-utc-scaled-700x500.jpg',
   'stem-cell-therapy': '/images/site/dermatologist-trichologist-performs-the-procedure-2025-01-08-12-52-28-utc-scaled-700x500.jpg',
   'gfc': '/images/site/treatment-of-hair-loss-injection-for-hair-growth-2025-04-29-00-57-22-utc-scaled-700x500.jpg',
+  'gfc-treatment': '/images/site/treatment-of-hair-loss-injection-for-hair-growth-2025-04-29-00-57-22-utc-scaled-700x500.jpg',
+  'gfc-therapy': '/images/site/treatment-of-hair-loss-injection-for-hair-growth-2025-04-29-00-57-22-utc-scaled-700x500.jpg',
   'prp': '/images/site/treatment-of-hair-loss-injection-for-hair-growth-2025-04-29-00-57-22-utc-scaled-700x500.jpg',
   'transplant': '/images/site/hair-transplant.webp',
   'smp-hair': '/images/site/dermatologist-trichologist-performs-the-procedure-2025-01-08-12-52-28-utc-scaled-700x500.jpg',
@@ -972,6 +974,20 @@ export const MOCK_SERVICES: Treatment[] = [
 
   // --- HAIR & SCALP PROCEDURES (From Clinic Rate Sheet & Catalog) ---
   {
+    id: 'gfc-treatment',
+    category: 'hair',
+    category_name: 'Cosmetic Hair Care',
+    name: 'GFC Treatment (Growth Factor Concentrate)',
+    description: 'Next-generation acellular growth factor concentrate therapy extracted from autologous blood to halt hair shedding, prolong anagen growth phase, and stimulate dormant follicles.',
+    price_range: '₹5,500 - ₹9,000 / session',
+    science: 'High-concentration platelet-derived growth factors (PDGF, VEGF, IGF-1) injected cleanly into the scalp without RBC or WBC inflammatory contaminants.',
+    treats: 'Androgenetic alopecia, telogen effluvium, post-illness hair fall, progressive scalp thinning.',
+    active: true,
+    branch: 'trivandrum',
+    procedure_type: 'cosmetic',
+    image: TREATMENT_IMAGES['gfc-treatment']
+  },
+  {
     id: 'gfc',
     category: 'hair',
     category_name: 'Cosmetic Hair Care',
@@ -981,7 +997,7 @@ export const MOCK_SERVICES: Treatment[] = [
     science: 'High-concentration platelet-derived growth factors (PDGF, VEGF, IGF-1) injected and rolled directly into the follicular hair bulb layer.',
     treats: 'Androgenetic alopecia, telogen effluvium, post-illness hair fall, progressive scalp thinning.',
     active: true,
-    branch: 'both',
+    branch: 'bangalore',
     procedure_type: 'cosmetic',
     image: TREATMENT_IMAGES['gfc']
   },
